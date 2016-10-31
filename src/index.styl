@@ -1,0 +1,58 @@
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+.layout
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  // dividers
+  .divider-column, .divider-row
+    position: relative;
+    z-index: 2;
+    .divider-content
+      position: absolute;
+      &:hover
+        background: rgba(50, 50, 100, 0.8);
+  .divider-column
+    height: 100%;
+    width: 0px;
+    float: left;
+    .divider-content
+      top: 0px;
+      left: -3.5px;
+      width: 8px;
+      height: 100%;
+      cursor: ew-resize;
+  .divider-row
+    height: 0px;
+    width: 100%;
+    .divider-content
+      top: -4px;
+      left: 0px;
+      height: 8px;
+      width: 100%;
+      cursor: ns-resize;
+
+  // items 
+  .row
+    width: 100%;
+    border: 1px solid black;
+    position: relative;
+  .column
+    height: 100%;
+    float: left;
+    border: 1px solid black;
+    position: relative;
