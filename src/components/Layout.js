@@ -2,6 +2,7 @@ const React = require('react');
 const classNames = require('classnames');
 
 const Stack = require('./Stack.js');
+const Float = require('./Float.js');
 const Divider = require('./Divider.js');
 const { isInteger } = Number;
 const { isArray } = Array;
@@ -12,33 +13,51 @@ const components = {};
 const ROW = 'row';
 const STACK = 'stack';
 const COLUMN = 'column';
+const FLOAT = 'float';
 
 obj.displayName = 'Layout';
 
 obj.getDefaultProps = () => ({
-  resize: true
+  resize: true,
+  children: [],
+  floats: []
 });
 
 obj.propTypes = {
   type: React.PropTypes.oneOf([STACK, ROW, COLUMN]),
   children: React.PropTypes.array.isRequired,
+  floats: React.PropTypes.array.isRequired,
   resize: React.PropTypes.bool
 };
 
+
+obj.getFloats = function () {
+  let floats = [];
+  let keys = Object.keys(this.state.floats);
+  for (var index = 0; index < keys.length; index++) {
+    var {key, pos, size, type, children} = this.state.floats[keys[index]];
+    floats.push(
+      <Float {...{key, pos, size}} >
+        <Layout {...{type, children, resize: false }} />
+      </Float>
+    )
+  }
+  // let {component, size, children, props, key, name, tabs, resize} = data;
+
+  return floats;
+};
 
 obj.getChildren = function () {
   let children = [];
   let classNameDivider = 'divider-' + this.state.type;
   let keys = Object.keys(this.state.children);
 
-  if (this.state.type === STACK) return this.getStack();
-
-  for (var index = 0; index < keys.length; index++) {
-    var child = this.state.children[keys[index]];
+  for (let index = 0; index < keys.length; index++) {
+    let child = this.state.children[keys[index]];
     children.push(
       this.getComponent(child)
     );
-    if (this.state.type !== STACK && this.state.resize && index !== keys.length - 1) {
+    if (this.state.resize && index !== keys.length - 1) {
       children.push(
         <Divider className={classNameDivider} key={'d' + child.key}/>
       );
@@ -79,13 +98,23 @@ obj.getComponent = function (data) {
 };
 
 obj.generateState = function () {
-  let {children, type, resize} = this.props;
+  let {children, type, resize, floats} = this.props;
+  let key = 0;
   let newChildren = {};
+  let newFloast = {};
+
   for (let index = 0; index < children.length; index++) {
     let child = children[index];
-    newChildren[index] = Object.assign({}, child, {key: index});
+    newChildren[key] = Object.assign({key}, child);
+    key++;
+  }
+  for (let index = 0; index < floats.length; index++) {
+    let float = floats[index];
+    newFloast[key] = Object.assign({key}, float);
+    key++;
   }
   return {
+    floats: newFloast,
     children: newChildren,
     type,
     resize
@@ -115,11 +144,13 @@ obj.render = function () {
   let className = classNames(
     'layout'
   );
-  if (this.state.type === STACK) {
-    return <Stack {...{type: className, children: this.getChildrenStack()}} />;
-  }
   return <div className={className}>
-    {this.state.type === STACK ? this.getStack() : this.getChildren()}
+    {
+      this.state.type === STACK ?
+        <Stack {...{type: ROW, children: this.getChildrenStack(), style: {height: '100%'}}} /> :
+        this.getChildren()
+    }
+    {this.getFloats()}
   </div>;
 };
 
@@ -140,3 +171,4 @@ exports.register = register;
 exports.ROW = ROW;
 exports.STACK = STACK;
 exports.COLUMN = COLUMN;
+exports.FLOAT = FLOAT;

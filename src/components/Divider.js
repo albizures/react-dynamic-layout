@@ -11,5 +11,4 @@ obj.render = function () {
 
 const Divider = React.createClass(obj);
 
-
 module.exports = Divider;
