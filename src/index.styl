@@ -3,7 +3,14 @@ height-tabs = 20px
 
 * {
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
+
+drag-hover-color = rgba(0, 0, 0, 0.5);
 
 body {
   margin: 0;
@@ -26,7 +33,7 @@ body {
     .divider-content
       position: absolute;
       &:hover
-        background: rgba(50, 50, 100, 0.8);
+        background: drag-hover-color;
   .divider-column
     height: 100%;
     width: 0px;
@@ -88,6 +95,8 @@ body {
       background-image: linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
     .resize-bar
       position: absolute
+      &.active, &:hover
+        background: drag-hover-color;
       &.north, &.south
         cursor: ns-resize;
       &.east, &.west
