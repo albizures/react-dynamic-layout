@@ -47,9 +47,13 @@ obj.getFloats = function () {
   return floats;
 };
 
+obj.setDiffSize = function (keyBefore, keyAfter, diff) {
+  console.log(keyBefore, keyAfter, diff);
+};
+
 obj.getChildren = function () {
   let children = [];
-  let classNameDivider = 'divider-' + this.state.type;
+  
   let keys = Object.keys(this.state.children);
 
   for (let index = 0; index < keys.length; index++) {
@@ -58,8 +62,15 @@ obj.getChildren = function () {
       this.getComponent(child)
     );
     if (this.state.resize && index !== keys.length - 1) {
+      let props = {
+        key: 'd' + child.key,
+        type: this.state.type,
+        keyBefore: child.key,
+        keyAfter: this.state.children[keys[index + 1]].key,
+        setDiff: this.setDiffSize
+      };
       children.push(
-        <Divider className={classNameDivider} key={'d' + child.key}/>
+        <Divider {...props}/>
       );
     }
   }
