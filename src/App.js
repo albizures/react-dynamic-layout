@@ -32,7 +32,6 @@ const config = {
     children: [{
       name: 'Left',
       type: STACK,
-      tabs: false,
       props: {text: 'Left'},
       size: 15,
       children: [{

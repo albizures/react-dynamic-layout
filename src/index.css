@@ -1,0 +1,179 @@
+* {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.layout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.layout .divider-column,
+.layout .divider-row {
+  position: relative;
+  z-index: 2;
+}
+.layout .divider-column .divider-content,
+.layout .divider-row .divider-content {
+  position: absolute;
+}
+.layout .divider-column .divider-content:hover,
+.layout .divider-row .divider-content:hover,
+.layout .divider-column .divider-content.active,
+.layout .divider-row .divider-content.active {
+  background: rgba(0,0,0,0.5);
+}
+.layout .divider-column {
+  height: 100%;
+  width: 0px;
+  float: left;
+}
+.layout .divider-column .divider-content {
+  top: 0px;
+  left: -3.5px;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.layout .divider-row {
+  height: 0px;
+  width: 100%;
+}
+.layout .divider-row .divider-content {
+  top: -4px;
+  left: 0px;
+  height: 8px;
+  width: 100%;
+  cursor: ns-resize;
+}
+.layout .stack {
+  position: relative;
+  border: 1px solid #000;
+}
+.layout .stack.no-tabs> .tab-body {
+  height: 100%;
+}
+.layout .stack .content-tabs {
+  height: 20px;
+  width: 100%;
+}
+.layout .stack .content-tabs .tab {
+  cursor: pointer;
+  font: bold 12px sans-serif;
+  float: left;
+  padding: 0 5px;
+  border-left: 1px solid #000;
+}
+.layout .stack .content-tabs .tab.active {
+  background: #808080;
+}
+.layout .stack .tab-body {
+  height: calc(100% - height-tabs);
+  position: relative;
+  width: 100%;
+  display: none;
+}
+.layout .stack .tab-body.active {
+  display: block;
+}
+.layout .float {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border: 1px solid #808080;
+  position: absolute;
+}
+.layout .float .content-float {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 15px);
+}
+.layout .float .drag-bar {
+  height: 15px;
+  width: 100%;
+  cursor: move;
+  background-image: -webkit-linear-gradient(#424242 0%, #303030 100%);
+  background-image: -o-linear-gradient(#424242 0%, #303030 100%);
+  background-image: linear-gradient(#424242 0%, #303030 100%);
+}
+.layout .float .resize-bar {
+  position: absolute;
+}
+.layout .float .resize-bar.active,
+.layout .float .resize-bar:hover {
+  background: rgba(0,0,0,0.5);
+}
+.layout .float .resize-bar.north,
+.layout .float .resize-bar.south {
+  cursor: ns-resize;
+}
+.layout .float .resize-bar.east,
+.layout .float .resize-bar.west {
+  cursor: ew-resize;
+}
+.layout .float .resize-bar.north {
+  width: 100%;
+  height: 8px;
+  top: -4px;
+  left: 0;
+}
+.layout .float .resize-bar.south {
+  width: 100%;
+  height: 8px;
+  bottom: -4px;
+  left: 0;
+}
+.layout .float .resize-bar.west {
+  left: -4px;
+  width: 8px;
+  height: 100%;
+  top: 0;
+}
+.layout .float .resize-bar.east {
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  top: 0;
+}
+.layout .float .resize-bar.north-west,
+.layout .float .resize-bar.north-east,
+.layout .float .resize-bar.south-west,
+.layout .float .resize-bar.south-east {
+  width: 8px;
+  height: 8px;
+}
+.layout .float .resize-bar.north-west {
+  cursor: nw-resize;
+  left: -4px;
+  top: -4px;
+}
+.layout .float .resize-bar.north-east {
+  cursor: ne-resize;
+  right: -4px;
+  top: -4px;
+}
+.layout .float .resize-bar.south-west {
+  cursor: sw-resize;
+  left: -4px;
+  bottom: -4px;
+}
+.layout .float .resize-bar.south-east {
+  cursor: se-resize;
+  right: -4px;
+  bottom: -4px;
+}
+.layout .row {
+  width: 100%;
+}
+.layout .column {
+  height: 100%;
+  float: left;
+}

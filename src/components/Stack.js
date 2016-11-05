@@ -12,7 +12,8 @@ obj.propTypes = {
   children: React.PropTypes.array.isRequired,
   tabs: React.PropTypes.bool.isRequired,
   type: React.PropTypes.string.isRequired,
-  active: React.PropTypes.number
+  active: React.PropTypes.number,
+  setSize: React.PropTypes.func.isRequired
 };
 
 obj.getInitialState = function () {
@@ -41,7 +42,13 @@ obj.process = function () {
     );
   }
   return {tabs, children};
-}
+};
+
+obj.componentDidMount = function () {
+  if (!this.props.id) return;
+  let {width, height} = this.refs.el.getBoundingClientRect();
+  this.props.setSize(this.props.id, {width, height});
+};
 
 obj.render = function () {
   let {tabs, children} = this.process();
@@ -50,7 +57,7 @@ obj.render = function () {
     this.props.type,
     {'no-tabs': !this.props.tabs}
   );
-  return <div className={className} style={this.props.style}>
+  return <div ref='el' className={className} style={this.props.style}>
     {this.props.tabs ? <div className='content-tabs'>
       {tabs}
     </div> : null}
