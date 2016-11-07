@@ -1,11 +1,12 @@
 import React from 'react';
-import { Layout, ROW, COLUMN, STACK } from './components/Layout.js';
+import Layout, { ROW, COLUMN, STACK } from './components/Layout.js';
 
 const config = {
   type: ROW,
   resize: false,
   floats: [{
     type: STACK,
+    tabs: false,
     pos: {x: 300, y: 300},
     size: {width: '100px', height: '200px'},
     children: [{
@@ -32,6 +33,7 @@ const config = {
     children: [{
       name: 'Left',
       type: STACK,
+      tabs: false,
       props: {text: 'Left'},
       size: 15,
       children: [{
@@ -82,4 +84,35 @@ const config = {
   }]
 };
 
+// config.type = COLUMN;
+// // config.children = [{
+// //   name: 'Right Top',
+// //   component: 'Label',
+// //   props: {text: 'Right Top'},
+// // }, {
+// //   name: 'Right Bottom',
+// //   component: 'Label',
+// //   props: {text: 'Right Bottom'},
+// // }];
+
+// config.children = [{
+//   name: 'Right Top',
+//   component: 'Label',
+//   props: {text: 'Right Top'},
+// }, {
+//   name: 'Right',
+//   type: ROW,
+//   tabs: false,
+//   children: [{
+//     name: 'Right Top',
+//     component: 'Label',
+//     props: {text: 'Right Top'},
+//     //size: 50
+//   }, {
+//     name: 'Right Bottom',
+//     component: 'Label',
+//     props: {text: 'Right Bottom'},
+//     // size: 50
+//   }]
+// }];
 export default () => <Layout {...config}/>;

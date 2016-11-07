@@ -86,8 +86,8 @@ obj.render = function () {
     height: this.state.size.height
   };
 
-  return <div className='float' style={style}>
-    <div className='drag-bar' onMouseDown={this.onMouseDown}/>
+  return <div className='rdl-float' style={style}>
+    <div className='rdl-drag-bar' onMouseDown={this.onMouseDown}/>
     {
       this.props.resize ? [
         <ResizeBar setDiff={this.setDiff} key='n' type='n' />,
@@ -100,7 +100,7 @@ obj.render = function () {
         <ResizeBar setDiff={this.setDiff} key='se' type='se' />
       ] : null
     }
-    <div className='content-float'>
+    <div className='rdl-content-float'>
       {this.props.children}
     </div>
   </div>;

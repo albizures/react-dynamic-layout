@@ -1,13 +1,14 @@
-const React = require('react');
+import React from 'react';
+import {ROW, COLUMN} from './Container.js'; 
 const obj = {};
 
 obj.displayName = 'Divider';
 
 obj.propTypes = {
-  type: React.PropTypes.oneOf(['row', 'column']),
+  type: React.PropTypes.oneOf([ROW, COLUMN]),
   setDiff: React.PropTypes.func.isRequired,
-  keyBefore: React.PropTypes.any.isRequired,
-  keyAfter: React.PropTypes.any.isRequired,
+  indexBefore: React.PropTypes.any.isRequired,
+  indexAfter: React.PropTypes.any.isRequired,
 };
 
 obj.resetPosition = function () {
@@ -73,8 +74,8 @@ obj.onMouseUp = function (evt) {
   window.removeEventListener('mouseup', this.onMouseUp);
   this.resetPosition();
   this.props.setDiff(
-    this.props.keyBefore,
-    this.props.keyAfter,
+    this.props.indexBefore,
+    this.props.indexAfter,
     this.getFunction(this.normalize(
       evt.clientY - this.diffY,
       evt.clientX - this.diffX
@@ -100,12 +101,10 @@ obj.onMouseDown = function (evt) {
 
 
 obj.render = function () {
-  let classNameDivider = 'divider-' + this.props.type;
+  let classNameDivider = 'rdl-divider-' + this.props.type;
   return <div className={classNameDivider}>
-    <div ref='el' className='divider-content' onMouseDown={this.onMouseDown}></div>
+    <div ref='el' className='rdl-divider-content' onMouseDown={this.onMouseDown}></div>
   </div>;
 };
 
-const Divider = React.createClass(obj);
-
-module.exports = Divider;
+export default React.createClass(obj);

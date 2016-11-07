@@ -1,0 +1,27 @@
+.rdl-layout
+  .rdl-divider-column, .rdl-divider-row
+    position: relative;
+    z-index: 2;
+    .rdl-divider-content
+      position: absolute;
+      &:hover, &.active
+        background: drag-hover-color;
+  .rdl-divider-column
+    height: 100%;
+    width: 0px;
+    float: left;
+    .rdl-divider-content
+      top: 0px;
+      left: -4px;
+      width: 8px;
+      height: 100%;
+      cursor: ew-resize;
+  .rdl-divider-row
+    height: 0px;
+    width: 100%;
+    .rdl-divider-content
+      top: -4px;
+      left: 0px;
+      height: 8px;
+      width: 100%;
+      cursor: ns-resize;

@@ -11,6 +11,11 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+#root {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 .layout {
   position: absolute;
   top: 0;
@@ -176,4 +181,167 @@ body {
 .layout .column {
   height: 100%;
   float: left;
+}
+.rdl-layout {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.rdl-layout .rdl-container {
+  outline: 1px solid #000;
+  background: #f5f5f5;
+  position: relative;
+}
+.rdl-layout .rdl-container.rdl-row {
+  width: 100%;
+}
+.rdl-layout .rdl-container.rdl-column {
+  height: 100%;
+  float: left;
+}
+.rdl-container .rdl-stack .rdl-tabs .rdl-tab {
+  cursor: pointer;
+  font: bold 12px sans-serif;
+  float: left;
+  padding: 1px 5px;
+  border-left: 1px solid #000;
+}
+.rdl-container .rdl-stack .rdl-tabs .rdl-tab.active {
+  background: #808080;
+}
+.rdl-container .rdl-body {
+  position: relative;
+}
+.rdl-container .rdl-body .rdl-item-body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.rdl-container .rdl-body .rdl-item-body.active {
+  display: block;
+}
+.rdl-layout .rdl-divider-column,
+.rdl-layout .rdl-divider-row {
+  position: relative;
+  z-index: 2;
+}
+.rdl-layout .rdl-divider-column .rdl-divider-content,
+.rdl-layout .rdl-divider-row .rdl-divider-content {
+  position: absolute;
+}
+.rdl-layout .rdl-divider-column .rdl-divider-content:hover,
+.rdl-layout .rdl-divider-row .rdl-divider-content:hover,
+.rdl-layout .rdl-divider-column .rdl-divider-content.active,
+.rdl-layout .rdl-divider-row .rdl-divider-content.active {
+  background: rgba(0,0,0,0.5);
+}
+.rdl-layout .rdl-divider-column {
+  height: 100%;
+  width: 0px;
+  float: left;
+}
+.rdl-layout .rdl-divider-column .rdl-divider-content {
+  top: 0px;
+  left: -4px;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.rdl-layout .rdl-divider-row {
+  height: 0px;
+  width: 100%;
+}
+.rdl-layout .rdl-divider-row .rdl-divider-content {
+  top: -4px;
+  left: 0px;
+  height: 8px;
+  width: 100%;
+  cursor: ns-resize;
+}
+.rdl-layout .rdl-float {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border: 1px solid #808080;
+  position: absolute;
+  min-height: 10px;
+  min-width: 10px;
+}
+.rdl-layout .rdl-float .rdl-content-float {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 15px);
+}
+.rdl-layout .rdl-float .rdl-drag-bar {
+  height: 15px;
+  width: 100%;
+  cursor: move;
+  background-image: -webkit-linear-gradient(#424242 0%, #303030 100%);
+  background-image: -o-linear-gradient(#424242 0%, #303030 100%);
+  background-image: linear-gradient(#424242 0%, #303030 100%);
+}
+.rdl-layout .rdl-float .rdl-resize-bar {
+  position: absolute;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.active,
+.rdl-layout .rdl-float .rdl-resize-bar:hover {
+  background: rgba(0,0,0,0.5);
+}
+.rdl-layout .rdl-float .rdl-resize-bar.north,
+.rdl-layout .rdl-float .rdl-resize-bar.south {
+  cursor: ns-resize;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.east,
+.rdl-layout .rdl-float .rdl-resize-bar.west {
+  cursor: ew-resize;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.north {
+  width: 100%;
+  height: 8px;
+  top: -4px;
+  left: 0;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.south {
+  width: 100%;
+  height: 8px;
+  bottom: -4px;
+  left: 0;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.west {
+  left: -4px;
+  width: 8px;
+  height: 100%;
+  top: 0;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.east {
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  top: 0;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.north-west,
+.rdl-layout .rdl-float .rdl-resize-bar.north-east,
+.rdl-layout .rdl-float .rdl-resize-bar.south-west,
+.rdl-layout .rdl-float .rdl-resize-bar.south-east {
+  width: 8px;
+  height: 8px;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.north-west {
+  cursor: nw-resize;
+  left: -4px;
+  top: -4px;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.north-east {
+  cursor: ne-resize;
+  right: -4px;
+  top: -4px;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.south-west {
+  cursor: sw-resize;
+  left: -4px;
+  bottom: -4px;
+}
+.rdl-layout .rdl-float .rdl-resize-bar.south-east {
+  cursor: se-resize;
+  right: -4px;
+  bottom: -4px;
 }
