@@ -206,20 +206,14 @@ obj.getFloatState = function (props) {
   let newFloast = [];
   
   for (let index = 0; index < floats.length; index++) {
-    let {children, type, pos, size} = floats[index];
+    let {children, type, pos, size, name} = floats[index];
     newFloast.push({
-      resize: false,
-      tabs: false,
       pos,
       size,
-      key: globalKey,
-      type: ROW,
-      children: [{
-        size: 100,
-        type,
-        children,
-        name: 'float' + globalKey,
-      }]
+      children,
+      name,
+      type,
+      key: globalKey 
     })
     globalKey++;
   }

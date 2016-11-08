@@ -281,6 +281,7 @@ body {
 }
 .rdl-layout .rdl-float .rdl-resize-bar {
   position: absolute;
+  z-index: 1;
 }
 .rdl-layout .rdl-float .rdl-resize-bar.active,
 .rdl-layout .rdl-float .rdl-resize-bar:hover {

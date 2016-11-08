@@ -6,8 +6,20 @@ const config = {
   resize: false,
   floats: [{
     type: STACK,
-    tabs: false,
     pos: {x: 300, y: 300},
+    size: {width: '100px', height: '200px'},
+    children: [{
+      component: 'Label',
+      name: 'Float',
+      props: {text: 'Float'},
+    }, {
+      component: 'Label',
+      name: 'Float 2',
+      props: {text: 'Float 2'},
+    }]
+  }, {
+    type: COLUMN,
+    pos: {x: 100, y: 100},
     size: {width: '100px', height: '200px'},
     children: [{
       component: 'Label',
