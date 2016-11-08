@@ -1,5 +1,6 @@
-const React = require('react');
-const classNames = require('classnames');
+import React from 'react';
+import classNames from 'classnames';
+
 const { parseInt } = Number;
 const obj = {};
 const types = {
@@ -129,7 +130,7 @@ obj.onMouseDown = function (evt) {
 
 obj.render = function () {
   let className = classNames(
-    'resize-bar',
+    'rdl-resize-bar',
     types[this.props.type]
   );
   return <div ref='el' className={className} onMouseDown={this.onMouseDown}/>;
@@ -137,4 +138,4 @@ obj.render = function () {
 
 const ResizeBar = React.createClass(obj);
 
-module.exports = ResizeBar;
+export default ResizeBar;

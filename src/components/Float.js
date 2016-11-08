@@ -1,5 +1,8 @@
-const React = require('react');
-const ResizeBar = require('./ResizeBar');
+import React from 'react';
+
+import ResizeBar from './ResizeBar.js';
+import Layout from './Layout.js';
+
 const obj = {};
 const { parseInt } = Number;
 obj.displayName = 'Float'; 
@@ -14,7 +17,8 @@ obj.getDefaultProps = () => ({
 obj.propTypes = {
   size: React.PropTypes.object.isRequired,
   pos: React.PropTypes.object.isRequired,
-  resize: React.PropTypes.bool.isRequired
+  resize: React.PropTypes.bool.isRequired,
+  layout: React.PropTypes.object.isRequired,
 };
 
 obj.generateState = function () {
@@ -78,6 +82,15 @@ obj.setDiff = function (diff) {
   this.setState({pos, size});
 };
 
+obj.onResize = function (fn) {
+  this.resizeLayout = fn;
+};
+
+obj.componentDidUpdate = function () {
+  if (this.resizeLayout) {
+    this.resizeLayout();
+  }
+};
 obj.render = function () {
   let style = {
     top: this.state.pos.y,
@@ -85,7 +98,6 @@ obj.render = function () {
     width: this.state.size.width,
     height: this.state.size.height
   };
-
   return <div className='rdl-float' style={style}>
     <div className='rdl-drag-bar' onMouseDown={this.onMouseDown}/>
     {
@@ -101,11 +113,11 @@ obj.render = function () {
       ] : null
     }
     <div className='rdl-content-float'>
-      {this.props.children}
+      <Layout onResize={this.onResize} root={false} {...this.props.layout} />
     </div>
   </div>;
 };
 
 const Float = React.createClass(obj);
 
-module.exports = Float;
+export default Float;

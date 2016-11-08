@@ -22,7 +22,8 @@ obj.propTypes = {
   children: React.PropTypes.array.isRequired,
   floats: React.PropTypes.array.isRequired,
   resize: React.PropTypes.bool,
-  root: React.PropTypes.bool
+  root: React.PropTypes.bool,
+  onResize: React.PropTypes.func
 };
 
 obj.render = function () {
@@ -116,12 +117,8 @@ obj.componentWillReceiveProps = function (nextProps) {
 obj.getFloats = function () {
   let floats = [];
   for (let index = 0; index < this.state.floats.length; index++) {
-    let {pos, size, ...float} = this.state.floats[index];
-    floats.push(
-      <Float {...{key: index, pos, size}} >
-        <Layout root={false} {...float} />
-      </Float>
-    );
+    let {pos, size, ...layout} = this.state.floats[index];
+    floats.push(<Float key={index} {...{pos, size, layout}} />);
   }
   return floats;
 };
@@ -259,7 +256,9 @@ obj.componentDidMount = function () {
     console.warn('width or height is very small');
   }
   if (this.props.root) window.addEventListener('resize', this.onResize);
-
+  if (this.props.onResize) {
+    this.props.onResize(this.onResize);
+  }
   this.setState(
     this.generateState()
   );
