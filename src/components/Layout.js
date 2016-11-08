@@ -13,14 +13,16 @@ obj.displayName = 'Layout';
 
 obj.getDefaultProps = () => ({
   floats: [],
-  resize: true
+  resize: true,
+  root: true
 });
 
 obj.propTypes = {
   type: React.PropTypes.oneOf([STACK, ROW, COLUMN]).isRequired,
   children: React.PropTypes.array.isRequired,
   floats: React.PropTypes.array.isRequired,
-  resize: React.PropTypes.bool
+  resize: React.PropTypes.bool,
+  root: React.PropTypes.bool
 };
 
 obj.render = function () {
@@ -117,7 +119,7 @@ obj.getFloats = function () {
     let {pos, size, ...float} = this.state.floats[index];
     floats.push(
       <Float {...{key: index, pos, size}} >
-        <Layout {...float} />
+        <Layout root={false} {...float} />
       </Float>
     );
   }
@@ -256,12 +258,15 @@ obj.componentDidMount = function () {
   if (parseInt(width, 10) < 10 || parseInt(height, 10) < 10) {
     console.warn('width or height is very small');
   }
-  window.addEventListener('resize', this.onResize);
+  if (this.props.root) window.addEventListener('resize', this.onResize);
+
   this.setState(
     this.generateState()
   );
 };
-
+obj.componentWillUnmount = function () {
+  window.removeEventListener('resize', this.onResize);
+};
 
 export {
   STACK,

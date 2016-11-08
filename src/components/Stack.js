@@ -40,7 +40,7 @@ obj.processChildren = function () {
     );
     if (Array.isArray(child.children)) {
       newChild = <div className={'rdl-item-body ' + activeClass} key={index}>
-        <Layout {...child}/>
+        <Layout root={false} {...child}/>
       </div>;
     } else {
       let Component = components[child.component];
