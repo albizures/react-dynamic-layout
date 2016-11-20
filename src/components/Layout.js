@@ -92,26 +92,36 @@ obj.getChildren = function () {
   return children;
 };
 
-
 obj.setDiffSize = function (indexBefore, indexAfter, diff) {
   let { children } = this.state;
   children = [].concat(children);
-  let dimension;
+  let prop;
   if (this.state.type === ROW) {
-    dimension = 'height';
+    prop = 'height';
   } else {
-    dimension = 'width';
+    prop = 'width';
   }
-  children[indexBefore][dimension] += diff[dimension];
-  children[indexAfter][dimension] -= diff[dimension];
+  children[indexBefore][prop] += diff[prop];
+  children[indexAfter][prop] -= diff[prop];
 
   this.setState({children});
 };
 
 obj.componentWillReceiveProps = function (nextProps) {
-  this.setState(
-    this.generateState(nextProps)
-  );
+  let rect = this.refs.el.parentElement.getBoundingClientRect();
+  let { width, height, top, left} = rect;
+  let children;
+  let prop = nextProps.type === ROW ? 'width': 'height';
+  children = this.state.children
+    .map(child => {
+      child[prop] = rect[prop];
+      return child;
+    });
+
+  this.setState({
+    width, height, top, left,
+    children
+  });
 };
 
 obj.getFloats = function () {

@@ -96,35 +96,29 @@ const config = {
   }]
 };
 
+// config.resize = true;
 // config.type = COLUMN;
-// // config.children = [{
-// //   name: 'Right Top',
-// //   component: 'Label',
-// //   props: {text: 'Right Top'},
-// // }, {
-// //   name: 'Right Bottom',
-// //   component: 'Label',
-// //   props: {text: 'Right Bottom'},
-// // }];
-
 // config.children = [{
-//   name: 'Right Top',
+//   name: 'Left',
 //   component: 'Label',
-//   props: {text: 'Right Top'},
+//   props: {text: 'Left'},
+//   size: 50
 // }, {
 //   name: 'Right',
-//   type: ROW,
+//   size: 50,
 //   tabs: false,
+//   type: ROW,
 //   children: [{
 //     name: 'Right Top',
 //     component: 'Label',
 //     props: {text: 'Right Top'},
-//     //size: 50
+//     size: 50
 //   }, {
 //     name: 'Right Bottom',
 //     component: 'Label',
 //     props: {text: 'Right Bottom'},
-//     // size: 50
+//     size: 50
 //   }]
 // }];
+
 export default () => <Layout {...config}/>;
