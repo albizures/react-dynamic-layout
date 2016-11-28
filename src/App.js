@@ -4,33 +4,33 @@ import Layout, { ROW, COLUMN, STACK } from './components/Layout.js';
 const config = {
   type: ROW,
   resize: false,
-  floats: [{
-    type: STACK,
-    pos: {x: 300, y: 300},
-    size: {width: '100px', height: '200px'},
-    children: [{
-      component: 'Label',
-      name: 'Float',
-      props: {text: 'Float'},
-    }, {
-      component: 'Label',
-      name: 'Float 2',
-      props: {text: 'Float 2'},
-    }]
-  }, {
-    type: COLUMN,
-    pos: {x: 100, y: 100},
-    size: {width: '100px', height: '200px'},
-    children: [{
-      component: 'Label',
-      name: 'Float',
-      props: {text: 'Float'},
-    }, {
-      component: 'Label',
-      name: 'Float 2',
-      props: {text: 'Float 2'},
-    }]
-  }],
+  // floats: [{
+  //   type: STACK,
+  //   pos: {x: 300, y: 300},
+  //   size: {width: '100px', height: '200px'},
+  //   children: [{
+  //     component: 'Label',
+  //     name: 'Float',
+  //     props: {text: 'Float'},
+  //   }, {
+  //     component: 'Label',
+  //     name: 'Float 2',
+  //     props: {text: 'Float 2'},
+  //   }]
+  // }, {
+  //   type: COLUMN,
+  //   pos: {x: 100, y: 100},
+  //   size: {width: '100px', height: '200px'},
+  //   children: [{
+  //     component: 'Label',
+  //     name: 'Float',
+  //     props: {text: 'Float'},
+  //   }, {
+  //     component: 'Label',
+  //     name: 'Float 2',
+  //     props: {text: 'Float 2'},
+  //   }]
+  // }],
   children: [{
     component: 'Label',
     name: 'Menu',

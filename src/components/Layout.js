@@ -111,10 +111,25 @@ obj.componentWillReceiveProps = function (nextProps) {
   let rect = this.refs.el.parentElement.getBoundingClientRect();
   let { width, height, top, left} = rect;
   let children;
-  let prop = nextProps.type === ROW ? 'width': 'height';
+  let prop;
+  let secondProp;
+  if (nextProps.type === ROW) {
+    prop = 'width';
+    secondProp = 'height';
+    diff = height / this.state.height;
+  } else {
+    prop = 'height';
+    secondProp = 'width';
+    diff = width / this.state.width;
+  }
+  console.log(diff);
+  // diff = 1;
+  // let prop = nextProps.type === ROW ? : ;
+  let diff = 
   children = this.state.children
     .map(child => {
       child[prop] = rect[prop];
+      child[secondProp] = child[secondProp] * diff;
       return child;
     });
 
