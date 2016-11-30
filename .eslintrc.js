@@ -4,13 +4,21 @@ module.exports = {
 
   parser: 'babel-eslint',
 
-  plugins: ['import', 'react'],
+  extends: "airbnb/base",
+
+  plugins: ['import', 'react', 'jsx-a11y'],
 
   env: {
     browser: true,
     commonjs: true,
     es6: true,
     node: true
+  },
+
+  globals: {
+    describe: true,
+    it: true,
+    beforeEach: true
   },
 
   parserOptions: {
@@ -21,6 +29,20 @@ module.exports = {
       generators: true,
       experimentalObjectRestSpread: true
     }
+  },
+
+  rules: {
+    "comma-dangle": ["error", "never"],
+    "arrow-parens": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-shadow": "off",
+    "prefer-template": "off",
+    "no-unused-expressions": "off",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
+    "react/react-in-jsx-scope": "error",
+    "no-plusplus": "off",
+    "no-param-reassign": "off"
   },
 
   settings: {

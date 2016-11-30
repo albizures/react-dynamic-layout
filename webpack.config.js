@@ -1,14 +1,14 @@
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
     require.resolve('react-dev-utils/webpackHotDevClient.js'),
-    './src/index.js'
+    './examples/index.js'
   ],
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -21,9 +21,9 @@ module.exports = {
       loader: 'eslint',
       exclude: /node_modules/
     }],
-    loaders : [
+    loaders: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
-      { test: /\.styl$/, loader: ExtractTextPlugin.extract('style','css!stylus') },
+      { test: /\.styl$/, loader: ExtractTextPlugin.extract('style', 'css!stylus') },
       { test: /\.css?$/, loader: ExtractTextPlugin.extract('style', 'css') },
       { test: /\.json$/, loader: 'json' },
       { test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
@@ -37,11 +37,11 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.join(__dirname, 'src', 'index.html')
+      template: path.join(__dirname, 'examples', 'index.html')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
-    new ExtractTextPlugin("[name].css")
+    new ExtractTextPlugin('[name].css')
   ],
   devServer: {
     stats: {

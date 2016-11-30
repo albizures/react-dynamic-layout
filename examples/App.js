@@ -1,5 +1,7 @@
 import React from 'react';
-import Layout, { ROW, COLUMN, STACK } from './components/Layout.js';
+import { Layout, ROW, COLUMN, STACK } from '../lib';
+import './index.styl';
+import './components/Label';
 
 const config = {
   type: ROW,
@@ -35,7 +37,9 @@ const config = {
     component: 'Label',
     name: 'Menu',
     tabs: false,
-    props: {text: 'Menu'},
+    props: {
+      text: 'Menu'
+    },
     size: '25px'
   }, {
     type: COLUMN,
@@ -46,16 +50,22 @@ const config = {
       name: 'Left',
       type: STACK,
       tabs: false,
-      props: {text: 'Left'},
+      props: {
+        text: 'Left'
+      },
       size: 15,
       children: [{
         name: 'Frames',
         component: 'Label',
-        props: {text: 'Frames'}
+        props: {
+          text: 'Frames'
+        }
       }, {
         name: 'Layers',
         component: 'Label',
-        props: {text: 'Layers'}
+        props: {
+          text: 'Layers'
+        }
       }]
     }, {
       name: 'Center',
@@ -67,13 +77,17 @@ const config = {
         name: 'Sprites',
         tabs: false,
         component: 'Label',
-        props: {text: 'Sprites'},
+        props: {
+          text: 'Sprites'
+        },
         size: '20px'
       }, {
         name: 'Canvas',
         tabs: false,
         component: 'Label',
-        props: {text: 'Canvas'},
+        props: {
+          text: 'Canvas'
+        },
         size: 'calc(100% - 20px)'
       }]
     }, {
@@ -84,12 +98,16 @@ const config = {
       children: [{
         name: 'Right Top',
         component: 'Label',
-        props: {text: 'Right Top'},
+        props: {
+          text: 'Right Top'
+        },
         size: 50
       }, {
         name: 'Right Bottom',
         component: 'Label',
-        props: {text: 'Right Bottom'},
+        props: {
+          text: 'Right Bottom'
+        },
         size: 50
       }]
     }]
@@ -121,4 +139,6 @@ const config = {
 //   }]
 // }];
 
-export default () => <Layout {...config}/>;
+config.children = [];
+
+export default () => < Layout {...config}/>;
