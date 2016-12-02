@@ -8,6 +8,19 @@ webpackConfig.alias = {
   cheerio: 'cheerio/lib/cheerio'
 };
 
+webpackConfig.module.loaders = [
+  { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
+  { test: /\.styl$/, loaders: ['style', 'css', 'stylus'] },
+  { test: /\.css?$/, loaders: ['style', 'css'] },
+  { test: /\.json$/, loader: 'json' },
+  { test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+    loader: 'file',
+    query: {
+      name: 'assets/[name].[hash:8].[ext]'
+    }
+  }
+];
+
 module.exports = config => {
   config.set({
     browsers: ['Chrome'],

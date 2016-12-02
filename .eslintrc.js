@@ -6,7 +6,7 @@ module.exports = {
 
   extends: "airbnb/base",
 
-  plugins: ['import', 'react', 'jsx-a11y'],
+  plugins: ['react', 'jsx-a11y'],
 
   env: {
     browser: true,
@@ -18,7 +18,8 @@ module.exports = {
   globals: {
     describe: true,
     it: true,
-    beforeEach: true
+    beforeEach: true,
+    afterEach: true
   },
 
   parserOptions: {
@@ -35,6 +36,7 @@ module.exports = {
     "comma-dangle": ["error", "never"],
     "arrow-parens": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/no-named-as-default": "off",
     "no-shadow": "off",
     "prefer-template": "off",
     "no-unused-expressions": "off",
@@ -43,18 +45,5 @@ module.exports = {
     "react/react-in-jsx-scope": "error",
     "no-plusplus": "off",
     "no-param-reassign": "off"
-  },
-
-  settings: {
-    'import/ignore': [
-      'node_modules',
-      '\\.(json|css|ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$',
-    ],
-    'import/extensions': ['.js'],
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.json']
-      }
-    }
   }
 };
