@@ -10,7 +10,7 @@ import { Layout, ROW, COLUMN, STACK } from '../lib';
 import Container from '../lib/Container';
 import Stack from '../lib/Stack';
 import '../examples/components/Label';
-import '../lib/style/index.styl';
+import '../lib/style/base/index.styl';
 
 function newValidDiv() {
   const node = document.createElement('div');

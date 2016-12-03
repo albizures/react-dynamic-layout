@@ -10,7 +10,7 @@
       width: 100%;
       height: calc(100% - 15px);
     .rdl-drag-bar
-      height: 15px;
+      height: drag-bar-height
       width: 100%;
       cursor: move;
       background-image: -webkit-linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
@@ -20,7 +20,7 @@
       position: absolute
       z-index: 1;
       &.active, &:hover
-        background: drag-hover-color;
+        background: hover-drag-color;
       &.north, &.south
         cursor: ns-resize;
       &.east, &.west
