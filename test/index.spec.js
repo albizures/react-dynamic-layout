@@ -5,10 +5,10 @@ import { render } from 'react-dom';
 import { mount } from 'enzyme';
 import Float from '../lib/Float';
 import ResizeBar from '../lib/ResizeBar';
-import register, { components } from '../lib/register';
 import { Layout, ROW, COLUMN, STACK } from '../lib';
 import Container from '../lib/Container';
 import Stack from '../lib/Stack';
+import { components, register } from '../lib/register';
 import '../examples/components/Label';
 import '../lib/style/base/index.styl';
 
