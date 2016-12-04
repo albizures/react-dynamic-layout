@@ -60,7 +60,8 @@
   "scripts": {
     "commit": "git-cz",
     "start": "webpack-dev-server --open",
-    "build": "rimraf ./build && cross-env NODE_ENV=production webpack",
+    "prebuild": "npm run test",
+    "build": "rimraf ./build && cross-env NODE_ENV=production webpack -p",
     "test": "karma start --single-run",
     "pretest": "npm run lint",
     "lint": "eslint .",
