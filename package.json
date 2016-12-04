@@ -61,7 +61,7 @@
     "commit": "git-cz",
     "start": "webpack-dev-server --open",
     "build": "rimraf ./build && cross-env NODE_ENV=production webpack",
-    "test": "karma start",
+    "test": "karma start --single-run",
     "pretest": "npm run lint",
     "lint": "eslint .",
     "eject": "react-scripts eject",
