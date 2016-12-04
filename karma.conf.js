@@ -23,7 +23,7 @@ webpackConfig.module.loaders = [
 
 module.exports = config => {
   config.set({
-    browsers: ['Chrome'],
+    browsers: [process.env.TRAVIS ? 'Chrome_travis_ci' : 'Chrome'],
     singleRun: true,
     frameworks: ['mocha'],
     files: [
@@ -38,6 +38,12 @@ module.exports = config => {
       'karma-sourcemap-loader',
       'karma-webpack'
     ],
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
     reporters: ['mocha'],
     webpack: webpackConfig,
     webpackServer: {
