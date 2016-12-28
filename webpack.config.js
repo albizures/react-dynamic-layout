@@ -56,20 +56,6 @@ if (isProd) {
       amd: 'classnames'
     }
   };
-  const extractBase = new ExtractTextPlugin('base.css');
-  const extractDark = new ExtractTextPlugin('dark-theme.css');
-  modules.loaders.push(
-    { test: /\.styl$/, exclude: /dark/, loader: extractBase.extract('style', 'css!stylus') },
-    { test: /\.styl$/, exclude: /base/, loader: extractDark.extract('style', 'css!stylus') }
-  );
-  plugins.push(
-    extractBase,
-    extractDark// ,
-    // new CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   minChunks: Infinity
-    // })
-  );
 } else {
   entry = [
     require.resolve('react-dev-utils/webpackHotDevClient.js'),

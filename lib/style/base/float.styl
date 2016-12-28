@@ -1,0 +1,66 @@
+.rdl-layout
+  .rdl-float
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border: 1px solid gray
+    position: absolute
+    min-height: 10px;
+    min-width: 10px;
+    .rdl-content-float
+      position: relative;
+      width: 100%;
+      height: calc(100% - 15px);
+    .rdl-drag-bar
+      height: drag-bar-height
+      width: 100%;
+      cursor: move;
+      background-image: -webkit-linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
+      background-image: -o-linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
+      background-image: linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
+    .rdl-resize-bar
+      position: absolute
+      z-index: 1;
+      &.active, &:hover
+        background: hover-drag-color;
+      &.north, &.south
+        cursor: ns-resize;
+      &.east, &.west
+        cursor: ew-resize;
+      &.north
+        width: 100%;
+        height: 8px;
+        top: -4px;
+        left: 0;
+      &.south
+        width: 100%;
+        height: 8px;
+        bottom: -4px;
+        left: 0;
+      &.west
+        left: -4px;
+        width: 8px;
+        height: 100%;
+        top: 0;
+      &.east
+        right: -4px;
+        width: 8px;
+        height: 100%;
+        top: 0;
+      &.north-west, &.north-east, &.south-west, &.south-east
+        width: 8px;
+        height: 8px;
+      &.north-west
+        cursor: nw-resize;
+        left: -4px;
+        top: -4px;
+      &.north-east
+        cursor: ne-resize;
+        right: -4px;
+        top: -4px;
+      &.south-west
+        cursor: sw-resize;
+        left: -4px;
+        bottom: -4px;
+      &.south-east
+        cursor: se-resize
+        right: -4px;
+        bottom: -4px;
