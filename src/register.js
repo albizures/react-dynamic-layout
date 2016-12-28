@@ -1,9 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var components = {};
+const components = {};
 
 // export const components = new Proxy($components, {
 //   get: function get(obj, name) {
@@ -16,9 +11,7 @@ var components = {};
 //   }
 // });
 
-function register(component, name) {
-  var rewrite = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
+function register(component, name, rewrite = false) {
   name = name || component.displayName;
 
   if (!name) {
@@ -35,6 +28,8 @@ function register(component, name) {
   components[name] = component;
 }
 
-exports.default = register;
-exports.components = components;
-exports.register = register;
+export default register;
+export {
+  components,
+  register
+};

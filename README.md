@@ -11,7 +11,9 @@ React Dynamic Layout is a dock layout system inspired by [Golden Layout](https:/
 * Multiple themes
 * Resizable
 
+## Installation
 
+    $ npm install --save react-dynamic-layout
 
 ## TODO
 * JSX children for static layout

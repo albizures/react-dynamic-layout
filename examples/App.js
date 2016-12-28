@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, ROW, COLUMN, STACK } from '../lib';
+import { Layout, ROW, COLUMN, STACK } from '../src';
 import './index.styl';
 import './components/Label';
 

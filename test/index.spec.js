@@ -3,14 +3,14 @@ import { expect } from 'chai';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { mount } from 'enzyme';
-import Float from '../lib/Float';
-import ResizeBar from '../lib/ResizeBar';
-import { Layout, ROW, COLUMN, STACK } from '../lib';
-import Container from '../lib/Container';
-import Stack from '../lib/Stack';
-import { components, register } from '../lib/register';
+import Float from '../src/Float';
+import ResizeBar from '../src/ResizeBar';
+import { Layout, ROW, COLUMN, STACK } from '../src';
+import Container from '../src/Container';
+import Stack from '../src/Stack';
+import { components, register } from '../src/register';
 import '../examples/components/Label';
-import '../lib/style/base/index.styl';
+import '../src/style/base/index.styl';
 
 function newValidDiv() {
   const node = document.createElement('div');

@@ -1,8 +1,9 @@
 {
   "name": "react-dynamic-layout",
   "version": "0.0.0-development",
-  "main": "build/index.js",
+  "main": "lib/index.js",
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.0",
     "babel-jest": "^17.0.2",
@@ -62,7 +63,10 @@
     "commit": "git-cz",
     "start": "webpack-dev-server --open",
     "prebuild": "npm run test",
-    "build": "rimraf ./build && cross-env NODE_ENV=production webpack -p",
+    "build:clean": "rimraf ./build && rimraf ./lib",
+    "build:webpack": "cross-env NODE_ENV=production webpack -p",
+    "build:babel": "babel src --out-dir lib",
+    "build": "npm run build:clean && npm run build:webpack && npm run build:babel",
     "test": "karma start --single-run",
     "pretest": "npm run lint",
     "lint": "eslint .",

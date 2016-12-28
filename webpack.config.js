@@ -39,7 +39,7 @@ if (isProd) {
   output.libraryTarget = 'umd';
   output.library = 'ReactDynamicLayout';
   entry = {
-    index: './lib'// ,
+    index: './src'// ,
     // vendor: ['react', 'classnames']
   };
   externals = {
