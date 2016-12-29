@@ -20,7 +20,8 @@ obj.propTypes = {
   children: React.PropTypes.array.isRequired,
   width: React.PropTypes.number.isRequired,
   height: React.PropTypes.number.isRequired,
-  tabs: React.PropTypes.bool
+  tabs: React.PropTypes.bool,
+  active: React.PropTypes.number
 };
 
 obj.render = function render() {
@@ -38,6 +39,7 @@ obj.render = function render() {
       children={this.props.children}
       width={this.props.width}
       height={this.props.height}
+      active={this.props.active}
     />
   </div>;
 };

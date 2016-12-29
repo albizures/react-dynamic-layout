@@ -23,7 +23,8 @@ obj.propTypes = {
   floats: React.PropTypes.array.isRequired,
   resize: React.PropTypes.bool,
   root: React.PropTypes.bool,
-  onResize: React.PropTypes.func
+  onResize: React.PropTypes.func,
+  active: React.PropTypes.number
 };
 
 obj.render = function render() {
@@ -53,6 +54,7 @@ obj.getChildren = function getChildren() {
       height={this.state.height}
       width={this.state.width}
       children={this.state.children}
+      active={this.state.active}
     />;
   }
   const children = [];
@@ -66,6 +68,7 @@ obj.getChildren = function getChildren() {
         props: child.props,
         children: child.children,
         type: child.type,
+        active: child.active,
         resize: child.resize
       }],
       tabs: child.tabs,
@@ -243,6 +246,7 @@ obj.generateState = function generateState(props) {
   props = props || this.props;
   const { width, height, top, left } = this.refs.el.parentElement.getBoundingClientRect();
   return {
+    active: props.active,
     type: props.type,
     resize: props.resize,
     width,

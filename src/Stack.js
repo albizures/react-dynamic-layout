@@ -22,8 +22,13 @@ obj.propTypes = {
 };
 
 obj.getInitialState = function getInitialState() {
+  if (this.props.active > -1 && this.props.active < this.props.children.length) {
+    return {
+      active: this.props.active
+    };
+  }
   return {
-    active: this.props.active
+    active: 0
   };
 };
 

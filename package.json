@@ -61,7 +61,7 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --open --inline",
     "prebuild": "npm run test",
     "build:style-dark": "stylus ./src/style/dark/index.styl -o ./build/dark-theme.css -c",
     "build:style-base": "stylus ./src/style/base/index.styl -o ./build/base.css -c",

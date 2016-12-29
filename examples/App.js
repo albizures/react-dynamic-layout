@@ -54,6 +54,7 @@ const config = {
         text: 'Left'
       },
       size: 15,
+      active: 5,
       children: [{
         name: 'Frames',
         component: 'Label',
