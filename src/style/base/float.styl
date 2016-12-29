@@ -1,5 +1,6 @@
 .rdl-layout
   .rdl-float
+    z-index: 3;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     border: 1px solid gray
     position: absolute
@@ -18,7 +19,7 @@
       background-image: linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
     .rdl-resize-bar
       position: absolute
-      z-index: 1;
+      z-index: 4;
       &.active, &:hover
         background: hover-drag-color;
       &.north, &.south

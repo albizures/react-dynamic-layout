@@ -16,6 +16,24 @@
       position: absolute
       width: 100%;
       height: 100%;
-      display: none
-      &.active
-        display: block
+
+.rdl-hidden-z-index
+  .rdl-item-body
+    background: white
+    z-index: 1
+    &.active
+      z-index: 2
+
+.rdl-hidden-display
+  .rdl-item-body
+    display: none
+    &.active
+      display: block
+
+.rdl-hidden-opacity
+  .rdl-item-body
+    opacity: 0
+    pointer-events: none
+    &.active
+      opacity: 1
+      pointer-events: all

@@ -5,6 +5,17 @@ import Float from './Float';
 import Container, { STACK, ROW, COLUMN } from './Container';
 import register from './register';
 
+
+const Z_INDEX = 'zIndex';
+const OPACITY = 'opacity';
+const DISPLAY = 'diplay';
+
+const hiddenTypes = {
+  [Z_INDEX]: 'rdl-hidden-z-index',
+  [OPACITY]: 'rdl-hidden-opacity',
+  [DISPLAY]: 'rdl-hidden-display'
+};
+
 let globalKey = 0;
 
 const obj = {};
@@ -24,7 +35,8 @@ obj.propTypes = {
   resize: React.PropTypes.bool,
   root: React.PropTypes.bool,
   onResize: React.PropTypes.func,
-  active: React.PropTypes.number
+  active: React.PropTypes.number,
+  hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY])
 };
 
 obj.render = function render() {
@@ -35,7 +47,15 @@ obj.render = function render() {
     width: this.state.width,
     height: this.state.height
   };
-  return <div className='rdl-layout' ref='el' style={style}>
+  let className = 'rdl-layout ';
+  if (this.props.root) {
+    if (this.props.hiddenType) {
+      className += hiddenTypes[this.props.hiddenType];
+    } else {
+      className += hiddenTypes[DISPLAY];
+    }
+  }
+  return <div className={className} ref='el' style={style}>
     {this.getChildren()}
     {this.getFloats()}
   </div>;
@@ -291,6 +311,9 @@ export {
   STACK,
   ROW,
   COLUMN,
+  Z_INDEX,
+  DISPLAY,
+  OPACITY,
   register
 };
 

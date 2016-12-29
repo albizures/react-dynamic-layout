@@ -1,10 +1,11 @@
 import React from 'react';
-import { Layout, ROW, COLUMN, STACK } from '../src';
+import { Layout, ROW, COLUMN, STACK, OPACITY } from '../src';
 import './index.styl';
 import './components/Label';
 
 const config = {
   type: ROW,
+  hiddenType: OPACITY,
   resize: false,
   floats: [{
     type: STACK,
