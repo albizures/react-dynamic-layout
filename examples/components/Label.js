@@ -1,5 +1,5 @@
 import React from 'react';
-import { register } from '../../src/Layout';
+import { register } from '../../src';
 
 // NOTE: only for testing
 

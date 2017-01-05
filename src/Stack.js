@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from './Layout';
-import { components } from './register';
+import store from './store';
+import { components } from './Register';
 
 const obj = {};
 
@@ -14,7 +15,7 @@ obj.getDefaultProps = () => ({
 });
 
 obj.propTypes = {
-  children: React.PropTypes.array.isRequired,
+  components: React.PropTypes.array.isRequired,
   width: React.PropTypes.number.isRequired,
   height: React.PropTypes.number.isRequired,
   tabs: React.PropTypes.bool,
@@ -22,7 +23,7 @@ obj.propTypes = {
 };
 
 obj.getInitialState = function getInitialState() {
-  if (this.props.active > -1 && this.props.active < this.props.children.length) {
+  if (this.props.active > -1 && this.props.active < this.props.components.length) {
     return {
       active: this.props.active
     };
@@ -35,23 +36,30 @@ obj.getInitialState = function getInitialState() {
 obj.processChildren = function processChildren() {
   const children = [];
   const tabs = [];
-  for (let index = 0; index < this.props.children.length; index++) {
-    const child = this.props.children[index];
+  for (let index = 0; index < this.props.components.length; index++) {
+    const component = this.props.components[index];
     const activeClass = index === this.state.active ? 'active' : '';
     let newChild;
     tabs.push(
-      <div onClick={() => this.setState({ active: index })} key={index} className={'rdl-tab ' + activeClass}>
-        {child.name}
+      <div onClick={() => this.setState({ active: index })} key={component.id} className={'rdl-tab ' + activeClass}>
+        {component.name}
       </div>
     );
-    if (Array.isArray(child.children)) {
-      newChild = <div className={'rdl-item-body ' + activeClass} key={index}>
-        <Layout root={false} {...child}/>
+    if (component.isLayout) {
+      const layout = store.getLayout(component.layout);
+      newChild = <div className={'rdl-item-body ' + activeClass} key={component.id}>
+         <Layout
+            containers={layout.containers.map(id => store.getContainer(id))}
+            childrenProcess={layout.childrenProcess}
+            type={layout.type}
+            resize={layout.resize}
+            id={component.layout}
+          />
       </div>;
     } else {
-      const Component = components[child.component];
-      newChild = <div className={'rdl-item-body ' + activeClass} key={index}>
-        <Component {...child.props}/>
+      const Component = components[component.componentName];
+      newChild = <div className={'rdl-item-body ' + activeClass} key={component.id}>
+        <Component {...component.props}/>
       </div>;
     }
     children.push(newChild);

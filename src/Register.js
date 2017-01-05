@@ -1,15 +1,18 @@
+import React from 'react';
+
 const components = {};
 
-// export const components = new Proxy($components, {
-//   get: function get(obj, name) {
-//     const component = obj[name];
-//     if (!component) throw new Error('Unknown ' + name + ' component');
-//     return obj[name];
-//   },
-//   set: function set() {
-//     throw new Error('Cannot rewrite component directly');
-//   }
-// });
+function Register() {
+  return <div></div>;
+}
+
+Register.displayName = 'Register';
+
+Register.propTypes = {
+  type: React.PropTypes.any.isRequired,
+  name: React.PropTypes.string,
+  props: React.PropTypes.object
+};
 
 function register(component, name, rewrite = false) {
   name = name || component.displayName;
@@ -28,8 +31,10 @@ function register(component, name, rewrite = false) {
   components[name] = component;
 }
 
-export default register;
+export default Register;
+
 export {
-  components,
-  register
+  Register,
+  register,
+  components
 };

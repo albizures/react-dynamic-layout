@@ -1,5 +1,8 @@
 import React from 'react';
 import { ROW, COLUMN } from './Container';
+import store from './store';
+import { updateContainer } from './store/actions';
+import { getSizeProperties } from './utils/components';
 
 const obj = {};
 
@@ -7,9 +10,8 @@ obj.displayName = 'Divider';
 
 obj.propTypes = {
   type: React.PropTypes.oneOf([ROW, COLUMN]),
-  setDiff: React.PropTypes.func.isRequired,
-  indexBefore: React.PropTypes.any.isRequired,
-  indexAfter: React.PropTypes.any.isRequired
+  idBefore: React.PropTypes.any.isRequired,
+  idAfter: React.PropTypes.any.isRequired
 };
 
 obj.resetPosition = function resetPosition() {
@@ -70,13 +72,24 @@ obj.onMouseMove = function onMouseMove(evt) {
   );
 };
 
+obj.setDiff = function setDiff(diff) {
+  const { containers } = store.getState();
+  const { portion } = getSizeProperties(this.props.type);
+  const before = containers[this.props.idBefore];
+  const after = containers[this.props.idAfter];
+  updateContainer(before.id, {
+    [portion]: before[portion] + diff[portion]
+  }, false);
+  updateContainer(after.id, {
+    [portion]: after[portion] - diff[portion]
+  });
+};
+
 obj.onMouseUp = function onMouseUp(evt) {
   window.removeEventListener('mousemove', this.onMouseMove);
   window.removeEventListener('mouseup', this.onMouseUp);
   this.resetPosition();
-  this.props.setDiff(
-    this.props.indexBefore,
-    this.props.indexAfter,
+  this.setDiff(
     this.getFunction(this.normalize(
       evt.clientY - this.diffY,
       evt.clientX - this.diffX

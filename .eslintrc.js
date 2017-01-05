@@ -38,6 +38,7 @@ module.exports = {
     "import/no-extraneous-dependencies": "off",
     "import/no-named-as-default": "off",
     "no-shadow": "off",
+    "no-use-before-define": "off",
     "prefer-template": "off",
     "no-unused-expressions": "off",
     "react/jsx-uses-vars": "error",
