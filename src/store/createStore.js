@@ -24,6 +24,9 @@ export default function createStore(state) {
     getLayout(id) {
       return store.state.layouts[id];
     },
+    getFloat(id) {
+      return store.state.floats[id];
+    },
     getContainer(id) {
       return store.state.containers[id];
     },

@@ -7,17 +7,24 @@ import { parseSize, getDiff } from './utils/size';
 import store from './store';
 import { updateContainer, updateLayout } from './store/actions';
 import Container from './Container';
+import Float from './Float';
 import Divider from './Divider';
 
 const obj = {};
 
 
 obj.propTypes = {
-  pojo: React.PropTypes.bool,
+  floats: React.PropTypes.array,
+  containers: React.PropTypes.array,
   type: React.PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
   hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY]),
   childrenProcess: React.PropTypes.bool
 };
+
+obj.getDefaultProps = () => ({
+  floats: [],
+  containers: []
+});
 
 const hiddenTypes = {
   [Z_INDEX]: 'rdl-hidden-z-index',
@@ -86,13 +93,13 @@ obj.componentDidMount = function componentDidMount() {
   this.childrenProcess();
 };
 
-obj.getChildren = function getChildren() {
+obj.getContainers = function getChildren() {
   const children = [];
   for (let index = 0; index < this.props.containers.length; index++) {
     const container = this.props.containers[index];
     children.push(
       <Container
-        key={container.id}
+        key={'c' + container.id}
         id={container.id}
         width={container.width}
         height={container.height}
@@ -115,6 +122,24 @@ obj.getChildren = function getChildren() {
   }
   return children;
 };
+obj.getFloats = function getFloats() {
+  const children = [];
+  for (let index = 0; index < this.props.floats.length; index++) {
+    const float = this.props.floats[index];
+    children.push(
+      <Float
+        key={'f' + float.id}
+        id={float.id}
+        width={float.width}
+        height={float.height}
+        x={float.x}
+        y={float.y}
+        layout={float.layout}
+      />
+    );
+  }
+  return children;
+};
 
 obj.render = function render() {
   const className = classNames(
@@ -127,7 +152,8 @@ obj.render = function render() {
     </div>;
   }
   return <div ref='el' className={className}>
-    {this.getChildren()}
+    {this.getContainers()}
+    {this.getFloats()}
   </div>;
 };
 

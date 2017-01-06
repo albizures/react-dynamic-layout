@@ -82,7 +82,7 @@ function reducerFloats(state, { name, ...action }) {
   switch (name) {
     case ADD:
       return state.concat(
-        assign({}, action.floats, { id: state.length })
+        assign({}, action.float, { id: state.length })
       );
     case UPDATE:
       return updateArrayItem(

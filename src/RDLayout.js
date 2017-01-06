@@ -55,10 +55,10 @@ obj.getInitialState = function getInitialState() {
 };
 
 obj.render = function render() {
-  const { layouts, containers } = store.getState();
-  const layout = layouts[this.state.id];
+  const layout = store.getLayout(this.state.id);
   return <Layout
-    containers={layout.containers.map(id => containers[id])}
+    containers={layout.containers.map(id => store.getContainer(id))}
+    floats={layout.floats.map(id => store.getFloat(id))}
     childrenProcess={layout.childrenProcess}
     type={layout.type}
     hiddenType={layout.hiddenType}

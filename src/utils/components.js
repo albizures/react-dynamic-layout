@@ -2,7 +2,7 @@
 import React from 'react';
 import RDLayout from '../RDLayout';
 import RDContainer from '../RDContainer';
-import Float from '../Float';
+import RDFloat from '../RDFloat';
 import { COLUMN, ROW } from '../types';
 import { Register, components, register } from '../Register';
 import {
@@ -60,6 +60,10 @@ function invalidChildrenError() {
   return new Error('Invalid prop `children` supplied to `Layout`. Validation failed.');
 }
 
+function invalidFloatChildrenError() {
+  return new Error('Invalid prop `children` supplied to `Float`. It must be only a Layout.');
+}
+
 
 function checkContainer(container) {
   const id = addContainer({
@@ -78,6 +82,25 @@ function checkContainer(container) {
   );
   return id;
 }
+function checkFloat(float) {
+  const layout = float.props.children;
+  if (React.Children.count(layout) === 1) {
+    return addFloat({
+      width: float.props.width,
+      height: float.props.height,
+      x: float.props.x,
+      y: float.props.y,
+      layout: processLayout(
+        layout.props.name || 'Layout',
+        layout.props.children,
+        layout.props.type,
+        layout.props.hiddenType,
+        layout.props.resize
+      )
+    });
+  }
+  return invalidFloatChildrenError();
+}
 
 function checkLayoutChild(child, layout) {
   if (child.type === RDContainer) {
@@ -86,10 +109,10 @@ function checkLayoutChild(child, layout) {
       checkContainer(child, layout)
     );
   }
-  if (child.type === Float) {
+  if (child.type === RDFloat) {
     return addLayoutFloat(
       layout,
-      addFloat(layout)
+      checkFloat(child)
     );
   }
   throw invalidChildrenError();

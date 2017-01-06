@@ -4,20 +4,22 @@ import { NumberOrString } from './types';
 
 const obj = {};
 
-obj.displayName = 'Container';
+obj.displayName = 'Float';
 
 obj.propTypes = {
-  size: NumberOrString.isRequired,
-  tabs: React.PropTypes.bool
+  x: NumberOrString.isRequired,
+  y: NumberOrString.isRequired,
+  width: NumberOrString.isRequired,
+  height: NumberOrString.isRequired,
+  resize: React.PropTypes.bool
 };
 
 obj.getDefaultProps = () => ({
-  tabs: true
+  resize: true
 });
 
 obj.render = function render() {
   return <div></div>;
 };
-
 
 export default React.createClass(obj);

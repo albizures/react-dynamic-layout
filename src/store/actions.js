@@ -54,7 +54,7 @@ export function addComponent(component) {
 export function addContainerChild(container, component) {
   store.dispatch({
     container,
-    data: { components: store.getState().containers[container].components.concat(component) },
+    data: { components: store.getContainer(container).components.concat(component) },
     type: CONTAINERS,
     name: UPDATE
   });
@@ -65,7 +65,7 @@ export function addLayoutContainer(layout, container) {
     layout,
     data: {
       containers: push(
-        store.getState().layouts[layout].containers,
+        store.getLayout(layout).containers,
         container
       )
     },
@@ -80,7 +80,7 @@ export function addLayoutFloat(layout, float) {
     layout,
     data: {
       floats: push(
-        store.getState().layouts[layout].floats,
+        store.getLayout(layout).floats,
         float
       )
     },
@@ -126,3 +126,11 @@ export function updateLayout(layout, data) {
   });
 }
 
+export function updateFloat(float, data) {
+  store.dispatch({
+    float,
+    data,
+    type: FLOATS,
+    name: UPDATE
+  });
+}

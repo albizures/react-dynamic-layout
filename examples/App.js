@@ -1,9 +1,19 @@
 import React from 'react';
-import Layout, { Register, Container, ROW, COLUMN, OPACITY } from '../src';
+import { Layout, Float, Register, Container, ROW, COLUMN, OPACITY } from '../src';
 import './index.styl';
 import Label from './components/Label';
 
 export default () => <Layout name='Main' type={ROW} hiddenType={OPACITY} resize={false}>
+  <Float width='200px' height='200px' x='300px' y='100px'>
+    <Layout name='Float' type={ROW} resize={true}>
+      <Container size={50}>
+        <Register type={Label} props={{ text: 'Float' }}/>
+      </Container>
+       <Container size={50}>
+        <Register type={Label} props={{ text: 'Float' }}/>
+      </Container>
+    </Layout>
+  </Float>
   <Container size='25px' tabs={false}>
     <Register type={Label} props={{ text: 'Top' }}/>
   </Container>

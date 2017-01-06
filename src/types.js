@@ -1,3 +1,4 @@
+import React from 'react';
 
 export const ROW = 'row';
 export const STACK = 'stack';
@@ -18,3 +19,8 @@ export const ADD = 'ADD';
 export const ADD_CHILD = 'ADD_CHILD';
 export const REMOVE_CHILD = 'REMOVE_CHILD';
 export const UPDATE = 'UPDATE';
+
+export const NumberOrString = React.PropTypes.oneOfType([
+  React.PropTypes.string,
+  React.PropTypes.number
+]);
