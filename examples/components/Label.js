@@ -9,6 +9,6 @@ function Label(props) {
 
 Label.displayName = 'Label';
 
-module.exports = Label;
+export default Label;
 
 register(Label, 'Label');

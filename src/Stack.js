@@ -48,18 +48,22 @@ obj.processChildren = function processChildren() {
     if (component.isLayout) {
       const layout = store.getLayout(component.layout);
       newChild = <div className={'rdl-item-body ' + activeClass} key={component.id}>
-         <Layout
-            containers={layout.containers.map(id => store.getContainer(id))}
-            childrenProcess={layout.childrenProcess}
-            type={layout.type}
-            resize={layout.resize}
-            id={component.layout}
-          />
+        <Layout
+          containers={layout.containers.map(id => store.getContainer(id))}
+          childrenProcess={layout.childrenProcess}
+          type={layout.type}
+          resize={layout.resize}
+          id={component.layout}
+        />
       </div>;
     } else {
       const Component = components[component.componentName];
       newChild = <div className={'rdl-item-body ' + activeClass} key={component.id}>
-        <Component {...component.props}/>
+        <Component
+          {...component.props}
+          rdWidth={this.props.width}
+          rdHeight={this.props.height}
+        />
       </div>;
     }
     children.push(newChild);

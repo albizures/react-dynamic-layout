@@ -2,7 +2,6 @@ import React from 'react';
 
 import Layout from './Layout';
 import store from './store';
-// import { updateLayout } from './store/actions';
 import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY } from './types';
 import { processLayout } from './utils/components';
 
@@ -28,7 +27,6 @@ obj.onResize = function onResize() {
   clearTimeout(this.resizeTimer);
   this.resizeTimer = setTimeout(() => {
     this.setState({ id: this.state.id });
-    // updateLayout(this.state.id, { childrenProcess: false });
   }, 250);
 };
 
