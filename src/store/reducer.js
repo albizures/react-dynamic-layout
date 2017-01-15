@@ -1,149 +1,134 @@
-import { updateArrayItem, removeArrayItem } from '../utils/store';
+import { removeArrayItem, push } from '../utils/store';
 import {
-  LAYOUTS,
-  COMPONENTS,
-  CONTAINERS,
-  FLOATS,
-  ADD,
-  ADD_CHILD,
-  REMOVE_CHILD,
-  UPDATE
-} from '../types';
+  ADD_LAYOUT,
+  UPDATE_LAYOUT,
+  REMOVE_LAYOUT,
+  ADD_LAYOUT_CONTAINER,
+  REMOVE_LAYOUT_CONTAINER,
+  ADD_LAYOUT_FLOAT,
+  REMOVE_LAYOUT_FLOAT,
+  ADD_CONTAINER,
+  REMOVE_CONTAINER,
+  UPDATE_CONTAINER,
+  ADD_CONTAINER_CHILD,
+  REMOVE_CONTAINER_CHILD,
+  ADD_FLOAT,
+  REMOVE_FLOAT,
+  UPDATE_FLOAT,
+  ADD_COMPONENT,
+  REMOVE_COMPONENT,
+  UPDATE_COMPONENT
+} from './actions';
 
-const { assign } = Object;
+const add = (state, payload) => ({
+  ...state,
+  [payload.id]: payload
+});
 
-function reducerLayouts(state, { name, ...action }) {
-  switch (name) {
-    case ADD:
-      return state.concat(
-        assign({ containers: [], floats: [] }, action.layout, { id: state.length })
-      );
-    case UPDATE:
-      return updateArrayItem(
-        state,
-        action.layout,
-        assign({}, state[action.layout], action.data)
-      );
-    case ADD_CHILD:
-      return updateArrayItem(
-        state,
-        action.layout,
-        assign({}, state[action.layout], {
-          containers: state[action.layout].concat(action.container)
-        })
-      );
-    case REMOVE_CHILD:
-      return updateArrayItem(
-        state,
-        action.layout,
-        assign({}, state[action.layout], {
-          containers: removeArrayItem(state[action.layout].indexOf(action.container))
-        })
-      );
-    default:
-      return state;
+const update = (state, payload) => ({
+  ...state,
+  [payload.id]: {
+    ...state[payload.id],
+    ...payload
   }
-}
+});
 
-function reducerContainers(state, { name, ...action }) {
-  switch (name) {
-    case ADD:
-      return state.concat(
-        assign({ components: [] }, action.container, { id: state.length })
-      );
-    case UPDATE:
-      return updateArrayItem(
-        state,
-        action.container,
-        assign({}, state[action.container], action.data)
-      );
-    case ADD_CHILD:
-      return updateArrayItem(
-        state,
-        action.container,
-        assign({}, state[action.container], {
-          components: state[action.container].concat(action.component)
-        })
-      );
-    case REMOVE_CHILD:
-      return updateArrayItem(
-        state,
-        action.container,
-        assign({}, state[action.container], {
-          components: removeArrayItem(state[action.container].indexOf(action.component))
-        })
-      );
-    default:
-      return state;
-  }
-}
+const remove = (state, payload) => {
+  const newState = {
+    ...state
+  };
+  delete newState[payload];
+  return newState;
+};
 
-function reducerFloats(state, { name, ...action }) {
-  switch (name) {
-    case ADD:
-      return state.concat(
-        assign({}, action.float, { id: state.length })
-      );
-    case UPDATE:
-      return updateArrayItem(
-        state,
-        action.float,
-        assign({}, state[action.float], action.data)
-      );
-    default:
-      return state;
-  }
-}
+const removeChild = (state, payload, prop) => {
+  const item = state[payload.id];
+  return {
+    ...state,
+    [item.id]: {
+      ...item,
+      [prop]: removeArrayItem(item[prop], item.indexOf(payload.child))
+    }
+  };
+};
 
-function reducerComponents(state, { name, ...action }) {
-  switch (name) {
-    case ADD:
-      return state.concat(
-        assign({}, action.component, { id: state.length })
-      );
-    case UPDATE:
-      return updateArrayItem(
-        state,
-        action.component,
-        assign({}, state[action.component], action.data)
-      );
-    default:
-      return state;
-  }
-}
+const addChild = (state, payload, prop) => {
+  const item = state[payload.id];
+  return {
+    ...state,
+    [item.id]: {
+      ...item,
+      [prop]: push(item[prop], payload.child)
+    }
+  };
+};
 
-export default function reducer({ layouts, containers, floats, components }, { type, ...action }) {
+function reducerCommon(state, { type, payload }) {
   switch (type) {
-    case LAYOUTS:
-      return {
-        layouts: reducerLayouts(layouts, action),
-        containers,
-        floats,
-        components
-      };
-    case CONTAINERS:
-      return {
-        layouts,
-        containers: reducerContainers(containers, action),
-        floats,
-        components
-      };
-    case FLOATS:
-      return {
-        layouts,
-        containers,
-        floats: reducerFloats(floats, action),
-        components
-      };
-    case COMPONENTS:
-      return {
-        layouts,
-        containers,
-        floats,
-        components: reducerComponents(components, action)
-      };
+    case ADD_LAYOUT:
+    case ADD_CONTAINER:
+    case ADD_FLOAT:
+    case ADD_COMPONENT:
+      return add(state, payload);
+    case REMOVE_LAYOUT:
+    case REMOVE_CONTAINER:
+    case REMOVE_FLOAT:
+    case REMOVE_COMPONENT:
+      return remove(state, payload);
+    case UPDATE_LAYOUT:
+    case UPDATE_CONTAINER:
+    case UPDATE_FLOAT:
+    case UPDATE_COMPONENT:
+      return update(state, payload);
     default:
-      return { layouts, containers, components, floats };
+      return state;
   }
 }
 
+function reducerLayouts(state, action) {
+  const common = reducerCommon(state, action);
+  if (common !== state) return common;
+
+  const { type, payload } = action;
+  switch (type) {
+    case ADD_LAYOUT_CONTAINER:
+      return addChild(state, payload, 'containers');
+    case REMOVE_LAYOUT_CONTAINER:
+      return removeChild(state, payload, 'containers');
+    case ADD_LAYOUT_FLOAT:
+      return addChild(state, payload, 'floats');
+    case REMOVE_LAYOUT_FLOAT:
+      return removeChild(state, payload, 'floats');
+    default:
+      return state;
+  }
+}
+
+function reducerContainers(state, action) {
+  const common = reducerCommon(state, action);
+  if (common !== state) return common;
+
+  const { type, payload } = action;
+  switch (type) {
+    case ADD_CONTAINER_CHILD:
+      return addChild(state, payload, 'components');
+    case REMOVE_CONTAINER_CHILD:
+      return removeChild(state, payload, 'components');
+    default:
+      return state;
+  }
+}
+function reducerFloats(state, action) {
+  return reducerCommon(state, action);
+}
+
+function reducerComponents(state, action) {
+  return reducerCommon(state, action);
+}
+
+export default (state, action) => ({
+  layouts: reducerLayouts(state.layouts, action),
+  containers: reducerContainers(state.containers, action),
+  floats: reducerFloats(state.floats, action),
+  components: reducerComponents(state.components, action)
+});

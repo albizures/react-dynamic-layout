@@ -42,13 +42,13 @@ obj.getInitialState = function getInitialState() {
     }
   });
   return {
-    id: processLayout(
-      this.props.name,
-      this.props.children,
-      this.props.type,
-      this.props.hiddenType,
-      this.props.resize
-    )
+    id: processLayout({
+      name: this.props.name,
+      children: this.props.children,
+      type: this.props.type,
+      hiddenType: this.props.hiddenType,
+      resize: this.props.resize
+    })
   };
 };
 

@@ -4,14 +4,13 @@ import classNames from 'classnames';
 import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY } from './types';
 import { checkParentElement, getSizeProperties } from './utils/components';
 import { parseSize, getDiff } from './utils/size';
-import store from './store';
-import { updateContainer, updateLayout } from './store/actions';
+import store, { actions } from './store';
 import Container from './Container';
 import Float from './Float';
 import Divider from './Divider';
 
+const { updateContainer, updateLayout } = actions;
 const obj = {};
-
 
 obj.propTypes = {
   floats: React.PropTypes.array,
@@ -30,10 +29,6 @@ const hiddenTypes = {
   [Z_INDEX]: 'rdl-hidden-z-index',
   [OPACITY]: 'rdl-hidden-opacity',
   [DISPLAY]: 'rdl-hidden-display'
-};
-
-obj.foo = function foo() {
-  return store;
 };
 
 obj.displayName = 'Layout';
@@ -56,10 +51,10 @@ obj.changeSize = function changeSize(size) {
 
   for (let index = 0; index < this.props.containers.length; index++) {
     const container = this.props.containers[index];
-    updateContainer(container.id, {
+    store.dispatch(updateContainer(container.id, {
       [portion]: container.isVariable ? container[portion] + sizeChange : container[portion],
       [total]: size[total]
-    }, index === this.props.containers.length - 1);
+    }), index === this.props.containers.length - 1);
   }
   this.setState(size);
 };
@@ -80,11 +75,11 @@ obj.childrenProcess = function childrenProcess() {
       [total]: parseSize(100, size[total]).px
     };
     totalPortionSize -= portionSize.percent;
-    updateContainer(container.id, containerSize, false);
+    store.dispatch(updateContainer(container.id, containerSize), false);
   }
   if (totalPortionSize < 0) console.warn('Children size is more than 100% of size');
   if (totalPortionSize > 0) console.warn('Children size is less than 100% of size');
-  updateLayout(this.props.id, { childrenProcess: true });
+  store.dispatch(updateLayout(this.props.id, { childrenProcess: true }));
   this.setState(size);
 };
 
@@ -99,7 +94,7 @@ obj.getContainers = function getChildren() {
     const container = this.props.containers[index];
     children.push(
       <Container
-        key={'c' + container.id}
+        key={container.id}
         id={container.id}
         width={container.width}
         height={container.height}

@@ -5,7 +5,10 @@ import RDContainer from '../RDContainer';
 import RDFloat from '../RDFloat';
 import { COLUMN, ROW } from '../types';
 import { Register, components, register } from '../Register';
-import {
+import store, { actions } from '../store';
+import cuid from './cuid';
+
+const {
   addLayout,
   addComponent,
   addContainer,
@@ -13,7 +16,8 @@ import {
   addContainerChild,
   addLayoutFloat,
   addLayoutContainer
-} from '../store/actions';
+} = actions;
+
 
 function checkComponentLayout(component) {
   const layout = processLayout(
@@ -23,11 +27,14 @@ function checkComponentLayout(component) {
     component.props.hiddenType,
     component.props.resize
   );
-  return addComponent({
+  const id = cuid();
+  store.dispatch(addComponent({
+    id,
     isLayout: true,
     name: component.props.name || component.type.displayName,
     layout
-  });
+  }));
+  return id;
 }
 
 function checkComponent(component) {
@@ -35,11 +42,14 @@ function checkComponent(component) {
   if (!components[type.displayName]) {
     register(type);
   }
-  return addComponent({
+  const id = cuid();
+  store.dispatch(addComponent({
+    id,
     componentName: type.displayName,
     name: component.props.name || type.displayName,
     props: component.props.props
-  });
+  }));
+  return id;
 }
 
 function checkContainerChild(component) {
@@ -65,55 +75,60 @@ function invalidFloatChildrenError() {
 }
 
 
-function checkContainer(container) {
-  const id = addContainer({
-    size: container.props.size,
-    tabs: container.props.tabs
-  });
-  if (!container.props || !container.props.children) {
+function checkContainer({ props }) {
+  const id = cuid();
+  store.dispatch(addContainer({
+    id,
+    size: props.size,
+    tabs: props.tabs
+  }));
+  if (!props || !props.children) {
     return id;
   }
   React.Children.forEach(
-    container.props.children,
-    child => addContainerChild(
+    props.children,
+    child => store.dispatch(addContainerChild(
       id,
       checkContainerChild(child, id)
-    )
+    ))
   );
   return id;
 }
 function checkFloat(float) {
   const layout = float.props.children;
-  if (React.Children.count(layout) === 1) {
-    return addFloat({
-      width: float.props.width,
-      height: float.props.height,
-      x: float.props.x,
-      y: float.props.y,
-      layout: processLayout(
-        layout.props.name || 'Layout',
-        layout.props.children,
-        layout.props.type,
-        layout.props.hiddenType,
-        layout.props.resize
-      )
-    });
+  if (React.Children.count(layout) !== 1) {
+    return invalidFloatChildrenError();
   }
-  return invalidFloatChildrenError();
+  const id = cuid();
+  store.dispatch(addFloat({
+    id,
+    width: float.props.width,
+    height: float.props.height,
+    x: float.props.x,
+    y: float.props.y,
+    layout: processLayout(
+      layout.props.name || 'Layout',
+      layout.props.children,
+      layout.props.type,
+      layout.props.hiddenType,
+      layout.props.resize
+    )
+  }));
+  return id;
 }
 
 function checkLayoutChild(child, layout) {
   if (child.type === RDContainer) {
-    return addLayoutContainer(
+    return store.dispatch(addLayoutContainer(
       layout,
       checkContainer(child, layout)
-    );
+    ));
   }
   if (child.type === RDFloat) {
-    return addLayoutFloat(
+    return store.dispatch(addLayoutFloat(
       layout,
       checkFloat(child)
-    );
+    ));
   }
   throw invalidChildrenError();
 }
@@ -128,13 +143,15 @@ function checkLayoutChildren(children, layout) {
   );
 }
 
-function processLayout(name, children, type = COLUMN, hiddenType, resize) {
-  const id = addLayout({
+function processLayout({ name, children, type = COLUMN, hiddenType, resize }) {
+  const id = cuid();
+  store.dispatch(addLayout({
+    id,
     type,
     name,
     hiddenType,
     resize
-  });
+  }));
   checkLayoutChildren(children, id);
   return id;
 }

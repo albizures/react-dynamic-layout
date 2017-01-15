@@ -1,15 +1,14 @@
 import reducer from './reducer';
 
-const { assign } = Object;
-
 export default function createStore(state) {
   const store = {
-    state: assign({}, state || {
+    state: {
+      ...state,
       layouts: [],
       containers: [],
       floats: [],
       components: []
-    }),
+    },
     listeners: [],
     reducer
   };
@@ -21,21 +20,11 @@ export default function createStore(state) {
         store.listeners[index](store.state);
       }
     },
-    getLayout(id) {
-      return store.state.layouts[id];
-    },
-    getFloat(id) {
-      return store.state.floats[id];
-    },
-    getContainer(id) {
-      return store.state.containers[id];
-    },
-    getComponent(id) {
-      return store.state.components[id];
-    },
-    getState() {
-      return store.state;
-    },
+    getLayout: id => store.state.layouts[id],
+    getFloat: id => store.state.floats[id],
+    getContainer: id => store.state.containers[id],
+    getComponent: id => store.state.components[id],
+    getState: () => store.state,
     subscribe(listener) {
       store.listeners.push(listener);
     }
