@@ -129,6 +129,7 @@ obj.getFloats = function getFloats() {
         height={float.height}
         x={float.x}
         y={float.y}
+        open={float.open}
         layout={float.layout}
       />
     );

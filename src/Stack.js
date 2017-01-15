@@ -1,7 +1,9 @@
 import React from 'react';
 import Layout from './Layout';
-import store from './store';
 import { components } from './Register';
+import store, { actions } from './store';
+
+const { closeFloat, openFloat } = actions;
 
 const obj = {};
 
@@ -63,6 +65,8 @@ obj.processChildren = function processChildren() {
           {...component.props}
           rdWidth={this.props.width}
           rdHeight={this.props.height}
+          rdCloseFloat={id => store.dispatch(closeFloat(id))}
+          rdOpenFloat={id => store.dispatch(openFloat(id))}
         />
       </div>;
     }

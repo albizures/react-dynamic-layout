@@ -1,9 +1,9 @@
 let counter = 0;
 
-export default function guidGenerator(fn) {
+export default function guidGenerator(cb) {
   counter++;
   const randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
   const uniqid = randLetter + Date.now() + counter;
-  setImmediate(() => fn(uniqid));
+  if (cb) setTimeout(() => cb(uniqid), 0);
   return uniqid;
 }

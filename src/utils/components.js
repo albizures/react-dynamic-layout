@@ -18,36 +18,51 @@ const {
   addLayoutContainer
 } = actions;
 
+function isFunc(fn) {
+  return typeof fn === 'function';
+}
 
-function checkComponentLayout(component) {
-  const layout = processLayout(
-    component.props.name || 'Layout',
-    component.props.children,
-    component.props.type,
-    component.props.hiddenType,
-    component.props.resize
-  );
+function checkId(id) {
+  if (isFunc(id)) {
+    return cuid(id);
+  }
+  if (typeof id === 'string') {
+    return id;
+  }
+  return cuid();
+}
+
+function checkComponentLayout({ props, type }) {
+  const layout = processLayout({
+    id: props.id,
+    name: props.name || 'Layout',
+    children: props.children,
+    type: props.type,
+    hiddenType: props.hiddenType,
+    resize: props.resize
+  });
   const id = cuid();
   store.dispatch(addComponent({
     id,
     isLayout: true,
-    name: component.props.name || component.type.displayName,
+    name: props.name || type.displayName,
     layout
   }));
   return id;
 }
 
-function checkComponent(component) {
-  const type = component.props.type;
-  if (!components[type.displayName]) {
-    register(type);
+function checkComponent({ props }) {
+  const type = props.type;
+  const name = type.displayName || props.name;
+  if (!components[name]) {
+    register(type, name);
   }
-  const id = cuid();
+  const id = checkId(props.id);
   store.dispatch(addComponent({
     id,
-    componentName: type.displayName,
-    name: component.props.name || type.displayName,
-    props: component.props.props
+    componentName: type.displayName || name,
+    name: name || type.displayName,
+    props: props.props
   }));
   return id;
 }
@@ -76,7 +91,7 @@ function invalidFloatChildrenError() {
 
 
 function checkContainer({ props }) {
-  const id = cuid();
+  const id = checkId(props.id);
   store.dispatch(addContainer({
     id,
     size: props.size,
@@ -94,25 +109,27 @@ function checkContainer({ props }) {
   );
   return id;
 }
-function checkFloat(float) {
-  const layout = float.props.children;
+function checkFloat({ props }) {
+  const layout = props.children;
   if (React.Children.count(layout) !== 1) {
     return invalidFloatChildrenError();
   }
-  const id = cuid();
+  const id = checkId(props.id);
   store.dispatch(addFloat({
     id,
-    width: float.props.width,
-    height: float.props.height,
-    x: float.props.x,
-    y: float.props.y,
-    layout: processLayout(
-      layout.props.name || 'Layout',
-      layout.props.children,
-      layout.props.type,
-      layout.props.hiddenType,
-      layout.props.resize
-    )
+    open: props.open,
+    width: props.width,
+    height: props.height,
+    x: props.x,
+    y: props.y,
+    layout: processLayout({
+      id: layout.props.id,
+      name: layout.props.name || 'Layout',
+      children: layout.props.children,
+      type: layout.props.type,
+      hiddenType: layout.props.hiddenType,
+      resize: layout.props.resize
+    })
   }));
   return id;
 }
@@ -121,7 +138,7 @@ function checkLayoutChild(child, layout) {
   if (child.type === RDContainer) {
     return store.dispatch(addLayoutContainer(
       layout,
-      checkContainer(child, layout)
+      checkContainer(child)
     ));
   }
   if (child.type === RDFloat) {
@@ -143,8 +160,8 @@ function checkLayoutChildren(children, layout) {
   );
 }
 
-function processLayout({ name, children, type = COLUMN, hiddenType, resize }) {
-  const id = cuid();
+function processLayout({ id, name, children, type = COLUMN, hiddenType, resize }) {
+  id = checkId(id);
   store.dispatch(addLayout({
     id,
     type,

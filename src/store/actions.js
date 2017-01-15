@@ -52,10 +52,11 @@ export const addFloat = ({
   height,
   x,
   y,
+  open,
   layout
 }) => ({
   type: ADD_FLOAT,
-  payload: { id, width, height, x, y, layout }
+  payload: { id, width, height, x, y, layout, open }
 });
 
 export const addComponent = ({
@@ -138,4 +139,14 @@ export const removeFloat = id => ({
 export const removeComponent = id => ({
   type: REMOVE_COMPONENT,
   payload: id
+});
+
+export const closeFloat = id => ({
+  type: UPDATE_FLOAT,
+  payload: { id, open: false }
+});
+
+export const openFloat = id => ({
+  type: UPDATE_FLOAT,
+  payload: { id, open: true }
 });

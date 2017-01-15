@@ -2,7 +2,7 @@ import React from 'react';
 
 import Layout from './Layout';
 import store from './store';
-import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY } from './types';
+import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY, StringOrFunc } from './types';
 import { processLayout } from './utils/components';
 
 const obj = {};
@@ -12,7 +12,8 @@ obj.propTypes = {
   name: React.PropTypes.string.isRequired,
   type: React.PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
   hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY]),
-  resize: React.PropTypes.bool
+  resize: React.PropTypes.bool,
+  id: StringOrFunc
 };
 
 obj.getDefaultProps = () => ({
@@ -43,6 +44,7 @@ obj.getInitialState = function getInitialState() {
   });
   return {
     id: processLayout({
+      id: this.props.id,
       name: this.props.name,
       children: this.props.children,
       type: this.props.type,

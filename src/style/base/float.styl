@@ -17,6 +17,18 @@
       background-image: -webkit-linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
       background-image: -o-linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
       background-image: linear-gradient(rgb(66, 66, 66) 0%, rgb(48, 48, 48) 100%)
+      .close
+        padding: 0;
+        background: transparent;
+        border: 0;
+        float: right;
+        height: 15px;
+        width: 17px;
+        font-size: 17px;
+        line-height: 1;
+        cursor: pointer;
+        &:hover
+          font-size: 18px;
     .rdl-resize-bar
       position: absolute
       z-index: 4;
@@ -65,3 +77,24 @@
         cursor: se-resize
         right: -4px;
         bottom: -4px;
+
+.rdl-hidden-z-index
+  .rdl-float
+    background: white
+    z-index: -1;
+    &.active
+      z-index: 3;
+
+.rdl-hidden-display
+  .rdl-float
+    display: none
+    &.active
+      display: block
+
+.rdl-hidden-opacity
+  .rdl-float
+    opacity: 0
+    pointer-events: none
+    &.active
+      opacity: 1
+      pointer-events: all

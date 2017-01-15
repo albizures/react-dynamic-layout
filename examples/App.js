@@ -1,14 +1,20 @@
 import React from 'react';
-import { Layout, Float, Register, Container, ROW, COLUMN, OPACITY } from '../src';
+import { Layout, Float, Register, Container, ROW, COLUMN, OPACITY, cuid } from '../src';
 import './index.styl';
-// import Label from './components/Label';
 import Size from './components/Size';
 
+const idFloat = cuid();
+
+const openModal = props => <div>
+  <button onClick={() => props.rdOpenFloat(idFloat)}>Open</button>
+  <button onClick={() => props.rdCloseFloat(idFloat)}>Close</button>
+</div>;
+
 export default () => <Layout name='Main' type={ROW} hiddenType={OPACITY} resize={false}>
-  <Float width='200px' height='200px' x='300px' y='100px'>
+  <Float width='200px' height='200px' x='300px' y='100px' id={idFloat}>
     <Layout name='Float' type={ROW} resize={true}>
       <Container size={50}>
-        <Register type={Size} props={{ text: 'Float' }}/>
+        <Register type={Size} props={{ text: 'Float', idFloat }}/>
       </Container>
        <Container size={50}>
         <Register type={Size} props={{ text: 'Float' }}/>
@@ -30,7 +36,7 @@ export default () => <Layout name='Main' type={ROW} hiddenType={OPACITY} resize=
             <Register type={Size} props={{ text: 'Center top' }}/>
           </Container>
           <Container size='calc(100% - 20px)' tabs={false}>
-            <Register type={Size} props={{ text: 'Center bottom' }}/>
+            <Register type={openModal} name='openModal' props={{ text: 'Center bottom', idFloat }}/>
           </Container>
         </Layout>
       </Container>

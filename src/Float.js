@@ -1,13 +1,15 @@
 import React from 'react';
-
-import store from './store';
-import { updateFloat } from './store/actions';
+import classNames from 'classnames';
+import store, { actions } from './store';
 import { NumberOrString } from './types';
 import ResizeBar from './ResizeBar';
 import Layout from './Layout';
 
-const obj = {};
 const { parseInt } = Number;
+const { updateFloat, closeFloat } = actions;
+
+const obj = {};
+
 obj.displayName = 'Float';
 
 
@@ -22,7 +24,8 @@ obj.propTypes = {
   y: NumberOrString.isRequired,
   width: NumberOrString.isRequired,
   height: NumberOrString.isRequired,
-  resize: React.PropTypes.bool
+  resize: React.PropTypes.bool,
+  open: React.PropTypes.bool
 };
 
 obj.onMouseMove = function onMouseMove(evt) {
@@ -51,7 +54,7 @@ obj.getPosition = function getPosition(evt) {
 
 obj.onMouseUp = function onMouseUp(evt) {
   const { y, x } = this.getPosition(evt);
-  updateFloat(this.props.id, { x, y });
+  store.dispatch(updateFloat(this.props.id, { x, y }));
   window.removeEventListener('mousemove', this.onMouseMove);
   window.removeEventListener('mouseup', this.onMouseUp);
 };
@@ -73,7 +76,7 @@ obj.setDiff = function setDiff(diff) {
   const width = parseInt(this.props.width, 10) + (diff.width || 0);
   const height = parseInt(this.props.height, 10) + (diff.height || 0);
 
-  updateFloat(this.props.id, { x, y, width, height });
+  store.dispatch(updateFloat(this.props.id, { x, y, width, height }));
 };
 
 obj.onResize = function onResize(fn) {
@@ -85,6 +88,12 @@ obj.componentDidUpdate = function componentDidUpdate() {
     this.resizeLayout();
   }
 };
+
+obj.onClose = function onClose(evt) {
+  evt.stopPropagation();
+  store.dispatch(closeFloat(this.props.id));
+};
+
 obj.render = function render() {
   const layout = store.getLayout(this.props.layout);
   const style = {
@@ -93,8 +102,14 @@ obj.render = function render() {
     width: this.props.width,
     height: this.props.height
   };
-  return <div className='rdl-float' ref='el' style={style}>
-    <div className='rdl-drag-bar' onMouseDown={this.onMouseDown}/>
+  const className = classNames(
+    'rdl-float',
+    { active: this.props.open }
+  );
+  return <div className={className} ref='el' style={style}>
+    <div className='rdl-drag-bar' onMouseDown={this.onMouseDown}>
+      <button className='close' onMouseDown={this.onClose}>&times;</button>
+    </div>
     {
       this.props.resize ? [
         <ResizeBar setDiff={this.setDiff} key='n' type='n' />,

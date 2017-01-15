@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { NumberOrString } from './types';
+import { NumberOrString, StringOrFunc } from './types';
 
 const obj = {};
 
@@ -8,7 +7,8 @@ obj.displayName = 'Container';
 
 obj.propTypes = {
   size: NumberOrString.isRequired,
-  tabs: React.PropTypes.bool
+  tabs: React.PropTypes.bool,
+  id: StringOrFunc
 };
 
 obj.getDefaultProps = () => ({
