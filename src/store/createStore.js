@@ -1,13 +1,13 @@
-import reducer from './reducer';
+import defaultReducer from './reducer';
 
-export default function createStore(state) {
+export default function createStore(state, reducer = defaultReducer) {
   const store = {
     state: {
-      ...state,
-      layouts: [],
-      containers: [],
-      floats: [],
-      components: []
+      layouts: {},
+      containers: {},
+      floats: {},
+      components: {},
+      ...state
     },
     listeners: [],
     reducer

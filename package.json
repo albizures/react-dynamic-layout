@@ -43,6 +43,7 @@
     "react-dom": "^15.4.1",
     "rimraf": "^2.5.4",
     "semantic-release": "^6.3.2",
+    "sinon": "^1.17.7",
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.3.1",

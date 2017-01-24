@@ -27,10 +27,10 @@ module.exports = config => {
     singleRun: true,
     frameworks: ['mocha'],
     files: [
-      './test/tests.webpack.js'
+      './tests.webpack.js'
     ],
     preprocessors: {
-      './test/tests.webpack.js': ['webpack', 'sourcemap']
+      './tests.webpack.js': ['webpack', 'sourcemap']
     },
     plugin: [
       'karma-chrome-launcher',

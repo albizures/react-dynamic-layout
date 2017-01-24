@@ -20,12 +20,12 @@ import {
   UPDATE_COMPONENT
 } from './actions';
 
-const add = (state, payload) => ({
+export const add = (state, payload) => ({
   ...state,
   [payload.id]: payload
 });
 
-const update = (state, payload) => ({
+export const update = (state, payload) => ({
   ...state,
   [payload.id]: {
     ...state[payload.id],
@@ -33,7 +33,7 @@ const update = (state, payload) => ({
   }
 });
 
-const remove = (state, payload) => {
+export const remove = (state, payload) => {
   const newState = {
     ...state
   };
@@ -41,18 +41,18 @@ const remove = (state, payload) => {
   return newState;
 };
 
-const removeChild = (state, payload, prop) => {
+export const removeChild = (state, payload, prop) => {
   const item = state[payload.id];
   return {
     ...state,
     [item.id]: {
       ...item,
-      [prop]: removeArrayItem(item[prop], item.indexOf(payload.child))
+      [prop]: removeArrayItem(item[prop], item[prop].indexOf(payload.child))
     }
   };
 };
 
-const addChild = (state, payload, prop) => {
+export const addChild = (state, payload, prop) => {
   const item = state[payload.id];
   return {
     ...state,
@@ -85,7 +85,7 @@ function reducerCommon(state, { type, payload }) {
   }
 }
 
-function reducerLayouts(state, action) {
+export function reducerLayouts(state, action) {
   const common = reducerCommon(state, action);
   if (common !== state) return common;
 
@@ -104,7 +104,7 @@ function reducerLayouts(state, action) {
   }
 }
 
-function reducerContainers(state, action) {
+export function reducerContainers(state, action) {
   const common = reducerCommon(state, action);
   if (common !== state) return common;
 
@@ -118,11 +118,11 @@ function reducerContainers(state, action) {
       return state;
   }
 }
-function reducerFloats(state, action) {
+export function reducerFloats(state, action) {
   return reducerCommon(state, action);
 }
 
-function reducerComponents(state, action) {
+export function reducerComponents(state, action) {
   return reducerCommon(state, action);
 }
 
