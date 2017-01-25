@@ -45,7 +45,7 @@ export const removeChild = (state, payload, prop) => {
   const item = state[payload.id];
   return {
     ...state,
-    [item.id]: {
+    [payload.id]: {
       ...item,
       [prop]: removeArrayItem(item[prop], item[prop].indexOf(payload.child))
     }
@@ -56,7 +56,7 @@ export const addChild = (state, payload, prop) => {
   const item = state[payload.id];
   return {
     ...state,
-    [item.id]: {
+    [payload.id]: {
       ...item,
       [prop]: push(item[prop], payload.child)
     }

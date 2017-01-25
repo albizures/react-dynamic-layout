@@ -7,31 +7,31 @@ const id = 1;
 describe('reducer', () => {
   it('should add a new item', () => {
     const state = {};
-    const newState = {
+    const nextState = {
       [id]: { id }
     };
     expect(
       add(state, { id: 1 })
     ).to.deep.equal(
-      newState
+      nextState
     );
   });
   it('should remove an item', () => {
     const state = {
       [id]: { id }
     };
-    const newState = {};
+    const nextState = {};
     expect(
       remove(state, id)
     ).to.deep.equal(
-      newState
+      nextState
     );
   });
   it('should update an item', () => {
     const state = {
       [id]: { id }
     };
-    const newState = {
+    const nextState = {
       [id]: {
         id,
         foo: 'foo'
@@ -40,7 +40,7 @@ describe('reducer', () => {
     expect(
       update(state, { id, foo: 'foo' })
     ).to.deep.equal(
-      newState
+      nextState
     );
   });
   it('should add a new child', () => {
@@ -50,7 +50,7 @@ describe('reducer', () => {
         children: []
       }
     };
-    const newState = {
+    const nextState = {
       [id]: {
         id,
         children: ['foo']
@@ -59,7 +59,7 @@ describe('reducer', () => {
     expect(
       addChild(state, { id, child: 'foo' }, 'children')
     ).to.deep.equal(
-      newState
+      nextState
     );
   });
   it('should remove a child', () => {
@@ -69,7 +69,7 @@ describe('reducer', () => {
         children: ['foo']
       }
     };
-    const newState = {
+    const nextState = {
       [id]: {
         id,
         children: []
@@ -78,7 +78,7 @@ describe('reducer', () => {
     expect(
       removeChild(state, { id, child: 'foo' }, 'children')
     ).to.deep.equal(
-      newState
+      nextState
     );
   });
 });
