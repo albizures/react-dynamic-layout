@@ -5,21 +5,14 @@ import * as actions from '../actions';
 
 const { addFloat, removeFloat, updateFloat } = actions;
 
+const id = 1;
+
 describe('reducerFloats', () => {
   it('should add a new float', () => {
-    expect(
-      reducerFloats({}, addFloat({
-        id: 1,
-        width: 10,
-        height: 10,
-        x: 10,
-        y: 10,
-        open: true,
-        layout: 1
-      }))
-    ).to.deep.equal({
-      1: {
-        id: 1,
+    const state = {};
+    const nextState = {
+      [id]: {
+        id,
         width: 10,
         height: 10,
         x: 10,
@@ -27,33 +20,50 @@ describe('reducerFloats', () => {
         open: true,
         layout: 1
       }
-    });
+    };
+    const data = {
+      id,
+      width: 10,
+      height: 10,
+      x: 10,
+      y: 10,
+      open: true,
+      layout: 1
+    };
+    expect(
+      reducerFloats(state, addFloat(data))
+    ).to.deep.equal(
+      nextState
+    );
   });
   it('should remove a float', () => {
+    const state = {
+      [id]: {
+        id
+      }
+    };
+    const nextState = {};
     expect(
-      reducerFloats({
-        1: {
-          id: 1
-        }
-      }, removeFloat(1))
-    ).to.deep.equal({});
+      reducerFloats(state, removeFloat(id))
+    ).to.deep.equal(
+      nextState
+    );
   });
   it('should update a float', () => {
-    expect(
-      reducerFloats({
-        1: {
-          id: 1,
-          width: 10,
-          height: 10,
-          x: 10,
-          y: 10,
-          open: true,
-          layout: 1
-        }
-      }, updateFloat(1, { width: 20, x: 15 }))
-    ).to.deep.equal({
-      1: {
-        id: 1,
+    const state = {
+      [id]: {
+        id,
+        width: 10,
+        height: 10,
+        x: 10,
+        y: 10,
+        open: true,
+        layout: 1
+      }
+    };
+    const nextState = {
+      [id]: {
+        id,
         width: 20,
         height: 10,
         x: 15,
@@ -61,6 +71,15 @@ describe('reducerFloats', () => {
         open: true,
         layout: 1
       }
-    });
+    };
+    const data = {
+      width: 20,
+      x: 15
+    };
+    expect(
+      reducerFloats(state, updateFloat(id, data))
+    ).to.deep.equal(
+      nextState
+    );
   });
 });
