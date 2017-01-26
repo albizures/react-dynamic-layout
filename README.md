@@ -24,7 +24,7 @@ React Dynamic Layout is a dock layout system inspired by [Golden Layout](https:/
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Layout, Register, Container, ROW, COLUMN } from '../src';
+import { Layout, Register, Container, ROW, COLUMN } from 'react-dynamic-layout';
 
 const Label = ({ text }) => <label>{ text }</label>
 
