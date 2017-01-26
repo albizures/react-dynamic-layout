@@ -1,61 +1,60 @@
 import React from 'react';
-
+import classNames from 'classnames';
+import store, { actions } from './store';
+import { NumberOrString } from './types';
 import ResizeBar from './ResizeBar';
 import Layout from './Layout';
 
-const obj = {};
 const { parseInt } = Number;
+const { updateFloat, closeFloat } = actions;
+
+const obj = {};
+
 obj.displayName = 'Float';
 
 
 obj.getDefaultProps = () => ({
-  pos: {},
-  size: {},
   resize: true
 });
 
 obj.propTypes = {
-  size: React.PropTypes.object.isRequired,
-  pos: React.PropTypes.object.isRequired,
-  resize: React.PropTypes.bool.isRequired,
-  layout: React.PropTypes.object.isRequired
-};
-
-obj.generateState = function generateState() {
-  return {
-    pos: Object.assign({}, this.props.pos),
-    size: Object.assign({}, this.props.size)
-  };
-};
-
-obj.getInitialState = function getInitialState() {
-  return this.generateState();
+  id: React.PropTypes.any.isRequired,
+  layout: React.PropTypes.any.isRequired,
+  x: NumberOrString.isRequired,
+  y: NumberOrString.isRequired,
+  width: NumberOrString.isRequired,
+  height: NumberOrString.isRequired,
+  resize: React.PropTypes.bool,
+  open: React.PropTypes.bool
 };
 
 obj.onMouseMove = function onMouseMove(evt) {
-  let top = evt.clientY - this.diffY;
-  let left = evt.clientX - this.diffX;
-  if (top < 25) {
-    top = 25;
-  }
-  if (left < 0) {
-    left = 0;
-  }
-  if (left > this.maxLeft) {
-    left = this.maxLeft;
-  }
-  if (top > this.maxTop) {
-    top = this.maxTop;
-  }
-  this.setState({
-    pos: {
-      y: top,
-      x: left
-    }
-  });
+  const { y, x } = this.getPosition(evt);
+  this.refs.el.style.top = y + 'px';
+  this.refs.el.style.left = x + 'px';
 };
 
-obj.onMouseUp = function onMouseUp() {
+obj.getPosition = function getPosition(evt) {
+  let y = evt.clientY - this.diffY;
+  let x = evt.clientX - this.diffX;
+  if (y < 25) {
+    y = 25;
+  }
+  if (x < 0) {
+    x = 0;
+  }
+  if (x > this.maxLeft) {
+    x = this.maxLeft;
+  }
+  if (y > this.maxTop) {
+    y = this.maxTop;
+  }
+  return { y, x };
+};
+
+obj.onMouseUp = function onMouseUp(evt) {
+  const { y, x } = this.getPosition(evt);
+  store.dispatch(updateFloat(this.props.id, { x, y }));
   window.removeEventListener('mousemove', this.onMouseMove);
   window.removeEventListener('mouseup', this.onMouseUp);
 };
@@ -71,15 +70,13 @@ obj.onMouseDown = function onMouseDown(evt) {
 };
 
 obj.setDiff = function setDiff(diff) {
-  const pos = {};
-  const size = {};
-  pos.x = this.state.pos.x + (diff.x || 0);
-  pos.y = this.state.pos.y + (diff.y || 0);
+  const x = this.props.x + (diff.x || 0);
+  const y = this.props.y + (diff.y || 0);
 
-  size.width = parseInt(this.state.size.width, 10) + (diff.width || 0);
-  size.height = parseInt(this.state.size.height, 10) + (diff.height || 0);
+  const width = parseInt(this.props.width, 10) + (diff.width || 0);
+  const height = parseInt(this.props.height, 10) + (diff.height || 0);
 
-  this.setState({ pos, size });
+  store.dispatch(updateFloat(this.props.id, { x, y, width, height }));
 };
 
 obj.onResize = function onResize(fn) {
@@ -91,15 +88,28 @@ obj.componentDidUpdate = function componentDidUpdate() {
     this.resizeLayout();
   }
 };
+
+obj.onClose = function onClose(evt) {
+  evt.stopPropagation();
+  store.dispatch(closeFloat(this.props.id));
+};
+
 obj.render = function render() {
+  const layout = store.getLayout(this.props.layout);
   const style = {
-    top: this.state.pos.y,
-    left: this.state.pos.x,
-    width: this.state.size.width,
-    height: this.state.size.height
+    top: this.props.y,
+    left: this.props.x,
+    width: this.props.width,
+    height: this.props.height
   };
-  return <div className='rdl-float' style={style}>
-    <div className='rdl-drag-bar' onMouseDown={this.onMouseDown}/>
+  const className = classNames(
+    'rdl-float',
+    { active: this.props.open }
+  );
+  return <div className={className} ref='el' style={style}>
+    <div className='rdl-drag-bar' onMouseDown={this.onMouseDown}>
+      <button className='close' onMouseDown={this.onClose}>&times;</button>
+    </div>
     {
       this.props.resize ? [
         <ResizeBar setDiff={this.setDiff} key='n' type='n' />,
@@ -113,7 +123,14 @@ obj.render = function render() {
       ] : null
     }
     <div className='rdl-content-float'>
-      <Layout onResize={this.onResize} root={false} {...this.props.layout} />
+      <Layout
+        containers={layout.containers.map(id => store.getContainer(id))}
+        childrenProcess={layout.childrenProcess}
+        type={layout.type}
+        hiddenType={layout.hiddenType}
+        resize={layout.resize}
+        id={layout.id}
+      />
     </div>
   </div>;
 };

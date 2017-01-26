@@ -1,5 +1,5 @@
 import React from 'react';
-import { register } from '../../src/Layout';
+import { register } from '../../src';
 
 // NOTE: only for testing
 
@@ -9,6 +9,6 @@ function Label(props) {
 
 Label.displayName = 'Label';
 
-module.exports = Label;
+export default Label;
 
 register(Label, 'Label');

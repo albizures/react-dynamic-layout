@@ -13,6 +13,9 @@ let devServer;
 let externals = [];
 
 const modules = {
+  noParse: [
+    /\/sinon.js/
+  ],
   preLoaders: [{
     test: /\.js$/,
     loader: 'eslint',

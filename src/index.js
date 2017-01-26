@@ -1,13 +1,20 @@
 
-
-import Layout, { Z_INDEX, DISPLAY, OPACITY } from './Layout';
-import { STACK, ROW, COLUMN } from './Container';
-import register from './register';
+import './utils/components';
+import { Z_INDEX, DISPLAY, OPACITY, STACK, ROW, COLUMN } from './types';
+import Container from './RDContainer';
+import Float from './RDFloat';
+import cuid from './utils/cuid';
+import { Register, register } from './Register';
+import Layout from './RDLayout';
 
 export default Layout;
 
 export {
+  cuid,
+  Float,
   Layout,
+  Register,
+  Container,
   register,
   STACK,
   ROW,

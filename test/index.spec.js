@@ -2,13 +2,8 @@
 import { expect } from 'chai';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { mount } from 'enzyme';
-import Float from '../src/Float';
-import ResizeBar from '../src/ResizeBar';
-import { Layout, ROW, COLUMN, STACK } from '../src';
-import Container from '../src/Container';
-import Stack from '../src/Stack';
-import { components, register } from '../src/register';
+import { Layout, ROW } from '../src';
+import { components, register } from '../src/Register';
 import '../examples/components/Label';
 import '../src/style/base/index.styl';
 
@@ -86,92 +81,3 @@ describe('register', () => {
     expect(() => render(<Layout {...config} />, node)).to.not.throw(Error);
   });
 });
-
-describe('renders without crashing', () => {
-  let node;
-  beforeEach(() => {
-    node = newValidDiv();
-    document.body.appendChild(node);
-  });
-  afterEach(() => {
-    node.remove();
-  });
-
-  it('renders an empty layout', () => {
-    const config = {
-      children: [],
-      type: ROW
-    };
-    let wrapper;
-    expect(() => {
-      wrapper = mount(<Layout {...config} />, { attachTo: node });
-    }).to.not.throw(Error);
-
-    expect([
-      wrapper.find(Container).length,
-      wrapper.find(ResizeBar).length,
-      wrapper.find(Float).length,
-      wrapper.find(Stack).length
-    ]).to.eql([0, 0, 0, 0]);
-  });
-
-  it('renders an layout with children', () => {
-    const config = {
-      children: [{
-        name: 'Left',
-        component: 'Label',
-        props: { text: 'Left' },
-        size: 50
-      }, {
-        name: 'Right',
-        type: COLUMN,
-        children: [{
-          name: 'Test',
-          component: 'Label',
-          props: { text: 'Left Top' },
-          size: 50
-        }, {
-          name: 'Test',
-          type: STACK,
-          children: [{
-            name: 'Right Button 1',
-            component: 'Label',
-            props: { text: 'Right Button 1' },
-            size: 50
-          }, {
-            name: 'Right Button 2',
-            component: 'Label',
-            props: { text: 'Right Button 2' },
-            size: 50
-          }],
-          size: 50
-        }],
-        size: 50
-      }],
-      type: ROW
-    };
-    render(<Layout {...config} />, node);
-    // return new Promise(resolve => setTimeout(resolve, 1000));
-  });
-
-  it('render element with one child', () => {
-    const config = {
-      children: [{
-        name: 'Test',
-        component: 'Label',
-        props: { text: 'Test' },
-        size: 50
-      }],
-      type: ROW
-    };
-    const wrapper = mount(<Layout {...config} />, { attachTo: node });
-    expect([
-      wrapper.find(Container).length,
-      wrapper.find(ResizeBar).length,
-      wrapper.find(Float).length,
-      wrapper.find(Stack).length
-    ]).to.eql([1, 0, 0, 1]);
-    // return new Promise(resolve => setTimeout(resolve, 500));
-  });
-});
-

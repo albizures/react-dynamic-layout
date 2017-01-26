@@ -1,45 +1,31 @@
 import React from 'react';
-import classNames from 'classnames';
-
+import { ROW, COLUMN, STACK } from './types';
 import Stack from './Stack';
-
-const ROW = 'row';
-const STACK = 'stack';
-const COLUMN = 'column';
 
 const obj = {};
 
 obj.displayName = 'Container';
 
-obj.getDefaultProps = () => ({
-  tabs: true
-});
-
 obj.propTypes = {
-  type: React.PropTypes.oneOf([ROW, COLUMN]).isRequired,
-  children: React.PropTypes.array.isRequired,
+  id: React.PropTypes.any.isRequired,
   width: React.PropTypes.number.isRequired,
   height: React.PropTypes.number.isRequired,
-  tabs: React.PropTypes.bool,
-  active: React.PropTypes.number
+  components: React.PropTypes.array.isRequired,
+  tabs: React.PropTypes.bool
+};
+
+obj.getSize = function getSize() {
+  const { width, height } = this.props;
+  return { width, height };
 };
 
 obj.render = function render() {
-  const className = classNames(
-    'rdl-container',
-    'rdl-' + this.props.type
-  );
-  const style = {
-    width: this.props.width,
-    height: this.props.height
-  };
-  return <div className={className} style={style}>
+  return <div ref='el' className='rdl-container' style={this.getSize()}>
     <Stack
-      tabs={this.props.tabs}
-      children={this.props.children}
+      components={this.props.components}
       width={this.props.width}
       height={this.props.height}
-      active={this.props.active}
+      tabs={this.props.tabs}
     />
   </div>;
 };
