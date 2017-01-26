@@ -18,6 +18,38 @@ React Dynamic Layout is a dock layout system inspired by [Golden Layout](https:/
 
     $ npm install --save react-dynamic-layout
 
+## Example
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Layout, Register, Container, ROW, COLUMN } from '../src';
+
+const Label = ({ text }) => <label>{ text }</label>
+
+const Example = () => <Layout name='Main' type={COLUMN}>
+    <Container size={50}>
+        <Register type={Label} props={{ text: 'Left' }}/>
+    </Container>
+    <Container size={50} tabs={false}>
+        <Layout type={ROW} name='Right'>
+            <Container size={50}>
+                <Register type={Label} props={{ text: 'Right top - tab 1' }}/>
+                <Register type={Label} props={{ text: 'Right top - tab 2' }}/>
+            </Container>
+            <Container size={50} >
+                <Register type={Label} props={{ text: 'Right bottom - tab 1' }}/>
+                <Register type={Label} props={{ text: 'Right bottom - tab 2' }}/>
+            </Container>
+        </Layout>
+    </Container>
+</Layout>;
+ReactDOM.render(
+    <Example/>,
+    document.getElementById('root')
+);
+```
 ## TODO
 * JSX children for static layout
 * Drag and Drop
