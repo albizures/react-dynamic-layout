@@ -1,8 +1,9 @@
 import React from 'react';
 import { ROW, COLUMN } from './Container';
-import store from './store';
-import { updateContainer } from './store/actions';
+import store, { actions } from './store';
 import { getSizeProperties } from './utils/components';
+
+const { updateContainer } = actions;
 
 const obj = {};
 
@@ -77,12 +78,12 @@ obj.setDiff = function setDiff(diff) {
   const { portion } = getSizeProperties(this.props.type);
   const before = containers[this.props.idBefore];
   const after = containers[this.props.idAfter];
-  updateContainer(before.id, {
+  store.dispatch(updateContainer(before.id, {
     [portion]: before[portion] + diff[portion]
-  }, false);
-  updateContainer(after.id, {
+  }, false));
+  store.dispatch(updateContainer(after.id, {
     [portion]: after[portion] - diff[portion]
-  });
+  }));
 };
 
 obj.onMouseUp = function onMouseUp(evt) {
