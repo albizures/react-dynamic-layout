@@ -64,7 +64,7 @@ obj.processChildren = function processChildren() {
         <Component
           {...component.props}
           rdWidth={this.props.width}
-          rdHeight={this.props.height}
+          rdHeight={this.props.height + tabHeight}
           rdCloseFloat={id => store.dispatch(closeFloat(id))}
           rdOpenFloat={id => store.dispatch(openFloat(id))}
         />
