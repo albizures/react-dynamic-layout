@@ -1,7 +1,6 @@
 import React from 'react';
-import { Layout, Float, Register, Container, ROW, COLUMN, OPACITY, cuid } from '../src';
-import './index.styl';
-import Size from './components/Size';
+import { Layout, Float, Register, Container, ROW, COLUMN, OPACITY, cuid } from '../../src';
+import Size from '../components/Size';
 
 const idFloat = cuid();
 
