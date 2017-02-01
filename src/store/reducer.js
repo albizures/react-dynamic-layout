@@ -41,24 +41,24 @@ export const remove = (state, payload) => {
   return newState;
 };
 
-export const removeChild = (state, payload, prop) => {
+export const removeChild = (state, payload, prop, child = 'child') => {
   const item = state[payload.id];
   return {
     ...state,
     [payload.id]: {
       ...item,
-      [prop]: removeArrayItem(item[prop], item[prop].indexOf(payload.child))
+      [prop]: removeArrayItem(item[prop], item[prop].indexOf(payload[child]))
     }
   };
 };
 
-export const addChild = (state, payload, prop) => {
+export const addChild = (state, payload, prop, child = 'child') => {
   const item = state[payload.id];
   return {
     ...state,
     [payload.id]: {
       ...item,
-      [prop]: push(item[prop], payload.child)
+      [prop]: push(item[prop], payload[child])
     }
   };
 };
