@@ -121,6 +121,11 @@ export const updateComponent = (id, component) => ({
   payload: { ...component, id }
 });
 
+export const updateComponentProps = (id, props) => ({
+  type: UPDATE_COMPONENT,
+  payload: { props, id }
+});
+
 export const removeLayout = id => ({
   type: REMOVE_LAYOUT,
   payload: id

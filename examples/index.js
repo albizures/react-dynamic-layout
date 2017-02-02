@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './index.styl';
 
-import App from './simple';
+import App from './complex';
 
 ReactDOM.render(
   <App/>,

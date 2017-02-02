@@ -4,7 +4,7 @@ import { components } from './Register';
 import store, { actions } from './store';
 import { RENDER } from './types';
 
-const { closeFloat, openFloat } = actions;
+const { closeFloat, openFloat, updateComponentProps } = actions;
 
 const obj = {};
 
@@ -61,6 +61,7 @@ obj.getChild = function getChild(component, index, className) {
       rdHeight={this.props.height + tabHeight}
       rdCloseFloat={id => store.dispatch(closeFloat(id))}
       rdOpenFloat={id => store.dispatch(openFloat(id))}
+      rdChangeProps={(id, props) => store.dispatch(updateComponentProps(id, props))}
     />
   </div>;
 };

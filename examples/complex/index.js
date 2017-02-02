@@ -1,20 +1,23 @@
 import React from 'react';
 import { Layout, Float, Register, Container, ROW, COLUMN, RENDER, cuid } from '../../src';
 import Size from '../components/Size';
+import Label from '../components/Label';
 
 const idFloat = cuid();
+const idComponent = cuid();
 
 
 const openModal = props => <div>
-  <button onClick={() => props.rdOpenFloat(idFloat)}>Open</button>
-  <button onClick={() => props.rdCloseFloat(idFloat)}>Close</button>
+  <button onClick={() => props.rdOpenFloat(idFloat)}>Open: {idFloat}</button>
+  <button onClick={() => props.rdCloseFloat(idFloat)}>Close: {idFloat}</button>
+  <button onClick={() => props.rdChangeProps(idComponent, { text: 'New Text' })}>Update props to :{idComponent}</button>
 </div>;
 
 export default () => <Layout name='Main' type={ROW} hiddenType={RENDER} resize={false}>
   <Float width='200px' height='200px' x='300px' y='100px' id={idFloat}>
     <Layout name='Float' type={ROW} resize={true}>
       <Container size={50}>
-        <Register type={Size} props={{ text: 'Float', idFloat }}/>
+        <Register id={idComponent} type={Label} props={{ text: 'Old text', idFloat }}/>
       </Container>
        <Container size={50}>
         <Register type={Size} props={{ text: 'Float' }}/>
