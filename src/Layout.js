@@ -20,6 +20,11 @@ obj.propTypes = {
   childrenProcess: React.PropTypes.bool
 };
 
+
+obj.contextTypes = {
+  hiddenType: React.PropTypes.string
+};
+
 obj.getDefaultProps = () => ({
   floats: [],
   containers: []
@@ -122,18 +127,20 @@ obj.getFloats = function getFloats() {
   const children = [];
   for (let index = 0; index < this.props.floats.length; index++) {
     const float = this.props.floats[index];
-    children.push(
-      <Float
-        key={'f' + float.id}
-        id={float.id}
-        width={float.width}
-        height={float.height}
-        x={float.x}
-        y={float.y}
-        open={float.open}
-        layout={float.layout}
-      />
-    );
+    if (!(this.context.hiddenType === RENDER && !float.open)) {
+      children.push(
+        <Float
+          key={float.id}
+          id={float.id}
+          width={float.width}
+          height={float.height}
+          x={float.x}
+          y={float.y}
+          open={float.open}
+          layout={float.layout}
+        />
+      );
+    }
   }
   return children;
 };
