@@ -1,15 +1,16 @@
 import React from 'react';
-import { Layout, Float, Register, Container, ROW, COLUMN, OPACITY, cuid } from '../../src';
+import { Layout, Float, Register, Container, ROW, COLUMN, RENDER, cuid } from '../../src';
 import Size from '../components/Size';
 
 const idFloat = cuid();
+
 
 const openModal = props => <div>
   <button onClick={() => props.rdOpenFloat(idFloat)}>Open</button>
   <button onClick={() => props.rdCloseFloat(idFloat)}>Close</button>
 </div>;
 
-export default () => <Layout name='Main' type={ROW} hiddenType={OPACITY} resize={false}>
+export default () => <Layout name='Main' type={ROW} hiddenType={RENDER} resize={false}>
   <Float width='200px' height='200px' x='300px' y='100px' id={idFloat}>
     <Layout name='Float' type={ROW} resize={true}>
       <Container size={50}>

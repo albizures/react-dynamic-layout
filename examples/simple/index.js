@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Layout, Register, Container, ROW, COLUMN } from '../../src';
+import { Layout, Register, Container, ROW, COLUMN, RENDER } from '../../src';
 import Label from '../components/Label';
 
-export default () => <Layout name='Main' type={COLUMN}>
+export default () => <Layout name='Main' type={COLUMN} hiddenType={RENDER}>
   <Container size={50}>
     <Register type={Label} props={{ text: 'Left' }}/>
   </Container>

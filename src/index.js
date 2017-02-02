@@ -1,6 +1,6 @@
 
 import './utils/components';
-import { Z_INDEX, DISPLAY, OPACITY, STACK, ROW, COLUMN } from './types';
+import { Z_INDEX, DISPLAY, OPACITY, STACK, ROW, COLUMN, RENDER } from './types';
 import Container from './RDContainer';
 import Float from './RDFloat';
 import cuid from './utils/cuid';
@@ -21,5 +21,6 @@ export {
   Z_INDEX,
   DISPLAY,
   OPACITY,
-  COLUMN
+  COLUMN,
+  RENDER
 };

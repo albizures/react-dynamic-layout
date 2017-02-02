@@ -6,7 +6,8 @@ export const COLUMN = 'column';
 
 export const Z_INDEX = 'zIndex';
 export const OPACITY = 'opacity';
-export const DISPLAY = 'diplay';
+export const DISPLAY = 'display';
+export const RENDER = 'render';
 
 export const NumberOrString = React.PropTypes.oneOfType([
   React.PropTypes.string,

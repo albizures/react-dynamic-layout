@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY } from './types';
+import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY, RENDER } from './types';
 import { checkParentElement, getSizeProperties } from './utils/components';
 import { parseSize, getDiff } from './utils/size';
 import store, { actions } from './store';
@@ -16,7 +16,7 @@ obj.propTypes = {
   floats: React.PropTypes.array,
   containers: React.PropTypes.array,
   type: React.PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
-  hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY]),
+  hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
   childrenProcess: React.PropTypes.bool
 };
 
@@ -28,7 +28,8 @@ obj.getDefaultProps = () => ({
 const hiddenTypes = {
   [Z_INDEX]: 'rdl-hidden-z-index',
   [OPACITY]: 'rdl-hidden-opacity',
-  [DISPLAY]: 'rdl-hidden-display'
+  [DISPLAY]: 'rdl-hidden-display',
+  [RENDER]: 'rdl-hidden-render'
 };
 
 obj.displayName = 'Layout';
