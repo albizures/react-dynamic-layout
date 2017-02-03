@@ -63,34 +63,14 @@ export const addChild = (state, payload, prop, child = 'child') => {
   };
 };
 
-function commonReducer(state, { type, payload }) {
+export function layoutReducer(state, { type, payload }) {
   switch (type) {
     case ADD_LAYOUT:
-    case ADD_CONTAINER:
-    case ADD_FLOAT:
-    case ADD_COMPONENT:
       return add(state, payload);
     case REMOVE_LAYOUT:
-    case REMOVE_CONTAINER:
-    case REMOVE_FLOAT:
-    case REMOVE_COMPONENT:
       return remove(state, payload);
     case UPDATE_LAYOUT:
-    case UPDATE_CONTAINER:
-    case UPDATE_FLOAT:
-    case UPDATE_COMPONENT:
       return update(state, payload);
-    default:
-      return state;
-  }
-}
-
-export function layoutReducer(state, action) {
-  const common = commonReducer(state, action);
-  if (common !== state) return common;
-
-  const { type, payload } = action;
-  switch (type) {
     case ADD_LAYOUT_CONTAINER:
       return addChild(state, payload, 'containers');
     case REMOVE_LAYOUT_CONTAINER:
@@ -104,12 +84,14 @@ export function layoutReducer(state, action) {
   }
 }
 
-export function containerReducer(state, action) {
-  const common = commonReducer(state, action);
-  if (common !== state) return common;
-
-  const { type, payload } = action;
+export function containerReducer(state, { type, payload }) {
   switch (type) {
+    case ADD_CONTAINER:
+      return add(state, payload);
+    case REMOVE_CONTAINER:
+      return remove(state, payload);
+    case UPDATE_CONTAINER:
+      return update(state, payload);
     case ADD_CONTAINER_CHILD:
       return addChild(state, payload, 'components');
     case REMOVE_CONTAINER_CHILD:
@@ -118,12 +100,30 @@ export function containerReducer(state, action) {
       return state;
   }
 }
-export function floatReducer(state, action) {
-  return commonReducer(state, action);
+export function floatReducer(state, { type, payload }) {
+  switch (type) {
+    case ADD_FLOAT:
+      return add(state, payload);
+    case REMOVE_FLOAT:
+      return remove(state, payload);
+    case UPDATE_FLOAT:
+      return update(state, payload);
+    default:
+      return state;
+  }
 }
 
-export function reducerComponents(state, action) {
-  return commonReducer(state, action);
+export function reducerComponents(state, { type, payload }) {
+  switch (type) {
+    case ADD_COMPONENT:
+      return add(state, payload);
+    case REMOVE_COMPONENT:
+      return remove(state, payload);
+    case UPDATE_COMPONENT:
+      return update(state, payload);
+    default:
+      return state;
+  }
 }
 
 export default (state, action) => ({
