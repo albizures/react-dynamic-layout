@@ -63,7 +63,7 @@ export const addChild = (state, payload, prop, child = 'child') => {
   };
 };
 
-function reducerCommon(state, { type, payload }) {
+function commonReducer(state, { type, payload }) {
   switch (type) {
     case ADD_LAYOUT:
     case ADD_CONTAINER:
@@ -85,8 +85,8 @@ function reducerCommon(state, { type, payload }) {
   }
 }
 
-export function reducerLayouts(state, action) {
-  const common = reducerCommon(state, action);
+export function layoutReducer(state, action) {
+  const common = commonReducer(state, action);
   if (common !== state) return common;
 
   const { type, payload } = action;
@@ -104,8 +104,8 @@ export function reducerLayouts(state, action) {
   }
 }
 
-export function reducerContainers(state, action) {
-  const common = reducerCommon(state, action);
+export function containerReducer(state, action) {
+  const common = commonReducer(state, action);
   if (common !== state) return common;
 
   const { type, payload } = action;
@@ -118,17 +118,17 @@ export function reducerContainers(state, action) {
       return state;
   }
 }
-export function reducerFloats(state, action) {
-  return reducerCommon(state, action);
+export function floatReducer(state, action) {
+  return commonReducer(state, action);
 }
 
 export function reducerComponents(state, action) {
-  return reducerCommon(state, action);
+  return commonReducer(state, action);
 }
 
 export default (state, action) => ({
-  layouts: reducerLayouts(state.layouts, action),
-  containers: reducerContainers(state.containers, action),
-  floats: reducerFloats(state.floats, action),
+  layouts: layoutReducer(state.layouts, action),
+  containers: containerReducer(state.containers, action),
+  floats: floatReducer(state.floats, action),
   components: reducerComponents(state.components, action)
 });
