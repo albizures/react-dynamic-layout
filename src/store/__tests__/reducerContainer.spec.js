@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { reducerContainers } from '../reducer';
+import { containerReducer } from '../reducer';
 import * as actions from '../actions';
 
 const {
@@ -14,10 +14,10 @@ const {
 const id = 1;
 const child = 2;
 
-describe('reducerContainers', () => {
+describe('containerReducer', () => {
   it('should add a new container', () => {
     expect(
-      reducerContainers({}, addContainer({
+      containerReducer({}, addContainer({
         id: 1,
         components: [],
         size: 10,
@@ -34,7 +34,7 @@ describe('reducerContainers', () => {
   });
   it('should remove a container', () => {
     expect(
-      reducerContainers({
+      containerReducer({
         1: {
           id: 1
         }
@@ -43,7 +43,7 @@ describe('reducerContainers', () => {
   });
   it('should update a container', () => {
     expect(
-      reducerContainers({
+      containerReducer({
         1: {
           id: 1,
           components: [],
@@ -73,7 +73,7 @@ describe('reducerContainers', () => {
     };
 
     expect(
-      reducerContainers(state, addContainerChild(id, child))
+      containerReducer(state, addContainerChild(id, child))
     ).to.deep.equal(
       nextState
     );
@@ -90,7 +90,7 @@ describe('reducerContainers', () => {
       }
     };
     expect(
-      reducerContainers(state, removeContainerChild(id, child))
+      containerReducer(state, removeContainerChild(id, child))
     ).to.deep.equal(
       nextState
     );

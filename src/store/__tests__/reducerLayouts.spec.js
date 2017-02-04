@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { reducerLayouts } from '../reducer';
+import { layoutReducer } from '../reducer';
 import * as actions from '../actions';
 
 const {
@@ -16,7 +16,7 @@ const {
 const id = 1;
 const child = 2;
 
-describe('reducerLayous', () => {
+describe('layoutReducer', () => {
   it('should add a new layout', () => {
     const state = {};
     const data = {
@@ -38,7 +38,7 @@ describe('reducerLayous', () => {
       }
     };
     expect(
-      reducerLayouts(state, addLayout(data))
+      layoutReducer(state, addLayout(data))
     ).to.deep.equal(
       nextState
     );
@@ -51,7 +51,7 @@ describe('reducerLayous', () => {
     };
     const nextState = {};
     expect(
-      reducerLayouts(state, removeLayout(id))
+      layoutReducer(state, removeLayout(id))
     ).to.deep.equal(
       nextState
     );
@@ -84,7 +84,7 @@ describe('reducerLayous', () => {
       name: 'new name'
     };
     expect(
-      reducerLayouts(state, updateLayout(id, data))
+      layoutReducer(state, updateLayout(id, data))
     ).to.deep.equal(
       nextState
     );
@@ -101,7 +101,7 @@ describe('reducerLayous', () => {
       }
     };
     expect(
-      reducerLayouts(state, addLayoutContainer(id, child))
+      layoutReducer(state, addLayoutContainer(id, child))
     ).to.deep.equal(
       nextState
     );
@@ -118,7 +118,7 @@ describe('reducerLayous', () => {
       }
     };
     expect(
-      reducerLayouts(state, removeLayoutContainer(id, child))
+      layoutReducer(state, removeLayoutContainer(id, child))
     ).to.deep.equal(
       nextState
     );
@@ -136,7 +136,7 @@ describe('reducerLayous', () => {
     };
 
     expect(
-      reducerLayouts(state, addLayoutFloat(id, child))
+      layoutReducer(state, addLayoutFloat(id, child))
     ).to.deep.equal(
       nextState
     );
@@ -153,7 +153,7 @@ describe('reducerLayous', () => {
       }
     };
     expect(
-      reducerLayouts(state, removeLayoutFloat(id, child))
+      layoutReducer(state, removeLayoutFloat(id, child))
     ).to.deep.equal(
       nextState
     );

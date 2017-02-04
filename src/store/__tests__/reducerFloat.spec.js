@@ -1,13 +1,13 @@
 
 import { expect } from 'chai';
-import { reducerFloats } from '../reducer';
+import { floatReducer } from '../reducer';
 import * as actions from '../actions';
 
 const { addFloat, removeFloat, updateFloat } = actions;
 
 const id = 1;
 
-describe('reducerFloats', () => {
+describe('floatReducer', () => {
   it('should add a new float', () => {
     const state = {};
     const nextState = {
@@ -31,7 +31,7 @@ describe('reducerFloats', () => {
       layout: 1
     };
     expect(
-      reducerFloats(state, addFloat(data))
+      floatReducer(state, addFloat(data))
     ).to.deep.equal(
       nextState
     );
@@ -44,7 +44,7 @@ describe('reducerFloats', () => {
     };
     const nextState = {};
     expect(
-      reducerFloats(state, removeFloat(id))
+      floatReducer(state, removeFloat(id))
     ).to.deep.equal(
       nextState
     );
@@ -77,7 +77,7 @@ describe('reducerFloats', () => {
       x: 15
     };
     expect(
-      reducerFloats(state, updateFloat(id, data))
+      floatReducer(state, updateFloat(id, data))
     ).to.deep.equal(
       nextState
     );
