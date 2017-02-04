@@ -30,6 +30,7 @@ obj.propTypes = {
 };
 
 obj.getInitialState = function getInitialState() {
+  this.components = {};
   if (this.props.active > -1 && this.props.active < this.props.components.length) {
     return {
       active: this.props.active
@@ -40,23 +41,24 @@ obj.getInitialState = function getInitialState() {
   };
 };
 
-obj.getChild = function getChild(component, index, className) {
-  if (component.isLayout) {
-    const layout = store.getLayout(component.layout);
-    return <div className={'rdl-item-body ' + className} key={component.id}>
-      <Layout
-        containers={layout.containers.map(id => store.getContainer(id))}
-        childrenProcess={layout.childrenProcess}
-        type={layout.type}
-        resize={layout.resize}
-        id={component.layout}
-      />
-    </div>;
-  }
-  const Component = components[component.componentName];
+obj.getLayout = function getLayout(component, className) {
+  const layout = store.getLayout(component.layout);
   return <div className={'rdl-item-body ' + className} key={component.id}>
+    <Layout
+      containers={layout.containers}
+      childrenProcess={layout.childrenProcess}
+      type={layout.type}
+      resize={layout.resize}
+      id={component.layout}
+    />
+  </div>;
+};
+
+obj.getComponent = function getComponent(data, className) {
+  const Component = components[data.componentName];
+  return <div className={'rdl-item-body ' + className} key={data.id}>
     <Component
-      {...component.props}
+      {...data.props}
       rdWidth={this.props.width}
       rdHeight={this.props.height + tabHeight}
       rdCloseFloat={id => store.dispatch(closeFloat(id))}
@@ -64,6 +66,13 @@ obj.getChild = function getChild(component, index, className) {
       rdChangeProps={(id, props) => store.dispatch(updateComponentProps(id, props))}
     />
   </div>;
+};
+
+obj.getChild = function getChild(component, className) {
+  if (component.isLayout) {
+    return this.getLayout(component, className);
+  }
+  return this.getComponent(component, className);
 };
 
 obj.processChildren = function processChildren() {
@@ -80,7 +89,7 @@ obj.processChildren = function processChildren() {
     );
     if (!(this.context.hiddenType === RENDER && !isActive)) {
       children.push(
-        this.getChild(component, index, activeClass)
+        this.getChild(component, activeClass)
       );
     }
   }

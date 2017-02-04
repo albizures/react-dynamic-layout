@@ -73,7 +73,7 @@ obj.childrenProcess = function childrenProcess() {
   let totalPortionSize = 100;
 
   for (let index = 0; index < this.props.containers.length; index++) {
-    const container = this.props.containers[index];
+    const container = store.getContainer(this.props.containers[index]);
     const portionSize = parseSize(container.size, size[portion]);
     const containerSize = {
       isVariable: portionSize.isVariable,
@@ -97,7 +97,7 @@ obj.componentDidMount = function componentDidMount() {
 obj.getContainers = function getChildren() {
   const children = [];
   for (let index = 0; index < this.props.containers.length; index++) {
-    const container = this.props.containers[index];
+    const container = store.getContainer(this.props.containers[index]);
     children.push(
       <Container
         key={container.id}
@@ -109,7 +109,7 @@ obj.getContainers = function getChildren() {
       />
     );
     if (this.props.resize && index !== this.props.containers.length - 1) {
-      const nextContainer = this.props.containers[index + 1];
+      const nextContainer = store.getContainer(this.props.containers[index + 1]);
       const dividerProps = {
         key: container.id + '_' + nextContainer.id,
         type: this.props.type,
@@ -126,7 +126,7 @@ obj.getContainers = function getChildren() {
 obj.getFloats = function getFloats() {
   const children = [];
   for (let index = 0; index < this.props.floats.length; index++) {
-    const float = this.props.floats[index];
+    const float = store.getFloat(this.props.floats[index]);
     if (!(this.context.hiddenType === RENDER && !float.open)) {
       children.push(
         <Float

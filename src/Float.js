@@ -124,7 +124,7 @@ obj.render = function render() {
     }
     <div className='rdl-content-float'>
       <Layout
-        containers={layout.containers.map(id => store.getContainer(id))}
+        containers={layout.containers}
         childrenProcess={layout.childrenProcess}
         type={layout.type}
         hiddenType={layout.hiddenType}
