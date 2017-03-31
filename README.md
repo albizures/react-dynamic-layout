@@ -51,7 +51,5 @@ ReactDOM.render(
 );
 ```
 ## TODO
-* JSX children for static layout
 * Drag and Drop
 * Serialization
-* Open and close components in flying
