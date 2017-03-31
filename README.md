@@ -52,4 +52,7 @@ ReactDOM.render(
 ```
 ## TODO
 * Drag and Drop
-* Serialization
+* Layout serialization
+* Compatibility with redux
+* Open and close tabs
+* Modals
