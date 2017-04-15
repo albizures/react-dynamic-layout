@@ -53,11 +53,13 @@ obj.shouldComponentUpdate = function shouldComponentUpdate() {
 obj.changeSize = function changeSize(size) {
   const { total, portion } = getSizeProperties(this.props.type);
   const diff = getDiff(this.state, size);
-  const containers = this.props.containers.filter(container => container.isVariable);
+  const containers = this.props.containers
+    .map(id => store.getContainer(id))
+    .filter(container => container.isVariable);
   const sizeChange = diff[portion] / (containers.length || 1 /* avoid 0*/);
 
   for (let index = 0; index < this.props.containers.length; index++) {
-    const container = this.props.containers[index];
+    const container = containers[index];
     store.dispatch(updateContainer(container.id, {
       [portion]: container.isVariable ? container[portion] + sizeChange : container[portion],
       [total]: size[total]
