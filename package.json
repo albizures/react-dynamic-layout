@@ -36,6 +36,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.2.0",
+    "null-loader": "^0.1.1",
     "prop-types": "^15.5.8",
     "pug": "^2.0.0-beta6",
     "pug-loader": "^2.3.0",
@@ -62,7 +63,7 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "start": "webpack-dev-server --open --inline",
+    "start": "webpack-dev-server --open",
     "prebuild": "npm run test",
     "build:style-dark": "stylus ./src/style/dark/index.styl -o ./build/dark-theme.css -c",
     "build:style-base": "stylus ./src/style/base/index.styl -o ./build/base.css -c",

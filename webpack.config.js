@@ -75,6 +75,7 @@ if (isProd) {
     new ExtractTextPlugin('[name].css')
   );
   devServer = {
+    inline: true,
     stats: {
       assets: false,
       colors: true,
@@ -86,6 +87,7 @@ if (isProd) {
     }
   };
   modules.loaders.push(
+    { test: /dev-server/, loader: 'null-loader' },
     { test: /\.styl$/, loader: ExtractTextPlugin.extract('style', 'css!stylus') }
   );
 }
