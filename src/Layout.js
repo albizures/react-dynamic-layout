@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY, RENDER } from './types';
@@ -13,16 +14,16 @@ const { updateContainer, updateLayout } = actions;
 const obj = {};
 
 obj.propTypes = {
-  floats: React.PropTypes.array,
-  containers: React.PropTypes.array,
-  type: React.PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
-  hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
-  childrenProcess: React.PropTypes.bool
+  floats: PropTypes.array,
+  containers: PropTypes.array,
+  type: PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
+  hiddenType: PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
+  childrenProcess: PropTypes.bool
 };
 
 
 obj.contextTypes = {
-  hiddenType: React.PropTypes.string
+  hiddenType: PropTypes.string
 };
 
 obj.getDefaultProps = () => ({

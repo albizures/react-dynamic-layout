@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 export const ROW = 'row';
 export const STACK = 'stack';
@@ -9,12 +9,12 @@ export const OPACITY = 'opacity';
 export const DISPLAY = 'display';
 export const RENDER = 'render';
 
-export const NumberOrString = React.PropTypes.oneOfType([
-  React.PropTypes.string,
-  React.PropTypes.number
+export const NumberOrString = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number
 ]);
 
-export const StringOrFunc = React.PropTypes.oneOfType([
-  React.PropTypes.func,
-  React.PropTypes.string
+export const StringOrFunc = PropTypes.oneOfType([
+  PropTypes.func,
+  PropTypes.string
 ]);

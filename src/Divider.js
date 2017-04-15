@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ROW, COLUMN } from './Container';
 import store, { actions } from './store';
 import { getSizeProperties } from './utils/components';
@@ -10,9 +11,9 @@ const obj = {};
 obj.displayName = 'Divider';
 
 obj.propTypes = {
-  type: React.PropTypes.oneOf([ROW, COLUMN]),
-  idBefore: React.PropTypes.any.isRequired,
-  idAfter: React.PropTypes.any.isRequired
+  type: PropTypes.oneOf([ROW, COLUMN]),
+  idBefore: PropTypes.any.isRequired,
+  idAfter: PropTypes.any.isRequired
 };
 
 obj.resetPosition = function resetPosition() {

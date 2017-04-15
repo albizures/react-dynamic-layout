@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import store, { actions } from './store';
 import { NumberOrString } from './types';
@@ -18,14 +19,14 @@ obj.getDefaultProps = () => ({
 });
 
 obj.propTypes = {
-  id: React.PropTypes.any.isRequired,
-  layout: React.PropTypes.any.isRequired,
+  id: PropTypes.any.isRequired,
+  layout: PropTypes.any.isRequired,
   x: NumberOrString.isRequired,
   y: NumberOrString.isRequired,
   width: NumberOrString.isRequired,
   height: NumberOrString.isRequired,
-  resize: React.PropTypes.bool,
-  open: React.PropTypes.bool
+  resize: PropTypes.bool,
+  open: PropTypes.bool
 };
 
 obj.onMouseMove = function onMouseMove(evt) {

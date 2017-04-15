@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ROW, COLUMN, STACK } from './types';
 import Stack from './Stack';
 
@@ -7,11 +8,11 @@ const obj = {};
 obj.displayName = 'Container';
 
 obj.propTypes = {
-  id: React.PropTypes.any.isRequired,
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired,
-  components: React.PropTypes.array.isRequired,
-  tabs: React.PropTypes.bool
+  id: PropTypes.any.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  components: PropTypes.array.isRequired,
+  tabs: PropTypes.bool
 };
 
 obj.getSize = function getSize() {

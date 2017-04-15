@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const { parseInt } = Number;
@@ -17,8 +18,8 @@ const types = {
 obj.displayName = 'ResizeBar';
 
 obj.propTypes = {
-  type: React.PropTypes.oneOf(Object.keys(types)).isRequired,
-  setDiff: React.PropTypes.func.isRequired
+  type: PropTypes.oneOf(Object.keys(types)).isRequired,
+  setDiff: PropTypes.func.isRequired
 };
 
 obj.setN = function setN({ top }) {

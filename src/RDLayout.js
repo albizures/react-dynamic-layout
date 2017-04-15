@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Layout from './Layout';
 import store from './store';
@@ -8,11 +9,11 @@ import { processLayout } from './utils/components';
 const obj = {};
 
 obj.propTypes = {
-  pojo: React.PropTypes.bool,
-  name: React.PropTypes.string.isRequired,
-  type: React.PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
-  hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
-  resize: React.PropTypes.bool,
+  pojo: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
+  hiddenType: PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
+  resize: PropTypes.bool,
   id: StringOrFunc
 };
 
@@ -36,7 +37,7 @@ obj.componentDidMount = function componentDidMount() {
 };
 
 obj.childContextTypes = {
-  hiddenType: React.PropTypes.string
+  hiddenType: PropTypes.string
 };
 
 obj.getChildContext = function getChildContext() {
