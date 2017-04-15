@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY, RENDER } from './types';
@@ -13,16 +14,16 @@ const { updateContainer, updateLayout } = actions;
 const obj = {};
 
 obj.propTypes = {
-  floats: React.PropTypes.array,
-  containers: React.PropTypes.array,
-  type: React.PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
-  hiddenType: React.PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
-  childrenProcess: React.PropTypes.bool
+  floats: PropTypes.array,
+  containers: PropTypes.array,
+  type: PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
+  hiddenType: PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
+  childrenProcess: PropTypes.bool
 };
 
 
 obj.contextTypes = {
-  hiddenType: React.PropTypes.string
+  hiddenType: PropTypes.string
 };
 
 obj.getDefaultProps = () => ({
@@ -52,11 +53,13 @@ obj.shouldComponentUpdate = function shouldComponentUpdate() {
 obj.changeSize = function changeSize(size) {
   const { total, portion } = getSizeProperties(this.props.type);
   const diff = getDiff(this.state, size);
-  const containers = this.props.containers.filter(container => container.isVariable);
+  const containers = this.props.containers
+    .map(id => store.getContainer(id))
+    .filter(container => container.isVariable);
   const sizeChange = diff[portion] / (containers.length || 1 /* avoid 0*/);
 
   for (let index = 0; index < this.props.containers.length; index++) {
-    const container = this.props.containers[index];
+    const container = containers[index];
     store.dispatch(updateContainer(container.id, {
       [portion]: container.isVariable ? container[portion] + sizeChange : container[portion],
       [total]: size[total]

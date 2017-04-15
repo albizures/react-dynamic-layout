@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Layout from './Layout';
 import { components } from './Register';
 import store, { actions } from './store';
@@ -13,7 +14,7 @@ const tabHeight = 16;
 obj.displayName = 'Stack';
 
 obj.contextTypes = {
-  hiddenType: React.PropTypes.string
+  hiddenType: PropTypes.string
 };
 
 obj.getDefaultProps = () => ({
@@ -22,11 +23,11 @@ obj.getDefaultProps = () => ({
 });
 
 obj.propTypes = {
-  components: React.PropTypes.array.isRequired,
-  width: React.PropTypes.number.isRequired,
-  height: React.PropTypes.number.isRequired,
-  tabs: React.PropTypes.bool,
-  active: React.PropTypes.number
+  components: PropTypes.array.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  tabs: PropTypes.bool,
+  active: PropTypes.number
 };
 
 obj.getInitialState = function getInitialState() {

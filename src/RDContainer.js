@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NumberOrString, StringOrFunc } from './types';
 
 const obj = {};
@@ -7,7 +8,7 @@ obj.displayName = 'Container';
 
 obj.propTypes = {
   size: NumberOrString.isRequired,
-  tabs: React.PropTypes.bool,
+  tabs: PropTypes.bool,
   id: StringOrFunc
 };
 

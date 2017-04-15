@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const components = {};
 
@@ -9,9 +10,9 @@ function Register() {
 Register.displayName = 'Register';
 
 Register.propTypes = {
-  type: React.PropTypes.any.isRequired,
-  name: React.PropTypes.string,
-  props: React.PropTypes.object
+  type: PropTypes.any.isRequired,
+  name: PropTypes.string,
+  props: PropTypes.object
 };
 
 function register(component, name, rewrite = false) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NumberOrString, StringOrFunc } from './types';
 
 const obj = {};
@@ -10,8 +11,8 @@ obj.propTypes = {
   y: NumberOrString.isRequired,
   width: NumberOrString.isRequired,
   height: NumberOrString.isRequired,
-  resize: React.PropTypes.bool,
-  open: React.PropTypes.bool,
+  resize: PropTypes.bool,
+  open: PropTypes.bool,
   id: StringOrFunc
 };
 
