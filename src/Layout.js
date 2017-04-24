@@ -40,9 +40,9 @@ const hiddenTypes = {
 
 obj.displayName = 'Layout';
 
-obj.shouldComponentUpdate = function shouldComponentUpdate() {
+obj.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
   const { clientWidth: width, clientHeight: height } = this.refs.el;
-  const changeSize = this.state && (this.state.width !== width || this.state.height !== height);
+  const changeSize = nextState && (nextState.width !== width || nextState.height !== height);
   if (changeSize) {
     this.changeSize({ width, height });
     return false;
@@ -57,9 +57,13 @@ obj.changeSize = function changeSize(size) {
     .map(id => store.getContainer(id))
     .filter(container => container.isVariable);
   const sizeChange = diff[portion] / (containers.length || 1 /* avoid 0*/);
-
+  console.log(total, portion, sizeChange, size);
   for (let index = 0; index < this.props.containers.length; index++) {
     const container = containers[index];
+    console.log(
+      container.isVariable,
+      container.isVariable ? container[portion] + sizeChange : container[portion]
+    );
     store.dispatch(updateContainer(container.id, {
       [portion]: container.isVariable ? container[portion] + sizeChange : container[portion],
       [total]: size[total]
