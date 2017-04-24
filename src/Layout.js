@@ -57,17 +57,14 @@ obj.changeSize = function changeSize(size) {
     .map(id => store.getContainer(id))
     .filter(container => container.isVariable);
   const sizeChange = diff[portion] / (containers.length || 1 /* avoid 0*/);
-  console.log(total, portion, sizeChange, size);
-  for (let index = 0; index < this.props.containers.length; index++) {
+
+  for (let index = 0; index < containers.length; index++) {
     const container = containers[index];
-    console.log(
-      container.isVariable,
-      container.isVariable ? container[portion] + sizeChange : container[portion]
-    );
+
     store.dispatch(updateContainer(container.id, {
       [portion]: container.isVariable ? container[portion] + sizeChange : container[portion],
       [total]: size[total]
-    }), index === this.props.containers.length - 1);
+    }), index === containers.length - 1);
   }
   this.setState(size);
 };
