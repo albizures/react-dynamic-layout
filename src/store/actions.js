@@ -22,6 +22,7 @@ export const UPDATE_FLOAT = 'UPDATE_FLOAT';
 export const ADD_COMPONENT = 'ADD_COMPONENT';
 export const REMOVE_COMPONENT = 'REMOVE_COMPONENT';
 export const UPDATE_COMPONENT = 'UPDATE_COMPONENT';
+export const UPDATE_COMPONENT_PROPS = 'UPDATE_COMPONENT_PROPS';
 
 export const addLayout = ({
   id = cuid(),
@@ -122,7 +123,7 @@ export const updateComponent = (id, component) => ({
 });
 
 export const updateComponentProps = (id, props) => ({
-  type: UPDATE_COMPONENT,
+  type: UPDATE_COMPONENT_PROPS,
   payload: { props, id }
 });
 
