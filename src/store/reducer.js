@@ -17,7 +17,8 @@ import {
   UPDATE_FLOAT,
   ADD_COMPONENT,
   REMOVE_COMPONENT,
-  UPDATE_COMPONENT
+  UPDATE_COMPONENT,
+  UPDATE_COMPONENT_PROPS
 } from './actions';
 
 export const add = (state, payload) => ({
@@ -121,6 +122,14 @@ export function reducerComponents(state, { type, payload }) {
       return remove(state, payload);
     case UPDATE_COMPONENT:
       return update(state, payload);
+    case UPDATE_COMPONENT_PROPS:
+      return update(state, {
+        id: payload.id,
+        props: {
+          ...state[payload.id].props,
+          ...payload.props
+        }
+      });
     default:
       return state;
   }
