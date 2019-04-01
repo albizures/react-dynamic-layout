@@ -1,4 +1,5 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import { ROW, COLUMN, STACK } from './types';
 import Stack from './Stack';
@@ -12,7 +13,7 @@ obj.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   components: PropTypes.array.isRequired,
-  tabs: PropTypes.bool
+  tabs: PropTypes.bool,
 };
 
 obj.getSize = function getSize() {
@@ -21,24 +22,20 @@ obj.getSize = function getSize() {
 };
 
 obj.render = function render() {
-  return <div ref='el' className='rdl-container' style={this.getSize()}>
-    <Stack
-      components={this.props.components}
-      width={this.props.width}
-      height={this.props.height}
-      tabs={this.props.tabs}
-    />
-  </div>;
+  return (
+    <div ref="el" className="rdl-container" style={this.getSize()}>
+      <Stack
+        components={this.props.components}
+        width={this.props.width}
+        height={this.props.height}
+        tabs={this.props.tabs}
+      />
+    </div>
+  );
 };
 
-const Container = React.createClass(obj);
+const Container = createClass(obj);
 
-export {
-  ROW,
-  STACK,
-  COLUMN,
-  Container
-};
+export { ROW, STACK, COLUMN, Container };
 
 export default Container;
-

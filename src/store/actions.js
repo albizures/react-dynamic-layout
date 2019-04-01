@@ -34,7 +34,9 @@ export const addLayout = ({
   resize
 }) => ({
   type: ADD_LAYOUT,
-  payload: { id, type, name, hiddenType, resize, containers, floats }
+  payload: {
+    id, type, name, hiddenType, resize, containers, floats
+  }
 });
 
 export const addContainer = ({
@@ -44,7 +46,9 @@ export const addContainer = ({
   tabs
 }) => ({
   type: ADD_CONTAINER,
-  payload: { id, size, tabs, components }
+  payload: {
+    id, size, tabs, components
+  }
 });
 
 export const addFloat = ({
@@ -57,7 +61,9 @@ export const addFloat = ({
   layout
 }) => ({
   type: ADD_FLOAT,
-  payload: { id, width, height, x, y, layout, open }
+  payload: {
+    id, width, height, x, y, layout, open
+  }
 });
 
 export const addComponent = ({
@@ -69,7 +75,9 @@ export const addComponent = ({
   props
 }) => ({
   type: ADD_COMPONENT,
-  payload: { id, isLayout, name, layout, componentName, props }
+  payload: {
+    id, isLayout, name, layout, componentName, props
+  }
 });
 
 export const addContainerChild = (id, child) => ({

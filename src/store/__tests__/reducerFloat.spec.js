@@ -1,5 +1,3 @@
-
-import { expect } from 'chai';
 import { floatReducer } from '../reducer';
 import * as actions from '../actions';
 
@@ -18,8 +16,8 @@ describe('floatReducer', () => {
         x: 10,
         y: 10,
         open: true,
-        layout: 1
-      }
+        layout: 1,
+      },
     };
     const data = {
       id,
@@ -28,26 +26,18 @@ describe('floatReducer', () => {
       x: 10,
       y: 10,
       open: true,
-      layout: 1
+      layout: 1,
     };
-    expect(
-      floatReducer(state, addFloat(data))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(floatReducer(state, addFloat(data))).toEqual(nextState);
   });
   it('should remove a float', () => {
     const state = {
       [id]: {
-        id
-      }
+        id,
+      },
     };
     const nextState = {};
-    expect(
-      floatReducer(state, removeFloat(id))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(floatReducer(state, removeFloat(id))).toEqual(nextState);
   });
   it('should update a float', () => {
     const state = {
@@ -58,8 +48,8 @@ describe('floatReducer', () => {
         x: 10,
         y: 10,
         open: true,
-        layout: 1
-      }
+        layout: 1,
+      },
     };
     const nextState = {
       [id]: {
@@ -69,17 +59,13 @@ describe('floatReducer', () => {
         x: 15,
         y: 10,
         open: true,
-        layout: 1
-      }
+        layout: 1,
+      },
     };
     const data = {
       width: 20,
-      x: 15
+      x: 15,
     };
-    expect(
-      floatReducer(state, updateFloat(id, data))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(floatReducer(state, updateFloat(id, data))).toEqual(nextState);
   });
 });

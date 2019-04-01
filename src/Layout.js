@@ -1,4 +1,5 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -18,31 +19,34 @@ obj.propTypes = {
   containers: PropTypes.array,
   type: PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
   hiddenType: PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
-  childrenProcess: PropTypes.bool
+  childrenProcess: PropTypes.bool,
 };
 
-
 obj.contextTypes = {
-  hiddenType: PropTypes.string
+  hiddenType: PropTypes.string,
 };
 
 obj.getDefaultProps = () => ({
   floats: [],
-  containers: []
+  containers: [],
 });
 
 const hiddenTypes = {
   [Z_INDEX]: 'rdl-hidden-z-index',
   [OPACITY]: 'rdl-hidden-opacity',
   [DISPLAY]: 'rdl-hidden-display',
-  [RENDER]: 'rdl-hidden-render'
+  [RENDER]: 'rdl-hidden-render',
 };
 
 obj.displayName = 'Layout';
 
-obj.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+obj.shouldComponentUpdate = function shouldComponentUpdate(
+  nextProps,
+  nextState,
+) {
   const { clientWidth: width, clientHeight: height } = this.refs.el;
-  const changeSize = nextState && (nextState.width !== width || nextState.height !== height);
+  const changeSize =
+    nextState && (nextState.width !== width || nextState.height !== height);
   if (changeSize) {
     this.changeSize({ width, height });
     return false;
@@ -54,17 +58,22 @@ obj.changeSize = function changeSize(size) {
   const { total, portion } = getSizeProperties(this.props.type);
   const diff = getDiff(this.state, size);
   const containers = this.props.containers
-    .map(id => store.getContainer(id))
-    .filter(container => container.isVariable);
-  const sizeChange = diff[portion] / (containers.length || 1 /* avoid 0*/);
+    .map((id) => store.getContainer(id))
+    .filter((container) => container.isVariable);
+  const sizeChange = diff[portion] / (containers.length || 1); /* avoid 0 */
 
   for (let index = 0; index < containers.length; index++) {
     const container = containers[index];
 
-    store.dispatch(updateContainer(container.id, {
-      [portion]: container.isVariable ? container[portion] + sizeChange : container[portion],
-      [total]: size[total]
-    }), index === containers.length - 1);
+    store.dispatch(
+      updateContainer(container.id, {
+        [portion]: container.isVariable
+          ? container[portion] + sizeChange
+          : container[portion],
+        [total]: size[total],
+      }),
+      index === containers.length - 1,
+    );
   }
   this.setState(size);
 };
@@ -82,13 +91,19 @@ obj.childrenProcess = function childrenProcess() {
     const containerSize = {
       isVariable: portionSize.isVariable,
       [portion]: portionSize.px,
-      [total]: parseSize(100, size[total]).px
+      [total]: parseSize(100, size[total]).px,
     };
     totalPortionSize -= portionSize.percent;
     store.dispatch(updateContainer(container.id, containerSize), false);
   }
-  if (totalPortionSize < 0) console.warn('Children size is more than 100% of size');
-  if (totalPortionSize > 0) console.warn('Children size is less than 100% of size');
+
+  if (totalPortionSize < 0) {
+    console.warn('Children size is more than 100% of size');
+  }
+
+  if (totalPortionSize > 0) {
+    console.warn('Children size is less than 100% of size');
+  }
   store.dispatch(updateLayout(this.props.id, { childrenProcess: true }));
   this.setState(size);
 };
@@ -109,20 +124,20 @@ obj.getContainers = function getChildren() {
         width={container.width}
         height={container.height}
         tabs={container.tabs}
-        components={container.components.map(id => store.getComponent(id))}
-      />
+        components={container.components.map((id) => store.getComponent(id))}
+      />,
     );
     if (this.props.resize && index !== this.props.containers.length - 1) {
-      const nextContainer = store.getContainer(this.props.containers[index + 1]);
+      const nextContainer = store.getContainer(
+        this.props.containers[index + 1],
+      );
       const dividerProps = {
         key: container.id + '_' + nextContainer.id,
         type: this.props.type,
         idBefore: container.id,
-        idAfter: nextContainer.id
+        idAfter: nextContainer.id,
       };
-      children.push(
-        <Divider {...dividerProps}/>
-      );
+      children.push(<Divider {...dividerProps} />);
     }
   }
   return children;
@@ -142,7 +157,7 @@ obj.getFloats = function getFloats() {
           y={float.y}
           open={float.open}
           layout={float.layout}
-        />
+        />,
       );
     }
   }
@@ -153,18 +168,19 @@ obj.render = function render() {
   const className = classNames(
     'rdl-layout',
     'rdl-' + this.props.type,
-    hiddenTypes[this.props.hiddenType]
+    hiddenTypes[this.props.hiddenType],
   );
   if (!this.props.childrenProcess) {
-    return <div ref='el' className={className}>
-    </div>;
+    return <div ref="el" className={className} />;
   }
-  return <div ref='el' className={className}>
-    {this.getContainers()}
-    {this.getFloats()}
-  </div>;
+  return (
+    <div ref="el" className={className}>
+      {this.getContainers()}
+      {this.getFloats()}
+    </div>
+  );
 };
 
-const Layout = React.createClass(obj);
+const Layout = createClass(obj);
 
 export default Layout;

@@ -1,12 +1,10 @@
-
-import { expect } from 'chai';
 import * as actions from '../actions';
 
-const keys = Object.keys;
+const { keys } = Object;
 
 describe('actions', () => {
   it('should have a type and a payload', () => {
-    keys(actions).forEach(key => {
+    keys(actions).forEach((key) => {
       const creator = actions[key];
       if (typeof action === 'function') {
         const action = creator({});
@@ -16,10 +14,10 @@ describe('actions', () => {
     });
   });
   it('should be `name === value`', () => {
-    keys(actions).forEach(key => {
+    keys(actions).forEach((key) => {
       const type = actions[key];
       if (typeof action === 'string') {
-        expect(type).to.equal(key);
+        expect(type).toBe(key);
       }
     });
   });

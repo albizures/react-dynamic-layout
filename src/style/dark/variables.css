@@ -1,0 +1,13 @@
+:root {
+  --float-border-radius: 3px;
+  --float-border: 1px solid #272727;
+}
+
+:root {
+  --font-color: #d5d5d5;
+  --font-disable-color: #919191;
+  --stack-background-color: #303030;
+  --active-tab-background-color: #494949;
+  --stack-body-background-color: #494949;
+  --hover-drag-color: rgba(0, 0, 0, 0.3);
+}

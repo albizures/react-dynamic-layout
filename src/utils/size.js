@@ -10,7 +10,7 @@ export function parseSize(size, maxSize) {
     newSize = {
       px: (maxSize * size) / 100,
       percent: size,
-      isVariable: true
+      isVariable: true,
     };
   } else if (size.indexOf('calc') !== -1) {
     const match = size.match(/[0-9]+(px|%)/g);
@@ -20,7 +20,7 @@ export function parseSize(size, maxSize) {
     size = parseInt(size, 10);
     newSize = {
       percent: (size * 100) / maxSize,
-      px: size
+      px: size,
     };
   } else if (size.indexOf('%') !== -1) {
     newSize = parseSize(parseInt(size, 10), maxSize);
@@ -33,7 +33,7 @@ export function parseSize(size, maxSize) {
 
 export const getDiff = (actualSize, newSize) => ({
   width: newSize.width - actualSize.width,
-  height: newSize.height - actualSize.height
+  height: newSize.height - actualSize.height,
 });
 
 // export const getDiff = (actualSize, newSize) => ({
@@ -42,6 +42,6 @@ export const getDiff = (actualSize, newSize) => ({
 // });
 
 export const getPercent = (partSize, totalSize) => ({
-  width: ((partSize.width * 100) / totalSize.width) / 100,
-  height: ((partSize.height * 100) / totalSize.height) / 100
+  width: (partSize.width * 100) / totalSize.width / 100,
+  height: (partSize.height * 100) / totalSize.height / 100,
 });

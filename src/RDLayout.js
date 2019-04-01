@@ -1,9 +1,19 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
 
 import Layout from './Layout';
 import store from './store';
-import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY, RENDER, StringOrFunc } from './types';
+import {
+  ROW,
+  COLUMN,
+  STACK,
+  Z_INDEX,
+  OPACITY,
+  DISPLAY,
+  RENDER,
+  StringOrFunc,
+} from './types';
 import { processLayout } from './utils/components';
 
 const obj = {};
@@ -14,14 +24,13 @@ obj.propTypes = {
   type: PropTypes.oneOf([ROW, COLUMN, STACK]).isRequired,
   hiddenType: PropTypes.oneOf([Z_INDEX, OPACITY, DISPLAY, RENDER]),
   resize: PropTypes.bool,
-  id: StringOrFunc
+  id: StringOrFunc,
 };
 
 obj.getDefaultProps = () => ({
   hiddenType: DISPLAY,
-  resize: true
+  resize: true,
 });
-
 
 obj.displayName = 'RDLayout';
 
@@ -37,12 +46,12 @@ obj.componentDidMount = function componentDidMount() {
 };
 
 obj.childContextTypes = {
-  hiddenType: PropTypes.string
+  hiddenType: PropTypes.string,
 };
 
 obj.getChildContext = function getChildContext() {
   return {
-    hiddenType: this.props.hiddenType
+    hiddenType: this.props.hiddenType,
   };
 };
 
@@ -60,25 +69,27 @@ obj.getInitialState = function getInitialState() {
       children: this.props.children,
       type: this.props.type,
       hiddenType: this.props.hiddenType,
-      resize: this.props.resize
-    })
+      resize: this.props.resize,
+    }),
   };
 };
 
 obj.render = function render() {
   const layout = store.getLayout(this.state.id);
-  return <Layout
-    containers={layout.containers}
-    floats={layout.floats}
-    childrenProcess={layout.childrenProcess}
-    type={layout.type}
-    hiddenType={layout.hiddenType}
-    resize={layout.resize}
-    id={this.state.id}
-  />;
+
+  return (
+    <Layout
+      containers={layout.containers}
+      floats={layout.floats}
+      childrenProcess={layout.childrenProcess}
+      type={layout.type}
+      hiddenType={layout.hiddenType}
+      resize={layout.resize}
+      id={this.state.id}
+    />
+  );
 };
 
-const RDLayout = React.createClass(obj);
+const RDLayout = createClass(obj);
 
 export default RDLayout;
-

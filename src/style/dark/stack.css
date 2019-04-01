@@ -1,0 +1,31 @@
+.rdl-dark {
+  .rdl-container {
+    .rdl-stack {
+      .rdl-tabs {
+        background: var(--stack-background-color);
+        color: var(--font-disable-color);
+
+        .rdl-tab {
+          &.active {
+            background: var(--active-tab-background-color);
+            color: var(--font-color);
+          }
+        }
+
+        .rdl-body {
+          background: var(--stack-body-background-color);
+        }
+      }
+    }
+  }
+}
+/* .rdl-hidden-z-index { */
+.rdl-item-body {
+  background: var(--stack-body-background-color);
+  z-index: 1;
+
+  &.active {
+    z-index: 2;
+  }
+}
+/* } */

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import RDLayout from '../RDLayout';
 import RDContainer from '../RDContainer';
@@ -15,7 +14,7 @@ const {
   addFloat,
   addContainerChild,
   addLayoutFloat,
-  addLayoutContainer
+  addLayoutContainer,
 } = actions;
 
 function isFunc(fn) {
@@ -39,31 +38,35 @@ function checkComponentLayout({ props, type }) {
     children: props.children,
     type: props.type,
     hiddenType: props.hiddenType,
-    resize: props.resize
+    resize: props.resize,
   });
   const id = cuid();
-  store.dispatch(addComponent({
-    id,
-    isLayout: true,
-    name: props.name || type.displayName,
-    layout
-  }));
+  store.dispatch(
+    addComponent({
+      id,
+      isLayout: true,
+      name: props.name || type.displayName,
+      layout,
+    }),
+  );
   return id;
 }
 
 function checkComponent({ props }) {
-  const type = props.type;
+  const { type } = props;
   const name = type.displayName || props.name;
   if (!components[name]) {
     register(type, name);
   }
   const id = checkId(props.id);
-  store.dispatch(addComponent({
-    id,
-    componentName: type.displayName || name,
-    name: name || type.displayName,
-    props: props.props
-  }));
+  store.dispatch(
+    addComponent({
+      id,
+      componentName: type.displayName || name,
+      name: name || type.displayName,
+      props: props.props,
+    }),
+  );
   return id;
 }
 
@@ -82,31 +85,39 @@ function useComponent() {
 }
 
 function invalidChildrenError() {
-  return new Error('Invalid prop `children` supplied to `Layout`. Validation failed.');
+  return new Error(
+    'Invalid prop `children` supplied to `Layout`. Validation failed.',
+  );
 }
 
 function invalidFloatChildrenError() {
-  return new Error('Invalid prop `children` supplied to `Float`. It must be only a Layout.');
+  return new Error(
+    'Invalid prop `children` supplied to `Float`. It must be only a Layout.',
+  );
 }
-
 
 function checkContainer({ props }) {
   const id = checkId(props.id);
-  store.dispatch(addContainer({
-    id,
-    size: props.size,
-    tabs: props.tabs
-  }));
+  store.dispatch(
+    addContainer({
+      id,
+      size: props.size,
+      tabs: props.tabs,
+    }),
+  );
   if (!props || !props.children) {
     return id;
   }
-  React.Children.forEach(
-    props.children,
-    child => store.dispatch(addContainerChild(
-      id,
-      checkContainerChild(child, id)
-    ))
-  );
+
+  const eachChild = (child) =>
+    store.dispatch(addContainerChild(id, checkContainerChild(child, id)));
+
+  if (Array.isArray(props.children)) {
+    props.children.forEach(eachChild);
+  } else {
+    React.Children.forEach(props.children, eachChild);
+  }
+
   return id;
 }
 function checkFloat({ props }) {
@@ -115,37 +126,33 @@ function checkFloat({ props }) {
     return invalidFloatChildrenError();
   }
   const id = checkId(props.id);
-  store.dispatch(addFloat({
-    id,
-    open: props.open,
-    width: props.width,
-    height: props.height,
-    x: props.x,
-    y: props.y,
-    layout: processLayout({
-      id: layout.props.id,
-      name: layout.props.name || 'Layout',
-      children: layout.props.children,
-      type: layout.props.type,
-      hiddenType: layout.props.hiddenType,
-      resize: layout.props.resize
-    })
-  }));
+  store.dispatch(
+    addFloat({
+      id,
+      open: props.open,
+      width: props.width,
+      height: props.height,
+      x: props.x,
+      y: props.y,
+      layout: processLayout({
+        id: layout.props.id,
+        name: layout.props.name || 'Layout',
+        children: layout.props.children,
+        type: layout.props.type,
+        hiddenType: layout.props.hiddenType,
+        resize: layout.props.resize,
+      }),
+    }),
+  );
   return id;
 }
 
 function checkLayoutChild(child, layout) {
   if (child.type === RDContainer) {
-    return store.dispatch(addLayoutContainer(
-      layout,
-      checkContainer(child)
-    ));
+    return store.dispatch(addLayoutContainer(layout, checkContainer(child)));
   }
   if (child.type === RDFloat) {
-    return store.dispatch(addLayoutFloat(
-      layout,
-      checkFloat(child)
-    ));
+    return store.dispatch(addLayoutFloat(layout, checkFloat(child)));
   }
   throw invalidChildrenError();
 }
@@ -154,32 +161,48 @@ function checkLayoutChildren(children, layout) {
   if (!children) {
     return;
   }
-  React.Children.forEach(
-    children,
-    child => checkLayoutChild(child, layout)
-  );
+
+  const eachChild = (child) => checkLayoutChild(child, layout);
+
+  if (Array.isArray(children)) {
+    children.forEach(eachChild);
+  } else {
+    React.Children.forEach(children, eachChild);
+  }
 }
 
-function processLayout({ id, name, children, type = COLUMN, hiddenType, resize }) {
+function processLayout({
+  id,
+  name,
+  children,
+  type = COLUMN,
+  hiddenType,
+  resize,
+}) {
   id = checkId(id);
-  store.dispatch(addLayout({
-    id,
-    type,
-    name,
-    hiddenType,
-    resize
-  }));
+  store.dispatch(
+    addLayout({
+      id,
+      type,
+      name,
+      hiddenType,
+      resize,
+    }),
+  );
   checkLayoutChildren(children, id);
   return id;
 }
 
 function checkParentElement(element) {
-  const { position, width, height } = window.getComputedStyle(element.parentElement);
+  const { position, width, height } = window.getComputedStyle(
+    element.parentElement,
+  );
+
   if (position !== 'absolute' && position !== 'relative') {
-    throw new Error('parentElement isn\'t `relative` or `absolute`');
+    throw new Error("parentElement isn't `relative` or `absolute`");
   }
   if (parseInt(width, 10) < 10 || parseInt(height, 10) < 10) {
-    console.warn('width or height is very small');
+    console.warn('width or height is top small');
   }
 }
 
@@ -196,7 +219,7 @@ function getSizeProperties(type) {
   }
   return {
     total,
-    portion
+    portion,
   };
 }
 
@@ -206,5 +229,5 @@ export {
   processLayout,
   checkComponent,
   checkLayoutChildren,
-  checkLayoutChild
+  checkLayoutChild,
 };

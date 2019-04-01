@@ -1,4 +1,5 @@
 import React from 'react';
+import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import { ROW, COLUMN } from './Container';
 import store, { actions } from './store';
@@ -13,7 +14,7 @@ obj.displayName = 'Divider';
 obj.propTypes = {
   type: PropTypes.oneOf([ROW, COLUMN]),
   idBefore: PropTypes.any.isRequired,
-  idAfter: PropTypes.any.isRequired
+  idAfter: PropTypes.any.isRequired,
 };
 
 obj.resetPosition = function resetPosition() {
@@ -38,21 +39,23 @@ obj.normalize = function normalize(top, left) {
 };
 
 obj.setRow = function setRow({ top }) {
-  this.refs.el.style.top = ((top - this.initPos.top) + this.initRelactivePos.top) + 'px';
+  this.refs.el.style.top =
+    top - this.initPos.top + this.initRelactivePos.top + 'px';
 };
 obj.setColumn = function setColumn({ left }) {
-  this.refs.el.style.left = ((left - this.initPos.left) + this.initRelactivePos.left) + 'px';
+  this.refs.el.style.left =
+    left - this.initPos.left + this.initRelactivePos.left + 'px';
 };
 
 obj.getRow = function getRow({ top }) {
   return {
-    height: (top - this.initPos.top)
+    height: top - this.initPos.top,
   };
 };
 
 obj.getColumn = function getColumn({ left }) {
   return {
-    width: (left - this.initPos.left)
+    width: left - this.initPos.left,
   };
 };
 
@@ -64,13 +67,9 @@ obj.getInitialState = function getInitialState() {
   return null;
 };
 
-
 obj.onMouseMove = function onMouseMove(evt) {
   this.setFunction(
-    this.normalize(
-      evt.clientY - this.diffY,
-      evt.clientX - this.diffX
-    )
+    this.normalize(evt.clientY - this.diffY, evt.clientX - this.diffX),
   );
 };
 
@@ -79,12 +78,20 @@ obj.setDiff = function setDiff(diff) {
   const { portion } = getSizeProperties(this.props.type);
   const before = containers[this.props.idBefore];
   const after = containers[this.props.idAfter];
-  store.dispatch(updateContainer(before.id, {
-    [portion]: before[portion] + diff[portion]
-  }, false));
-  store.dispatch(updateContainer(after.id, {
-    [portion]: after[portion] - diff[portion]
-  }));
+  store.dispatch(
+    updateContainer(
+      before.id,
+      {
+        [portion]: before[portion] + diff[portion],
+      },
+      false,
+    ),
+  );
+  store.dispatch(
+    updateContainer(after.id, {
+      [portion]: after[portion] - diff[portion],
+    }),
+  );
 };
 
 obj.onMouseUp = function onMouseUp(evt) {
@@ -92,20 +99,21 @@ obj.onMouseUp = function onMouseUp(evt) {
   window.removeEventListener('mouseup', this.onMouseUp);
   this.resetPosition();
   this.setDiff(
-    this.getFunction(this.normalize(
-      evt.clientY - this.diffY,
-      evt.clientX - this.diffX
-    ))
+    this.getFunction(
+      this.normalize(evt.clientY - this.diffY, evt.clientX - this.diffX),
+    ),
   );
 };
 
 obj.onMouseDown = function onMouseDown(evt) {
   const { left, top } = window.getComputedStyle(evt.target);
-  const stats = this.initPos = evt.target.getBoundingClientRect();
+  const stats = evt.target.getBoundingClientRect();
+
+  this.initPos = stats;
   this.refs.el.classList.toggle('active');
   this.initRelactivePos = {
     left: parseInt(left, 10),
-    top: parseInt(top, 10)
+    top: parseInt(top, 10),
   };
   this.diffX = evt.clientX - stats.left;
   this.diffY = evt.clientY - stats.top;
@@ -115,12 +123,17 @@ obj.onMouseDown = function onMouseDown(evt) {
   window.addEventListener('mouseup', this.onMouseUp);
 };
 
-
 obj.render = function render() {
   const classNameDivider = 'rdl-divider-' + this.props.type;
-  return <div className={classNameDivider}>
-    <div ref='el' className='rdl-divider-content' onMouseDown={this.onMouseDown}></div>
-  </div>;
+  return (
+    <div className={classNameDivider}>
+      <div
+        ref="el"
+        className="rdl-divider-content"
+        onMouseDown={this.onMouseDown}
+      />
+    </div>
+  );
 };
 
-export default React.createClass(obj);
+export default createClass(obj);

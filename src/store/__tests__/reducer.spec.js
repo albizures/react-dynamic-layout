@@ -1,5 +1,3 @@
-
-import { expect } from 'chai';
 import { add, remove, update, addChild, removeChild } from '../reducer';
 
 const id = 1;
@@ -8,77 +6,61 @@ describe('reducer', () => {
   it('should add a new item', () => {
     const state = {};
     const nextState = {
-      [id]: { id }
+      [id]: { id },
     };
-    expect(
-      add(state, { id: 1 })
-    ).to.deep.equal(
-      nextState
-    );
+    expect(add(state, { id: 1 })).toEqual(nextState);
   });
   it('should remove an item', () => {
     const state = {
-      [id]: { id }
+      [id]: { id },
     };
     const nextState = {};
-    expect(
-      remove(state, id)
-    ).to.deep.equal(
-      nextState
-    );
+    expect(remove(state, id)).toEqual(nextState);
   });
   it('should update an item', () => {
     const state = {
-      [id]: { id }
+      [id]: { id },
     };
     const nextState = {
       [id]: {
         id,
-        foo: 'foo'
-      }
+        foo: 'foo',
+      },
     };
-    expect(
-      update(state, { id, foo: 'foo' })
-    ).to.deep.equal(
-      nextState
-    );
+    expect(update(state, { id, foo: 'foo' })).toEqual(nextState);
   });
   it('should add a new child', () => {
     const state = {
       [id]: {
         id,
-        children: []
-      }
+        children: [],
+      },
     };
     const nextState = {
       [id]: {
         id,
-        children: ['foo']
-      }
+        children: ['foo'],
+      },
     };
-    expect(
-      addChild(state, { id, child: 'foo' }, 'children')
-    ).to.deep.equal(
-      nextState
+    expect(addChild(state, { id, child: 'foo' }, 'children')).toEqual(
+      nextState,
     );
   });
   it('should remove a child', () => {
     const state = {
       [id]: {
         id,
-        children: ['foo']
-      }
+        children: ['foo'],
+      },
     };
     const nextState = {
       [id]: {
         id,
-        children: []
-      }
+        children: [],
+      },
     };
-    expect(
-      removeChild(state, { id, child: 'foo' }, 'children')
-    ).to.deep.equal(
-      nextState
+    expect(removeChild(state, { id, child: 'foo' }, 'children')).toEqual(
+      nextState,
     );
   });
 });

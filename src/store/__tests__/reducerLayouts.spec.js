@@ -1,5 +1,3 @@
-
-import { expect } from 'chai';
 import { layoutReducer } from '../reducer';
 import * as actions from '../actions';
 
@@ -10,7 +8,7 @@ const {
   addLayoutContainer,
   removeLayoutContainer,
   addLayoutFloat,
-  removeLayoutFloat
+  removeLayoutFloat,
 } = actions;
 
 const id = 1;
@@ -24,7 +22,7 @@ describe('layoutReducer', () => {
       type: 'type',
       name: 'name',
       hiddenType: 'hiddenType',
-      resize: true
+      resize: true,
     };
     const nextState = {
       [id]: {
@@ -34,27 +32,19 @@ describe('layoutReducer', () => {
         hiddenType: 'hiddenType',
         resize: true,
         containers: [],
-        floats: []
-      }
+        floats: [],
+      },
     };
-    expect(
-      layoutReducer(state, addLayout(data))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(layoutReducer(state, addLayout(data))).toEqual(nextState);
   });
   it('should remove a layout', () => {
     const state = {
       [id]: {
-        id
-      }
+        id,
+      },
     };
     const nextState = {};
-    expect(
-      layoutReducer(state, removeLayout(id))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(layoutReducer(state, removeLayout(id))).toEqual(nextState);
   });
   it('should update a layout', () => {
     const state = {
@@ -65,8 +55,8 @@ describe('layoutReducer', () => {
         hiddenType: 'hiddenType',
         resize: true,
         containers: [],
-        floats: []
-      }
+        floats: [],
+      },
     };
     const nextState = {
       [id]: {
@@ -76,86 +66,72 @@ describe('layoutReducer', () => {
         hiddenType: 'hiddenType',
         resize: true,
         containers: [],
-        floats: []
-      }
+        floats: [],
+      },
     };
     const data = {
       type: 'new type',
-      name: 'new name'
+      name: 'new name',
     };
-    expect(
-      layoutReducer(state, updateLayout(id, data))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(layoutReducer(state, updateLayout(id, data))).toEqual(nextState);
   });
   it('should add a container into a layout', () => {
     const state = {
       [id]: {
-        containers: []
-      }
+        containers: [],
+      },
     };
     const nextState = {
       [id]: {
-        containers: [child]
-      }
+        containers: [child],
+      },
     };
-    expect(
-      layoutReducer(state, addLayoutContainer(id, child))
-    ).to.deep.equal(
-      nextState
+    expect(layoutReducer(state, addLayoutContainer(id, child))).toEqual(
+      nextState,
     );
   });
   it('should remove a container of the layout', () => {
     const state = {
       [id]: {
-        containers: [child]
-      }
+        containers: [child],
+      },
     };
     const nextState = {
       [id]: {
-        containers: []
-      }
+        containers: [],
+      },
     };
-    expect(
-      layoutReducer(state, removeLayoutContainer(id, child))
-    ).to.deep.equal(
-      nextState
+    expect(layoutReducer(state, removeLayoutContainer(id, child))).toEqual(
+      nextState,
     );
   });
   it('should add a float into a layout', () => {
     const state = {
       [id]: {
-        floats: []
-      }
+        floats: [],
+      },
     };
     const nextState = {
       [id]: {
-        floats: [child]
-      }
+        floats: [child],
+      },
     };
 
-    expect(
-      layoutReducer(state, addLayoutFloat(id, child))
-    ).to.deep.equal(
-      nextState
-    );
+    expect(layoutReducer(state, addLayoutFloat(id, child))).toEqual(nextState);
   });
   it('should remove a float of the layout', () => {
     const state = {
       [id]: {
-        floats: [child]
-      }
+        floats: [child],
+      },
     };
     const nextState = {
       [id]: {
-        floats: []
-      }
+        floats: [],
+      },
     };
-    expect(
-      layoutReducer(state, removeLayoutFloat(id, child))
-    ).to.deep.equal(
-      nextState
+    expect(layoutReducer(state, removeLayoutFloat(id, child))).toEqual(
+      nextState,
     );
   });
 });
