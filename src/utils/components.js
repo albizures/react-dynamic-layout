@@ -77,10 +77,11 @@ function checkContainerChild(component) {
   if (component.type === Register) {
     return checkComponent(component);
   }
-  throw useComponent();
+
+  throw createUseComponentError();
 }
 
-function useComponent() {
+function createUseComponentError() {
   return new Error('Use component `Register`');
 }
 
@@ -202,6 +203,7 @@ function checkParentElement(element) {
     throw new Error("parentElement isn't `relative` or `absolute`");
   }
   if (parseInt(width, 10) < 10 || parseInt(height, 10) < 10) {
+    // eslint-disable-next-line
     console.warn('width or height is top small');
   }
 }

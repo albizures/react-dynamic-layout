@@ -3,7 +3,7 @@ import React from 'react';
 import { Layout, Register, Container, ROW, COLUMN, RENDER } from '../../src';
 import Label from '../components/Label';
 
-export default () => (
+const SimpleExample = () => (
   <Layout name="Main" type={COLUMN} hiddenType={RENDER}>
     <Container size={50}>
       <Register type={Label} props={{ text: 'Left' }} />
@@ -22,3 +22,5 @@ export default () => (
     </Container>
   </Layout>
 );
+
+export default SimpleExample;

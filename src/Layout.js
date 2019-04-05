@@ -1,3 +1,4 @@
+/* eslint-disable react/no-string-refs */
 import React from 'react';
 import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import { ROW, COLUMN, STACK, Z_INDEX, OPACITY, DISPLAY, RENDER } from './types';
 import { checkParentElement, getSizeProperties } from './utils/components';
 import { parseSize, getDiff } from './utils/size';
 import store, { actions } from './store';
-import Container from './Container';
+import { Container } from './Container';
 import Float from './Float';
 import Divider from './Divider';
 
@@ -98,10 +99,12 @@ obj.childrenProcess = function childrenProcess() {
   }
 
   if (totalPortionSize < 0) {
+    // eslint-disable-next-line
     console.warn('Children size is more than 100% of size');
   }
 
   if (totalPortionSize > 0) {
+    // eslint-disable-next-line
     console.warn('Children size is less than 100% of size');
   }
   store.dispatch(updateLayout(this.props.id, { childrenProcess: true }));

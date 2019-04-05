@@ -1,3 +1,4 @@
+/* eslint-disable react/no-string-refs */
 import React from 'react';
 import createClass from 'create-react-class';
 import PropTypes from 'prop-types';

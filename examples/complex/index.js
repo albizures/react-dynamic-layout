@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Layout,
   Float,
@@ -15,7 +16,7 @@ import Label from '../components/Label';
 const idFloat = cuid();
 const idComponent = cuid();
 
-const openModal = (props) => (
+const OpenModal = (props) => (
   <div>
     <button onClick={() => props.rdOpenFloat(idFloat)}>Open: {idFloat}</button>
     <button onClick={() => props.rdCloseFloat(idFloat)}>
@@ -29,7 +30,13 @@ const openModal = (props) => (
   </div>
 );
 
-export default () => (
+OpenModal.propTypes = {
+  rdOpenFloat: PropTypes.func.isRequired,
+  rdCloseFloat: PropTypes.func.isRequired,
+  rdChangeProps: PropTypes.func.isRequired,
+};
+
+const ComplexExample = () => (
   <Layout name="Main" type={ROW} hiddenType={RENDER} resize={false}>
     <Float width="200px" height="200px" x="300px" y="100px" id={idFloat}>
       <Layout name="Float" type={ROW} resize={true}>
@@ -61,7 +68,7 @@ export default () => (
             </Container>
             <Container size="calc(100% - 20px)" tabs={false}>
               <Register
-                type={openModal}
+                type={OpenModal}
                 name="openModal"
                 props={{ text: 'Center bottom', idFloat }}
               />
@@ -82,3 +89,5 @@ export default () => (
     </Container>
   </Layout>
 );
+
+export default ComplexExample;
