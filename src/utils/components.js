@@ -54,7 +54,8 @@ function checkComponentLayout({ props, type }) {
 
 function checkComponent({ props }) {
   const { type } = props;
-  const name = type.displayName || props.name;
+
+  const name = type.displayName || type.name || props.name;
   if (!components[name]) {
     register(type, name);
   }
