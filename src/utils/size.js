@@ -1,40 +1,120 @@
-function isFloat(n) {
-  return Number(n) === n && n % 1 !== 0;
+// @ts-check
+
+import { layoutTypes } from './enums';
+
+/**
+ * @typedef {(string|number)} Size
+ */
+
+/**
+ *
+ * @param {Size} size
+ * @returns {boolean}
+ */
+export const isFloat = (size) => Number(size) === size && size % 1 !== 0;
+
+/**
+ *
+ * @param {Size} size
+ * @returns {size is number}
+ */
+const isPixel = (size) => typeof size === 'number';
+
+/**
+ *
+ * @param {string} size
+ * @returns {number}
+ */
+const percentagetoNumber = (size) => Number(size.substring(0, size.length - 1));
+
+/**
+ *
+ * @param {string} size
+ * @returns {boolean}
+ */
+function isPercentage(size) {
+  const hasPercentageSymbol = size[size.length - 1] === '%';
+  if (hasPercentageSymbol) {
+    return !Number.isNaN(percentagetoNumber(size));
+  }
+
+  return false;
 }
 
-export function parseSize(size, maxSize) {
+/**
+ *
+ * @param {number} px
+ * @param {number} totalSize
+ * @returns {number}
+ */
+export const pixelToPercentage = (px, totalSize) => (px * 100) / totalSize;
+
+/**
+ * @typedef {Object} SizeDescriptor
+ * @property {number} px
+ * @property {boolean} isVariable
+ */
+
+/**
+ *
+ * @param {Size} size
+ * @param {number} totalSize
+ * @param {boolean} isFixedSize
+ * @returns {SizeDescriptor}
+ */
+export function parseSize(size, totalSize, isFixedSize) {
   // NOTE: a interger is interpreted as a percentage
   // 100 == '100%'
-  let newSize;
-  if (Number.isInteger(size) || isFloat(size)) {
-    newSize = {
-      px: (maxSize * size) / 100,
-      percent: size,
-      isVariable: true,
+  const isVariable = !isFixedSize;
+
+  if (!size) {
+    return {
+      px: null,
+      isVariable,
     };
-  } else if (size.indexOf('calc') !== -1) {
-    const match = size.match(/[0-9]+(px|%)/g);
-    size = parseInt(match[0], 10) - parseSize(match[1], maxSize).percent;
-    newSize = parseSize(size, maxSize);
-  } else if (size.indexOf('px') !== -1) {
-    size = parseInt(size, 10);
-    newSize = {
-      percent: (size * 100) / maxSize,
+  }
+
+  if (isPixel(size)) {
+    return {
       px: size,
+      isVariable,
     };
-  } else if (size.indexOf('%') !== -1) {
-    newSize = parseSize(parseInt(size, 10), maxSize);
   }
-  if (!newSize || Number.isNaN(newSize.percent) || Number.isNaN(newSize.px)) {
-    throw new Error('Incorrect size: ' + size);
+
+  if (isPercentage(size)) {
+    const percentage = percentagetoNumber(size);
+    return {
+      px: (totalSize * percentage) / 100,
+      isVariable,
+    };
   }
-  return newSize;
+
+  throw new Error(`Incorrect size: '${size}'`);
 }
 
 export const getDiff = (actualSize, newSize) => ({
   width: newSize.width - actualSize.width,
   height: newSize.height - actualSize.height,
 });
+
+/**
+ * @typedef {Object} SizeProperty
+ * @property {string} portion
+ * @property {string} total
+ */
+
+/**
+ *
+ * @param {string} type
+ * @returns {SizeProperty}
+ */
+export const getSizeProperty = (type) => {
+  if (type === layoutTypes.ROW) {
+    return { portion: 'width', total: 'height' };
+  }
+
+  return { portion: 'height', total: 'width' };
+};
 
 // export const getDiff = (actualSize, newSize) => ({
 //   width: actualSize.width - newSize.width,
