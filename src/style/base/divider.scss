@@ -1,0 +1,42 @@
+$size-divider: 6px;
+
+.rdl-divider {
+  $divider: &;
+  flex: 0;
+  position: relative;
+
+  &--row {
+    #{$divider}__content {
+      left: #{-$size-divider / 2};
+      top: 0;
+      height: 100%;
+      width: $size-divider;
+
+      &:hover {
+        cursor: ew-resize;
+      }
+    }
+  }
+
+  &--column {
+    #{$divider}__content {
+      height: $size-divider;
+      width: 100%;
+      left: 0;
+      top: #{-$size-divider / 2};
+
+      &:hover {
+        cursor: ns-resize;
+      }
+    }
+  }
+
+  &__content {
+    z-index: 1;
+    position: absolute;
+
+    &:hover {
+      background: var(--hover-drag-color);
+    }
+  }
+}
