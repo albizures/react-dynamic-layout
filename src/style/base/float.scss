@@ -11,6 +11,7 @@
     position: relative;
     width: 100%;
     height: calc(100% - 18px);
+    overflow: hidden;
   }
 
   &__drag-bar {
