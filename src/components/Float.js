@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -86,6 +86,12 @@ const Float = (props) => {
     },
     [width, height, top, left, layoutEvents],
   );
+
+  useEffect(() => {
+    if (isOpen) {
+      layoutEvents.fire('check-dimensions');
+    }
+  }, [isOpen, layoutEvents]);
 
   return (
     <div ref={elementRef} style={style} className={className}>

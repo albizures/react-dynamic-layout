@@ -8,7 +8,7 @@ const Content = (props) => {
   const childrenIsFunction = typeof children === 'function';
 
   const elementRef = useRef();
-  const dimensions = useDimensions(elementRef, childrenIsFunction);
+  const { dimensions } = useDimensions(elementRef, childrenIsFunction);
 
   const content = childrenIsFunction ? children({ dimensions }) : children;
 

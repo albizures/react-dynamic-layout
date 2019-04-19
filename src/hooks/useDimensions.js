@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, useCallback } from 'react';
 
 import { debounce } from '../utils';
 
@@ -11,10 +11,16 @@ import { debounce } from '../utils';
  */
 
 /**
+ * @typedef {object} UseDimensions
+ * @property {Dimensions} dimensions
+ * @property {Function} checkDimensions
+ */
+
+/**
  *
  * @param {RefObject<HTMLElement>} elementRef
  * @param {boolean} required
- * @returns {Dimensions}
+ * @returns {UseDimensions}
  */
 const useDimensions = (elementRef, required = true) => {
   const [dimensions, setDimensions] = useState({
@@ -23,6 +29,19 @@ const useDimensions = (elementRef, required = true) => {
     lastWidth: 0,
     lastHeight: 0,
   });
+
+  const checkDimensions = useCallback(() => {
+    const { current: element } = elementRef;
+    const { clientWidth: width, clientHeight: height } = element;
+    if (dimensions.width !== width || dimensions.height !== height) {
+      setDimensions((dimensions) => ({
+        width,
+        height,
+        lastWidth: dimensions.width,
+        lastHeight: dimensions.height,
+      }));
+    }
+  }, [dimensions, elementRef]);
 
   useLayoutEffect(() => {
     const { current: element } = elementRef;
@@ -45,7 +64,7 @@ const useDimensions = (elementRef, required = true) => {
     }
   }, [required, elementRef]);
 
-  return dimensions;
+  return { dimensions, checkDimensions };
 };
 
 export default useDimensions;

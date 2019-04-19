@@ -20,7 +20,7 @@ const Container = (props) => {
   const style = {};
 
   const elementRef = useRef();
-  const dimensions = useDimensions(elementRef, !size);
+  const { dimensions } = useDimensions(elementRef, !size);
   const { portion } = useSizeProperties();
   const id = getIdBy(children);
 

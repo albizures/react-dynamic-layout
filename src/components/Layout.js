@@ -86,7 +86,10 @@ const useCreateEventSystems = () => {
   };
 };
 
-const useParentLayoutEvents = (onParentLayoutResize, dimensions) => {
+const useParentLayoutEvents = (
+  { onParentLayoutResize, onCheckDimensions },
+  dimensions,
+) => {
   const { layoutEventsRef, isRoot } = useContextLayout();
 
   useEffect(() => {
@@ -95,18 +98,28 @@ const useParentLayoutEvents = (onParentLayoutResize, dimensions) => {
       layoutEvents.on('resize', onParentLayoutResize);
 
       return () => layoutEvents.off('resize', onParentLayoutResize);
-    } else {
-      if (!dimensionsAreZero(dimensions)) {
-        onParentLayoutResize();
-      }
+    }
+    if (!dimensionsAreZero(dimensions)) {
+      onParentLayoutResize();
     }
   }, [isRoot, onParentLayoutResize, layoutEventsRef, dimensions]);
+
+  useEffect(() => {
+    if (isRoot) {
+      return;
+    }
+
+    const { current: layoutEvents } = layoutEventsRef;
+    layoutEvents.on('check-dimensions', onCheckDimensions);
+
+    return () => layoutEvents.off('check-dimensions', onCheckDimensions);
+  }, [isRoot, onCheckDimensions, layoutEventsRef]);
 };
 
 const Layout = (props) => {
   const variableContainersRef = useRef([]);
   const elementRef = useRef(null);
-  const dimensions = useDimensions(elementRef);
+  const { dimensions, checkDimensions } = useDimensions(elementRef);
   const { children, type, floats } = props;
   const style = {
     flexDirection: type,
@@ -182,7 +195,14 @@ const Layout = (props) => {
     }
   }, [dimensions, type, layoutEvents, containersEvents]);
 
-  useParentLayoutEvents(onParentLayoutResize, dimensions);
+  const onCheckDimensions = useCallback(() => {
+    checkDimensions();
+  }, [checkDimensions]);
+
+  useParentLayoutEvents(
+    { onParentLayoutResize, onCheckDimensions },
+    dimensions,
+  );
 
   return (
     <LayoutContext.Provider value={contextValue}>
