@@ -8,7 +8,9 @@ import useMouseMove from '../hooks/useMouseMove';
 import useContextLayout from '../hooks/useContextLayout';
 
 const Float = (props) => {
-  const { fireResizeEvent } = useContextLayout();
+  const {
+    layoutEventsRef: { current: layoutEvents },
+  } = useContextLayout();
   const addEventListener = useMouseMove();
   const elementRef = useRef();
   const {
@@ -80,9 +82,9 @@ const Float = (props) => {
         height: height - diffTop - diffBottom,
       });
 
-      fireResizeEvent();
+      layoutEvents.fire('resize');
     },
-    [width, height, top, left, fireResizeEvent],
+    [width, height, top, left, layoutEvents],
   );
 
   return (

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import Layout from '../../src/components/Layout';
-import Container from '../../src/components/placeholders/Container';
+import Container from '../../src/components/Container';
 import Tabs from '../../src/components/Tabs';
 import Float from '../../src/components/Float';
 
 import CenterName from '../components/CenterName';
 
 const Complex = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const floats = [
     <Float
       isOpen={isModalOpen}

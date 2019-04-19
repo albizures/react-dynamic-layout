@@ -57,8 +57,8 @@ const Divider = (props) => {
 
 Divider.propTypes = {
   onSizeChange: PropTypes.func.isRequired,
-  before: PropTypes.number.isRequired,
-  after: PropTypes.number.isRequired,
+  before: PropTypes.string.isRequired,
+  after: PropTypes.string.isRequired,
 };
 
 export default Divider;

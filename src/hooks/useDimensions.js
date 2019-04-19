@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useRef, useEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { debounce } from '../utils';
 
@@ -10,14 +10,6 @@ import { debounce } from '../utils';
  * @property {number} lastHeight
  */
 
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 /**
  *
  * @param {RefObject<HTMLElement>} elementRef
@@ -28,21 +20,20 @@ const useDimensions = (elementRef, required = true) => {
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
-  });
-  const { width, height } = dimensions;
-  const lastDimensions = usePrevious({
-    lastWidth: width,
-    lastHeight: height,
+    lastWidth: 0,
+    lastHeight: 0,
   });
 
   useLayoutEffect(() => {
     const { current: element } = elementRef;
     if (required) {
       const saveDimensions = debounce(() => {
-        setDimensions({
+        setDimensions((dimensions) => ({
           width: element.clientWidth,
           height: element.clientHeight,
-        });
+          lastWidth: dimensions.width,
+          lastHeight: dimensions.height,
+        }));
       }, 300);
 
       window.addEventListener('resize', saveDimensions);
@@ -54,7 +45,7 @@ const useDimensions = (elementRef, required = true) => {
     }
   }, [required, elementRef]);
 
-  return Object.assign({}, dimensions, lastDimensions);
+  return dimensions;
 };
 
 export default useDimensions;

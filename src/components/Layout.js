@@ -1,28 +1,24 @@
 // @ts-check
-import React, {
-  Children,
-  useRef,
-  useLayoutEffect,
-  useReducer,
-  useMemo,
-  useCallback,
-  useEffect,
-} from 'react';
+import React, { Children, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Divider from './Divider';
 import LayoutContext from '../contexts/LayoutContext';
 import useDimensions from '../hooks/useDimensions';
 import { layoutTypes } from '../utils/enums';
-import { parseSize, getSizeProperty, pixelToPercentage } from '../utils/size';
-import * as containersStore from '../store/containers';
-import Container from './Container';
 import useContextLayout from '../hooks/useContextLayout';
-import { removeArrayItem } from '../utils';
+import * as events from '../utils/events';
+import { dimensionsAreZero } from '../utils/size';
+import { getIdBy } from '../utils/keys';
 
 /**
  * @typedef {import('../hooks/useDimensions').Dimensions} Dimensions
+ * @typedef {import('../contexts/LayoutContext').LayoutContextType} LayoutContextType
  * @typedef {import('../utils/size').SizeDescriptor} SizeDescriptor
+ * @typedef {import('../utils/events').EventSystem} EventSystem
+ * @typedef {import('../utils/events').OnEvent} OnEvent
+ * @typedef {import('../utils/events').OffEvent} OffEvent
+ * @typedef {import('../utils/events').FireEvent} FireEvent
  * @typedef {import('../store/containers').ContainersState} ContainersState
  * @typedef {import('../store/containers').Container} Container
  */
@@ -48,235 +44,127 @@ import { removeArrayItem } from '../utils';
 /**
  *
  * @param {object} params
- * @param {Dimensions} params.dimensions
  * @param {string} params.type
- * @returns {ChildrenReducer}
- */
-const childrenReducerFactory = ({ dimensions, type }) => (
-  result,
-  child,
-  index,
-) => {
-  const { props: childProps } = child;
-  const { initialSize, isFixedSize, children } = childProps;
-  const { portion } = getSizeProperty(type);
-
-  const size = parseSize(initialSize, dimensions[portion], isFixedSize);
-
-  result.containers[index] = {
-    children,
-    size,
-  };
-
-  if (size.isVariable) {
-    result.variableSizes.push(index);
-  }
-
-  if (size.px !== null) {
-    result.totalSize = result.totalSize + size.px;
-  } else {
-    result.autoSizes.push(index);
-  }
-
-  return result;
-};
-
-/**
- *
- * @param {ContainersState} containers
- * @param {Function} dispatch
- * @param {Function} fireResizeEvent
- * @returns {(string|Array)}
- */
-const getContainers = (containers, dispatch, fireResizeEvent) => {
-  if (containers.keyList.length === 0) {
-    return 'Processing...';
-  }
-
-  return containers.keyList.reduce((result, key, index, list) => {
-    const { size, children } = containers.map[key];
-    const isLast = index === list.length - 1;
-
-    result.push(
-      <Container key={index} size={size.px}>
-        {children}
-      </Container>,
-    );
-
-    if (size.isVariable && !isLast) {
-      result.push(
-        <Divider
-          before={index}
-          after={index + 1}
-          key={`${index}-${index + 1}`}
-          onSizeChange={(change) => {
-            const { before: beforeKey, after: afterKey, diff } = change;
-
-            const beforeContainerSize = containers.map[beforeKey].size;
-            const afterContainerSize = containers.map[afterKey].size;
-
-            dispatch(
-              containersStore.actions.batch([
-                containersStore.actions.changeSize(
-                  beforeKey,
-                  beforeContainerSize.px + diff,
-                ),
-                containersStore.actions.changeSize(
-                  afterKey,
-                  afterContainerSize.px - diff,
-                ),
-              ]),
-            );
-
-            fireResizeEvent();
-          }}
-        />,
-      );
-    }
-
-    return result;
-  }, []);
-};
-
-/**
- *
- * @param {object} params
- * @param {string} params.type
- * @param {Array} params.childrenArr
  * @param {Dimensions} params.dimensions
- * @returns {ContainersState}
+ * @param {object} params.variableContainersRef
+ * @param {object} params.layoutEventsRef
+ * @param {object} params.containersEventsRef
+ * @returns {LayoutContextType}
  */
-const createContainersState = (params) => {
-  const { type, childrenArr, dimensions } = params;
-  const { portion } = getSizeProperty(type);
-
-  const {
-    containers,
-    totalSize,
-    autoSizes,
-    variableSizes,
-  } = childrenArr.reduce(childrenReducerFactory({ dimensions, type }), {
-    containers: {},
-    totalSize: 0,
-    autoSizes: [],
-    variableSizes: [],
-  });
-  const freeSpace = dimensions[portion] - totalSize;
-
-  if (freeSpace < 0) {
-    // eslint-disable-next-line no-console
-    console.warn('Size overflow, please check your initial sizes');
-  }
-
-  if (freeSpace > 0 && autoSizes.length === 0) {
-    // eslint-disable-next-line no-console
-    console.warn('Extra free space, please check your initial sizes');
-  }
-
-  const autoSize = freeSpace / autoSizes.length;
-  autoSizes.forEach((item) => {
-    const {
-      size: { isVariable },
-    } = containers[item];
-
-    containers[item].size = {
-      px: autoSize,
-      percentage: pixelToPercentage(autoSize, dimensions[portion]),
-      isVariable,
-    };
-  });
-
-  return { map: containers, variableSizes };
-};
-
-/**
- *
- * @param {ContainersState} containers
- * @param {string} type
- */
-const useCreateLayoutContext = (containers, type) => {
-  const resizeListenersRef = useRef([]);
-  const removeResizeListener = useCallback((listener) => {
-    const { current: resizeListeners } = resizeListenersRef;
-
-    resizeListenersRef.current = removeArrayItem(resizeListeners, listener);
-  }, []);
-
-  const addResizeListeners = useCallback((listener) => {
-    const { current: resizeListeners } = resizeListenersRef;
-    if (!resizeListeners.includes(listener)) {
-      resizeListenersRef.current.push(listener);
-    }
-  }, []);
-
-  const fireResizeEvent = useCallback(() => {
-    resizeListenersRef.current.forEach((listener) => listener());
-  }, []);
-
+const useCreateLayoutContext = ({
+  type,
+  dimensions,
+  variableContainersRef,
+  layoutEventsRef,
+  containersEventsRef,
+}) => {
   return {
-    addResizeListeners,
-    removeResizeListener,
-    fireResizeEvent,
+    layoutEventsRef,
+    containersEventsRef,
+    variableContainersRef,
     isRoot: false,
-    containers,
+    dimensions,
     type,
   };
 };
 
+const useCreateEventSystems = () => {
+  const layout = events.createEventSystem();
+  const containers = events.createEventSystem();
+
+  layout.off = useCallback(events.offFactory(layout), []);
+  layout.on = useCallback(events.onFactory(layout), []);
+  layout.fire = useCallback(events.fireFactory(layout), []);
+
+  containers.off = useCallback(events.offFactory(containers), []);
+  containers.on = useCallback(events.onFactory(containers), []);
+  containers.fire = useCallback(events.fireFactory(containers), []);
+
+  return {
+    layoutEventsRef: useRef(layout),
+    containersEventsRef: useRef(containers),
+  };
+};
+
+const useParentLayoutEvents = (onParentLayoutResize, dimensions) => {
+  const { layoutEventsRef, isRoot } = useContextLayout();
+
+  useEffect(() => {
+    if (!isRoot) {
+      const { current: layoutEvents } = layoutEventsRef;
+      layoutEvents.on('resize', onParentLayoutResize);
+
+      return () => layoutEvents.off('resize', onParentLayoutResize);
+    } else {
+      if (!dimensionsAreZero(dimensions)) {
+        onParentLayoutResize();
+      }
+    }
+  }, [isRoot, onParentLayoutResize, layoutEventsRef, dimensions]);
+};
+
 const Layout = (props) => {
-  const {
-    addResizeListeners,
-    removeResizeListener,
-    isRoot,
-  } = useContextLayout();
-  const initRef = useRef(null);
+  const variableContainersRef = useRef([]);
   const elementRef = useRef(null);
-  const [containers, dispatch] = useReducer(containersStore.reducer, {
-    variableSizes: [],
-    map: {},
-    keyList: [],
-  });
   const dimensions = useDimensions(elementRef);
   const { children, type, floats } = props;
   const style = {
     flexDirection: type,
   };
+  const { layoutEventsRef, containersEventsRef } = useCreateEventSystems();
+  const { current: layoutEvents } = layoutEventsRef;
+  const { current: containersEvents } = containersEventsRef;
+  const { current: variableContainers } = variableContainersRef;
 
   const childrenArr = Children.toArray(children);
-  useLayoutEffect(() => {
-    if (dimensions.width === 0 && dimensions.height === 0) {
-      return;
-    }
+  const { content } = childrenArr.reduce(
+    (result, child, index, list) => {
+      const { isFixedSize, children } = child.props;
+      const isLast = index === list.length - 1;
 
-    let containersState;
+      result.content.push(child);
 
-    if (initRef.current) {
-      const diff =
-        type === layoutTypes.ROW
-          ? dimensions.width - dimensions.lastWidth
-          : dimensions.height - dimensions.lastHeight;
-      if (diff !== 0) {
-        dispatch(containersStore.actions.resize(diff));
+      const current = getIdBy(children);
+
+      if (isFixedSize) {
+        const index = variableContainers.indexOf(current);
+        variableContainers.splice(index, 1);
+      } else if (!variableContainers.includes(current)) {
+        variableContainers.push(current);
       }
-    } else {
-      containersState = createContainersState({
-        type,
-        childrenArr,
-        dimensions,
-      });
 
-      initRef.current = true;
-      dispatch(containersStore.actions.init(containersState));
-    }
-  }, [childrenArr, dimensions, type]);
+      if (!isFixedSize && !isLast) {
+        const after = getIdBy(list[index + 1].props.children);
+        result.content.push(
+          <Divider
+            before={current}
+            after={after}
+            key={`${current}-${after}`}
+            onSizeChange={(change) => {
+              const { diff } = change;
 
-  const contextValue = useCreateLayoutContext(containers, type);
-  const { fireResizeEvent } = contextValue;
+              layoutEvents.fire('resize');
+              containersEvents.fire('resize', {
+                containers: [current, after],
+                diff,
+              });
+            }}
+          />,
+        );
+      }
 
-  const content = useMemo(
-    () => getContainers(containers, dispatch, fireResizeEvent),
-    [containers, fireResizeEvent],
+      return result;
+    },
+    { content: [] },
   );
+
+  const contextValue = useCreateLayoutContext({
+    layoutEventsRef,
+    containersEventsRef,
+    type,
+    dimensions,
+    variableContainersRef,
+  });
 
   const onParentLayoutResize = useCallback(() => {
     const { current: element } = elementRef;
@@ -284,29 +172,29 @@ const Layout = (props) => {
 
     const diff =
       type === layoutTypes.ROW
-        ? width - dimensions.width
-        : height - dimensions.height;
+        ? width - dimensions.lastWidth
+        : height - dimensions.lastHeight;
+
+    layoutEvents.fire('resize');
 
     if (diff !== 0) {
-      dispatch(containersStore.actions.resize(diff));
+      containersEvents.fire('layout-resize', diff);
     }
+  }, [dimensions, type, layoutEvents, containersEvents]);
 
-    fireResizeEvent();
-  }, [dimensions, type, fireResizeEvent]);
-
-  useEffect(() => {
-    if (!isRoot) {
-      addResizeListeners(onParentLayoutResize);
-
-      return () => removeResizeListener(onParentLayoutResize);
-    }
-  }, [isRoot, onParentLayoutResize, addResizeListeners, removeResizeListener]);
+  useParentLayoutEvents(onParentLayoutResize, dimensions);
 
   return (
     <LayoutContext.Provider value={contextValue}>
       <div ref={elementRef} className="rdl-layout" style={style}>
-        {content}
-        {floats}
+        {dimensionsAreZero(dimensions) ? (
+          'Processing...'
+        ) : (
+          <>
+            {content}
+            {floats}
+          </>
+        )}
       </div>
     </LayoutContext.Provider>
   );

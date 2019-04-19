@@ -125,3 +125,6 @@ export const getPercent = (partSize, totalSize) => ({
   width: (partSize.width * 100) / totalSize.width / 100,
   height: (partSize.height * 100) / totalSize.height / 100,
 });
+
+export const dimensionsAreZero = (dimensions) =>
+  dimensions.height === 0 && dimensions.width === 0;

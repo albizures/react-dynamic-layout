@@ -1,29 +1,41 @@
+// @ts-check
 import React from 'react';
 
 /**
- * @typedef {import('../store/containers').ContainersState} ContainersState
+ * @typedef {import('../hooks/useDimensions').Dimensions} Dimensions
+ * @typedef {import('../utils/events').EventSystem} EventSystem
  */
 
 /**
- * @typedef {LayoutContext}
- * @property {ContainersState} [containers]
- * @property {Function[]} resizeListeners
- * @property {string} [type]
+ * @typedef EventSystemRef
+ * @property {EventSystem} current
  */
-const LayoutContext = React.createContext({
-  // eslint-disable-next-line no-unused-vars
-  addResizeListeners(listener) {
-    window.console.error('Invalid context usage of root layout');
-  },
-  // eslint-disable-next-line no-unused-vars
-  removeResizeListener(listener) {
-    window.console.error('Invalid context usage of root layout');
-  },
-  fireResizeEvent() {
-    window.console.error('Invalid context usage of root layout');
-  },
+/**
+ * @typedef variableContainersRef
+ * @property {array} current
+ */
 
+/**
+ * @typedef {object} LayoutContextType
+ * @property {Dimensions} dimensions
+ * @property {string} [type]
+ * @property {boolean} isRoot
+ * @property {EventSystemRef} [layoutEventsRef]
+ * @property {EventSystemRef} [containersEventsRef]
+ * @property {variableContainersRef} [variableContainersRef]
+ */
+
+/** @type {LayoutContextType} */
+const initialValue = {
+  dimensions: {
+    width: 0,
+    height: 0,
+    lastWidth: 0,
+    lastHeight: 0,
+  },
   isRoot: true,
-});
+};
+
+const LayoutContext = React.createContext(initialValue);
 
 export default LayoutContext;

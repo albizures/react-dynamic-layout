@@ -8,11 +8,11 @@ import CenterName from '../components/CenterName';
 
 const SimpleExample = () => (
   <Layout type={Layout.COLUMN}>
-    <Container>
+    <Container initialSize="30%">
       <CenterName name="Top" />
     </Container>
     <Container>
-      <Layout type={Layout.COLUMN}>
+      <Layout type={Layout.ROW}>
         <Container>
           <CenterName name="Bottom Left" />
         </Container>

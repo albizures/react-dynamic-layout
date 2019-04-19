@@ -32,7 +32,7 @@ const { assign, keys } = Object;
 
 /**
  * @typedef {Object} Action
- * @property {ContainersState} payload
+ * @property {any} payload
  * @property {string} action
  */
 /**
@@ -59,7 +59,7 @@ const resize = (state, diff) => {
 /**
  *
  * @param {ContainersState} state
- * @param {Action} action
+ * @param {(Action|Action[])} action
  * @returns {ContainersState}
  */
 export const reducer = (state, action) => {
