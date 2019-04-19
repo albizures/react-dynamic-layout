@@ -1,0 +1,35 @@
+.rdl-dark {
+  .rdl-float {
+    border-radius: var(--float-border-radius);
+    border: var(--float-border);
+
+    .rdl-resize-bar {
+      position: absolute;
+      z-index: 1;
+
+      &--active,
+      &:hover {
+        background: var(--hover-drag-color);
+      }
+    }
+
+    &__drag-bar {
+      background-image: linear-gradient(
+        rgb(66, 66, 66) 0%,
+        rgb(48, 48, 48) 100%
+      );
+    }
+
+    &__close {
+      line {
+        stroke: gray;
+      }
+
+      &:hover {
+        line {
+          stroke: white;
+        }
+      }
+    }
+  }
+}
