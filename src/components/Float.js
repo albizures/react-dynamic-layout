@@ -11,6 +11,7 @@ const Float = (props) => {
   const {
     layoutEventsRef: { current: layoutEvents },
   } = useContextLayout();
+
   const addEventListener = useMouseMove();
   const elementRef = useRef();
   const {
@@ -40,11 +41,6 @@ const Float = (props) => {
     width,
     height,
   };
-
-  const className = classNames({
-    'rdl-float': true,
-    'rdl-float--open': isOpen,
-  });
 
   const move = useCallback((position) => {
     setPosition(position);
@@ -93,6 +89,11 @@ const Float = (props) => {
     }
   }, [isOpen, layoutEvents]);
 
+  const className = classNames({
+    'rdl-float': true,
+    'rdl-float--open': isOpen,
+  });
+
   return (
     <div ref={elementRef} style={style} className={className}>
       <div className="rdl-float__drag-bar" onMouseDown={onMouseDown}>
@@ -121,50 +122,30 @@ const Float = (props) => {
           </svg>
         </button>
       </div>
-      {!isFixedSize
-        ? [
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.NORTH}
-              type={resizeBarTypes.NORTH}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.SOUTH}
-              type={resizeBarTypes.SOUTH}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.EAST}
-              type={resizeBarTypes.EAST}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.WEST}
-              type={resizeBarTypes.WEST}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.NORTH_EAST}
-              type={resizeBarTypes.NORTH_EAST}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.NORTH_WEST}
-              type={resizeBarTypes.NORTH_WEST}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.SOUTH_WEST}
-              type={resizeBarTypes.SOUTH_WEST}
-            />,
-            <ResizeBar
-              onSizeChange={onSizeChange}
-              key={resizeBarTypes.SOUTH_EAST}
-              type={resizeBarTypes.SOUTH_EAST}
-            />,
-          ]
-        : null}
+      {!isFixedSize ? (
+        <>
+          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.NORTH} />
+          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.SOUTH} />
+          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.EAST} />
+          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.WEST} />
+          <ResizeBar
+            onSizeChange={onSizeChange}
+            type={resizeBarTypes.NORTH_EAST}
+          />
+          <ResizeBar
+            onSizeChange={onSizeChange}
+            type={resizeBarTypes.NORTH_WEST}
+          />
+          <ResizeBar
+            onSizeChange={onSizeChange}
+            type={resizeBarTypes.SOUTH_WEST}
+          />
+          <ResizeBar
+            onSizeChange={onSizeChange}
+            type={resizeBarTypes.SOUTH_EAST}
+          />
+        </>
+      ) : null}
       <div className="rdl-float__content">{children}</div>
     </div>
   );
@@ -174,6 +155,8 @@ Float.defaultProps = {
   isOpen: false,
   closeLabel: 'Close',
   isFixedSize: false,
+  initialTop: 0,
+  initialLeft: 0,
 };
 
 Float.propTypes = {
