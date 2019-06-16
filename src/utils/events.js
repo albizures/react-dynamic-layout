@@ -46,8 +46,9 @@ export const createEventSystem = () => ({
  * @returns {OnEvent}
  */
 export const onFactory = (eventSystem) => (eventName, listener) => {
-  checkEvent(eventSystem, eventName);
-  const listeners = eventSystem[eventName];
+  const { events } = eventSystem;
+  checkEvent(events, eventName);
+  const listeners = events[eventName];
   if (!listeners.includes(listener)) {
     listeners.push(listener);
   }
@@ -59,9 +60,10 @@ export const onFactory = (eventSystem) => (eventName, listener) => {
  * @returns {OffEvent}
  */
 export const offFactory = (eventSystem) => (eventName, listener) => {
-  checkEvent(eventSystem, eventName);
+  const { events } = eventSystem;
+  checkEvent(events, eventName);
 
-  eventSystem[eventName] = removeArrayItem(eventSystem[eventName], listener);
+  events[eventName] = removeArrayItem(events[eventName], listener);
 };
 
 /**
@@ -70,6 +72,7 @@ export const offFactory = (eventSystem) => (eventName, listener) => {
  * @returns {FireEvent}
  */
 export const fireFactory = (eventSystem) => (eventName, data) => {
-  checkEvent(eventSystem, eventName);
-  eventSystem[eventName].forEach((listener) => listener(data));
+  const { events } = eventSystem;
+  checkEvent(events, eventName);
+  events[eventName].forEach((listener) => listener(data));
 };
