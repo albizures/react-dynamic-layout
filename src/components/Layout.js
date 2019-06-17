@@ -7,9 +7,9 @@ import LayoutContext from '../contexts/LayoutContext';
 import useDimensions from '../hooks/useDimensions';
 import { layoutTypes } from '../utils/enums';
 import useContextLayout from '../hooks/useContextLayout';
-import * as events from '../utils/events';
 import { dimensionsAreZero } from '../utils/size';
 import { getIdBy } from '../utils/keys';
+import useEventSystem from '../hooks/useEventSystem';
 
 /**
  * @typedef {import('../hooks/useDimensions').Dimensions} Dimensions
@@ -68,24 +68,6 @@ const useCreateLayoutContext = ({
   };
 };
 
-const useCreateEventSystems = () => {
-  const layout = events.createEventSystem();
-  const containers = events.createEventSystem();
-
-  layout.off = useCallback(events.offFactory(layout), []);
-  layout.on = useCallback(events.onFactory(layout), []);
-  layout.fire = useCallback(events.fireFactory(layout), []);
-
-  containers.off = useCallback(events.offFactory(containers), []);
-  containers.on = useCallback(events.onFactory(containers), []);
-  containers.fire = useCallback(events.fireFactory(containers), []);
-
-  return {
-    layoutEventsRef: useRef(layout),
-    containersEventsRef: useRef(containers),
-  };
-};
-
 const useParentLayoutEvents = (
   { onParentLayoutResize, onCheckDimensions },
   dimensions,
@@ -121,13 +103,11 @@ const Layout = (props) => {
   const elementRef = useRef(null);
   const { dimensions, checkDimensions } = useDimensions(elementRef);
   const { children, type, floats } = props;
-  const style = {
-    flexDirection: type,
-  };
-  const { layoutEventsRef, containersEventsRef } = useCreateEventSystems();
+  const { layoutEventsRef, containersEventsRef } = useEventSystem();
   const { current: layoutEvents } = layoutEventsRef;
   const { current: containersEvents } = containersEventsRef;
   const { current: variableContainers } = variableContainersRef;
+  const style = { flexDirection: type };
 
   const childrenArr = Children.toArray(children);
   const { content } = childrenArr.reduce(
