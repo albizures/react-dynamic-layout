@@ -50,11 +50,12 @@ const useDimensions = (elementRef, isLive = true) => {
     const { current: element } = elementRef;
     if (isLive) {
       const saveDimensions = debounce(() => {
-        setDimensions((dimensions) => ({
-          width: element.clientWidth,
-          height: element.clientHeight,
-          lastWidth: dimensions.width,
-          lastHeight: dimensions.height,
+        const { clientWidth, clientHeight } = element;
+        setDimensions(({ width, height }) => ({
+          width: clientWidth,
+          height: clientHeight,
+          lastWidth: dimensions.width === 0 ? clientWidth : width,
+          lastHeight: dimensions.height === 0 ? clientHeight : height,
         }));
       }, 300);
 

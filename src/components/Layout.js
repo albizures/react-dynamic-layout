@@ -72,10 +72,10 @@ const useParentLayoutEvents = (
   { onParentLayoutResize, onCheckDimensions },
   dimensions,
 ) => {
-  const { layoutEventsRef, isRoot } = useContextLayout();
+  const { layoutEventsRef } = useContextLayout();
 
   useEffect(() => {
-    if (!isRoot) {
+    if (layoutEventsRef) {
       const { current: layoutEvents } = layoutEventsRef;
       layoutEvents.on('resize', onParentLayoutResize);
 
@@ -84,18 +84,19 @@ const useParentLayoutEvents = (
     if (!dimensionsAreZero(dimensions)) {
       onParentLayoutResize();
     }
-  }, [isRoot, onParentLayoutResize, layoutEventsRef, dimensions]);
+  }, [onParentLayoutResize, layoutEventsRef, dimensions]);
 
   useEffect(() => {
-    if (isRoot) {
-      return;
+    if (!layoutEventsRef) {
+      window.addEventListener('resize', onCheckDimensions);
+      return () => window.removeEventListener('resize', onCheckDimensions);
     }
 
     const { current: layoutEvents } = layoutEventsRef;
     layoutEvents.on('check-dimensions', onCheckDimensions);
 
     return () => layoutEvents.off('check-dimensions', onCheckDimensions);
-  }, [isRoot, onCheckDimensions, layoutEventsRef]);
+  }, [onCheckDimensions, layoutEventsRef]);
 };
 
 const Layout = (props) => {
@@ -158,22 +159,20 @@ const Layout = (props) => {
     dimensions,
     variableContainersRef,
   });
-
+  const { lastHeight, lastWidth } = dimensions;
   const onParentLayoutResize = useCallback(() => {
     const { current: element } = elementRef;
     const { clientWidth: width, clientHeight: height } = element;
 
     const diff =
-      type === layoutTypes.ROW
-        ? width - dimensions.lastWidth
-        : height - dimensions.lastHeight;
+      type === layoutTypes.ROW ? width - lastWidth : height - lastHeight;
 
     layoutEvents.fire('resize');
 
     if (diff !== 0) {
       containersEvents.fire('layout-resize', diff);
     }
-  }, [dimensions, type, layoutEvents, containersEvents]);
+  }, [lastHeight, lastWidth, type, layoutEvents, containersEvents]);
 
   const onCheckDimensions = useCallback(() => {
     checkDimensions();

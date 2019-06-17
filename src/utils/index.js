@@ -1,4 +1,8 @@
-// eslint-disable-next-line import/prefer-default-export
+// @ts-check
+/**
+ * @param {{ (): void; (): void; }} callback
+ * @param {number} delay
+ */
 export const debounce = (callback, delay) => {
   let timeout = null;
   return () => {
