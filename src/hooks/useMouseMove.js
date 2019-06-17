@@ -22,14 +22,14 @@ const useMouseMove = () => {
   const onRemoveListenerReff = useRef();
   const [offset, setOffset] = useState();
 
-  const removeEventListener = useCallback(() => {
+  const removeEventListener = useCallback((position) => {
     setEventListener(undefined);
     setOffset(undefined);
     if (onRemoveListenerReff.current) {
       const { current: onRemoveListener } = onRemoveListenerReff;
 
       onRemoveListenerReff.current = undefined;
-      onRemoveListener();
+      onRemoveListener(position);
     }
   }, []);
 
@@ -53,9 +53,10 @@ const useMouseMove = () => {
     [eventListener, offset],
   );
 
-  const onMouseUp = useCallback(() => {
-    removeEventListener();
-  }, [removeEventListener]);
+  const onMouseUp = useCallback(
+    (event) => removeEventListener(getPosition(event, offset)),
+    [removeEventListener, offset],
+  );
 
   useEffect(() => {
     if (eventListener) {
