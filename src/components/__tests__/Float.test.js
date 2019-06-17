@@ -2,6 +2,7 @@ import React from 'react';
 import { render, cleanup, within, fireEvent } from 'react-testing-library';
 
 import { resizeBarTypes } from '../../utils/enums';
+import { testResizeBar } from '../../utils/tests';
 import Float from '../Float';
 import LayoutContext from '../../contexts/LayoutContext';
 
@@ -25,27 +26,6 @@ const renderComponent = (props, renderFunction = render) => {
   const queries = within(float);
   queries.container = float;
   return queries;
-};
-
-const testResizeBar = ({ container, type, down, move, up, moveAfterDrop }) => {
-  const [resizeBar] = container.getElementsByClassName(
-    `rdl-resize-bar--${type}`,
-  );
-
-  fireEvent.mouseDown(resizeBar, down.event);
-  expect(resizeBar).toHaveStyle(down.style);
-
-  move.forEach(({ event, style }) => {
-    fireEvent.mouseMove(window, event);
-    expect(resizeBar).toHaveStyle(style);
-  });
-
-  fireEvent.mouseUp(resizeBar, up.event);
-  expect(resizeBar).toHaveStyle(up.style);
-  expect(container).toHaveStyle(up.floatStyle);
-
-  fireEvent.mouseUp(resizeBar, moveAfterDrop.event);
-  expect(resizeBar).toHaveStyle(moveAfterDrop.style);
 };
 
 afterEach(cleanup);
