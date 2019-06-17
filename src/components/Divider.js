@@ -43,11 +43,16 @@ const Divider = (props) => {
     onDiffLastChange,
   });
 
+  const classNameContent = classNames({
+    'rdl-divider__content': true,
+    'rdl-divider__content--active': diff,
+  });
+
   return (
     <div className={className}>
       <div
         style={style}
-        className="rdl-divider__content"
+        className={classNameContent}
         ref={elementRef}
         onMouseDown={onMouseDown}
       />

@@ -35,6 +35,7 @@ $size-divider: 6px;
     z-index: 1;
     position: absolute;
 
+    &--active,
     &:hover {
       background: var(--hover-drag-color);
     }

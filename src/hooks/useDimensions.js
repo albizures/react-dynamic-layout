@@ -1,3 +1,4 @@
+// @ts-check
 import { useLayoutEffect, useState, useCallback } from 'react';
 
 import { debounce } from '../utils';
@@ -18,11 +19,11 @@ import { debounce } from '../utils';
 
 /**
  *
- * @param {RefObject<HTMLElement>} elementRef
- * @param {boolean} required
+ * @param {React.RefObject<HTMLElement>} elementRef
+ * @param {boolean} isLive
  * @returns {UseDimensions}
  */
-const useDimensions = (elementRef, required = true) => {
+const useDimensions = (elementRef, isLive = true) => {
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
@@ -30,10 +31,12 @@ const useDimensions = (elementRef, required = true) => {
     lastHeight: 0,
   });
 
+  const { width: currentWidth, height: currentHeight } = dimensions;
+
   const checkDimensions = useCallback(() => {
     const { current: element } = elementRef;
     const { clientWidth: width, clientHeight: height } = element;
-    if (dimensions.width !== width || dimensions.height !== height) {
+    if (currentWidth !== width || currentHeight !== height) {
       setDimensions((dimensions) => ({
         width,
         height,
@@ -41,17 +44,18 @@ const useDimensions = (elementRef, required = true) => {
         lastHeight: dimensions.height,
       }));
     }
-  }, [dimensions, elementRef]);
+  }, [currentWidth, currentHeight, elementRef]);
 
   useLayoutEffect(() => {
     const { current: element } = elementRef;
-    if (required) {
+    if (isLive) {
       const saveDimensions = debounce(() => {
-        setDimensions((dimensions) => ({
-          width: element.clientWidth,
-          height: element.clientHeight,
-          lastWidth: dimensions.width,
-          lastHeight: dimensions.height,
+        const { clientWidth, clientHeight } = element;
+        setDimensions(({ width, height }) => ({
+          width: clientWidth,
+          height: clientHeight,
+          lastWidth: dimensions.width === 0 ? clientWidth : width,
+          lastHeight: dimensions.height === 0 ? clientHeight : height,
         }));
       }, 300);
 
@@ -62,7 +66,7 @@ const useDimensions = (elementRef, required = true) => {
         window.removeEventListener('resize', saveDimensions);
       };
     }
-  }, [required, elementRef]);
+  }, [isLive, elementRef]);
 
   return { dimensions, checkDimensions };
 };
