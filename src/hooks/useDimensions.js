@@ -54,8 +54,8 @@ const useDimensions = (elementRef, isLive = true) => {
         setDimensions(({ width, height }) => ({
           width: clientWidth,
           height: clientHeight,
-          lastWidth: dimensions.width === 0 ? clientWidth : width,
-          lastHeight: dimensions.height === 0 ? clientHeight : height,
+          lastWidth: width === 0 ? clientWidth : width,
+          lastHeight: height === 0 ? clientHeight : height,
         }));
       }, 300);
 

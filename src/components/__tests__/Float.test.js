@@ -53,12 +53,12 @@ describe('Float', () => {
   });
 
   describe('when `isOpen` prop changes', () => {
-    it('should fire a `check-dimensions` event', () => {
+    it('should fire a `resize` event', () => {
       const { rerender } = renderComponent({ isOpen: true });
 
       renderComponent({ isOpen: false }, rerender);
 
-      expect(fireMock).toHaveBeenCalledWith('check-dimensions');
+      expect(fireMock).toHaveBeenCalledWith('resize');
       expect(fireMock).toHaveBeenCalledTimes(1);
     });
   });

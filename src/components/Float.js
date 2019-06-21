@@ -85,7 +85,7 @@ const Float = (props) => {
 
   useEffect(() => {
     if (isOpen) {
-      layoutEvents.fire('check-dimensions');
+      layoutEvents.fire('resize');
     }
   }, [isOpen, layoutEvents]);
 
