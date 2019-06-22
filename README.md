@@ -1,59 +1,98 @@
-[![npm version](https://img.shields.io/npm/v/react-dynamic-layout.svg?style=flat-square)](https://www.npmjs.com/package/react-dynamic-layout)
-[![Build Status](https://travis-ci.org/albizures/react-dynamic-layout.svg?branch=master)](https://travis-ci.org/albizures/react-dynamic-layout)
+<h1 align="center">Welcome to react-dynamic-layout 👋</h1>
+<p>
+  <img src="https://img.shields.io/badge/version- -blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/albizures/react-dynamic-layout#readme">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/albizures/react-dynamic-layout/graphs/commit-activity">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/albizures/react-dynamic-layout/blob/master/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
+  </a>
+  <a href="https://twitter.com/_albizures">
+    <img alt="Twitter: _albizures" src="https://img.shields.io/twitter/follow/_albizures.svg?style=social" target="_blank" />
+  </a>
+</p>
 
-# React Dynamic Layout
+> React Dynamic Layout is a dock layout system inspired by [Golden Layout](https://golden-layout.com), made with react.js
 
-React Dynamic Layout is a dock layout system inspired by [Golden Layout](https://golden-layout.com), made with react.js
+### 🏠 [Homepage](https://github.com/albizures/react-dynamic-layout)
 
 ## Features
 
-* Easy way to create layouts
-* Multiple levels of hierarchy
-* Float windows
-* Panel stack
-* Multiple themes
-* Resizable
+- Easy way to create layouts
+- Multiple levels of hierarchy
+- Float windows
+- Panel stack
+- Multiple themes
+- Resizable
 
-## Installation
+## Install
 
-    $ npm install --save react-dynamic-layout
+```sh
+npm install --save react-dynamic-layout
+```
 
 ## Example
 
 ```js
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-import { Layout, Register, Container, ROW, COLUMN } from 'react-dynamic-layout';
+import { Layout, Container } from 'react-dynamic-layout';
 
-const Label = ({ text }) => <label>{ text }</label>
+import CenterName from '../components/CenterName';
 
-const Example = () => <Layout name='Main' type={COLUMN}>
-    <Container size={50}>
-        <Register type={Label} props={{ text: 'Left' }}/>
+const SimpleExample = () => (
+  <Layout type={Layout.COLUMN}>
+    <Container initialSize="30%">
+      <CenterName name="Top" />
     </Container>
-    <Container size={50} tabs={false}>
-        <Layout type={ROW} name='Right'>
-            <Container size={50}>
-                <Register type={Label} props={{ text: 'Right top - tab 1' }}/>
-                <Register type={Label} props={{ text: 'Right top - tab 2' }}/>
-            </Container>
-            <Container size={50} >
-                <Register type={Label} props={{ text: 'Right bottom - tab 1' }}/>
-                <Register type={Label} props={{ text: 'Right bottom - tab 2' }}/>
-            </Container>
-        </Layout>
+    <Container>
+      <Layout type={Layout.ROW}>
+        <Container>
+          <CenterName name="Bottom Left" />
+        </Container>
+        <Container>
+          <CenterName name="Bottom Right" />
+        </Container>
+      </Layout>
     </Container>
-</Layout>;
-ReactDOM.render(
-    <Example/>,
-    document.getElementById('root')
+  </Layout>
 );
+
+ReactDOM.render(<SimpleExample />, document.getElementById('root'));
 ```
-## TODO
-* Drag and Drop
-* Layout serialization
-* Compatibility with redux
-* Open and close tabs
-* Modals
+
+> NOTE: Look into example folder for more advanced usages
+
+## Author
+
+👤 **Jose Albizures**
+
+- Twitter: [@\_albizures](https://twitter.com/_albizures)
+- Github: [@albizures](https://github.com/albizures)
+
+## Wishlist
+
+- Drag and Drop
+- Layout serialization
+- Open and close tabs
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/albizures/react-dynamic-layout/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2019 [Jose Albizures](https://github.com/albizures).<br />
+This project is [MIT](https://github.com/albizures/react-dynamic-layout/blob/master/LICENSE) licensed.
+
+---
+
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

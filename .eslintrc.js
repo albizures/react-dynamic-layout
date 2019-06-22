@@ -1,13 +1,22 @@
 module.exports = {
   root: true,
   parser: 'babel-eslint',
-  extends: ['airbnb/base', 'prettier'],
-  plugins: ['react', 'jsx-a11y'],
+  extends: [
+    'airbnb/base',
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'prettier',
+  ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  plugins: ['react', 'jsx-a11y', 'react-hooks'],
   env: {
     browser: true,
     commonjs: true,
     es6: true,
-    node: true,
     jest: true,
   },
   parserOptions: {
@@ -20,17 +29,7 @@ module.exports = {
     },
   },
   rules: {
-    'arrow-parens': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'import/no-named-as-default': 'off',
-    'no-shadow': 'off',
-    'no-use-before-define': 'off',
-    'prefer-template': 'off',
-    'no-unused-expressions': 'off',
-    'react/jsx-uses-vars': 'error',
-    'react/jsx-uses-react': 'error',
-    'react/react-in-jsx-scope': 'error',
-    'no-plusplus': 'off',
-    'no-param-reassign': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 };

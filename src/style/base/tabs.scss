@@ -1,0 +1,32 @@
+.rdl-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    border-bottom: 1px solid black;
+  }
+
+  &__title {
+    border-right: 1px solid black;
+
+    button {
+      border: 0;
+      background: transparent;
+    }
+
+    &--active {
+      background: var(--background-active-tab);
+    }
+  }
+
+  &__content {
+    position: relative;
+    flex: auto;
+    overflow: hidden;
+  }
+}

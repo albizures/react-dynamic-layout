@@ -1,14 +1,13 @@
 import React from 'react';
-import { register } from '../../src';
+import PropTypes from 'prop-types';
 
 // NOTE: only for testing
-
 function Label(props) {
   return <label>{props.text}</label>;
 }
 
-Label.displayName = 'Label';
+Label.propTypes = {
+  text: PropTypes.string.isRequired,
+};
 
 export default Label;
-
-register(Label, 'Label');
