@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { register } from '../../src';
 
 // NOTE: only for testing
 function Label(props) {
@@ -12,5 +11,3 @@ Label.propTypes = {
 };
 
 export default Label;
-
-register(Label, 'Label');
