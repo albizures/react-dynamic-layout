@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { within, render, fireEvent } from 'react-testing-library';
+import { within, render, fireEvent } from '@testing-library/react';
 
 export const renderComponentFactory = (options, componentRender) => {
   const { defaultProps, selector } = options;

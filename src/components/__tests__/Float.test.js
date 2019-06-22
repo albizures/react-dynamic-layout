@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup, within, fireEvent } from 'react-testing-library';
+import { render, cleanup, within, fireEvent } from '@testing-library/react';
 
 import { resizeBarTypes } from '../../utils/enums';
 import { testResizeBar } from '../../utils/tests';
