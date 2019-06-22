@@ -2,6 +2,7 @@
   "name": "react-dynamic-layout",
   "version": "0.0.0-development",
   "main": "dist/index.js",
+  "description": "React Dynamic Layout is a dock layout system inspired by Golden Layout, made with react.js",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
