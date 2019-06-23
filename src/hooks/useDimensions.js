@@ -1,5 +1,5 @@
 // @ts-check
-import { useLayoutEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import { debounce } from '../utils';
 
@@ -46,7 +46,7 @@ const useDimensions = (elementRef, isLive = true) => {
     }
   }, [currentWidth, currentHeight, elementRef]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const { current: element } = elementRef;
     if (isLive) {
       const saveDimensions = debounce(() => {

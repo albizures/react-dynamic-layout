@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import useDimensions from '../hooks/useDimensions';
 import useSizeProperties from '../hooks/useSizeProperties';
 import useContextLayout from '../hooks/useContextLayout';
-import { dimensionsAreZero } from '../utils/size';
 import { getIdBy } from '../utils/keys';
 
 const { assign } = Object;
@@ -57,12 +56,6 @@ const Container = (props) => {
     containersEvents.on('layout-resize', onLayoutResize);
     return () => containersEvents.off('layout-resize', onLayoutResize);
   }, [containersEvents, onLayoutResize]);
-
-  useEffect(() => {
-    if (!dimensionsAreZero(dimensions)) {
-      setSize(dimensions[portion]);
-    }
-  }, [dimensions, portion]);
 
   if (size) {
     assign(style, { [portion]: size });
