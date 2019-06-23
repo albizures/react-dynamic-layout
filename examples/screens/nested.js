@@ -1,0 +1,46 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+
+import Layout from '../../src/components/Layout';
+import Container from '../../src/components/Container';
+
+import ShowDimensions from '../components/ShowDimensions';
+
+const Part = (props) => {
+  const { deep, type, dimensions } = props;
+  if (deep > 3) {
+    return (
+      <ShowDimensions width={dimensions.width} height={dimensions.height} />
+    );
+  }
+
+  const nextType = type === Layout.ROW ? Layout.COLUMN : Layout.ROW;
+
+  return (
+    <Layout type={type}>
+      <Container>
+        {({ dimensions }) => (
+          <ShowDimensions width={dimensions.width} height={dimensions.height} />
+        )}
+      </Container>
+      <Container>
+        {({ dimensions }) => (
+          <Part deep={deep + 1} type={nextType} dimensions={dimensions} />
+        )}
+      </Container>
+    </Layout>
+  );
+};
+
+Part.propTypes = {
+  deep: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
+  dimensions: PropTypes.object,
+};
+
+const Fibonacci = () => {
+  return <Part deep={0} type={Layout.ROW} />;
+};
+
+ReactDOM.render(<Fibonacci />, document.getElementById('root'));
