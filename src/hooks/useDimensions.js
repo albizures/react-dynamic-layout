@@ -15,6 +15,7 @@ import { debounce } from '../utils';
  * @typedef {object} UseDimensions
  * @property {Dimensions} dimensions
  * @property {Function} checkDimensions
+ * @property {(element: HTMLDivElement) => void} setElement
  */
 
 /**
@@ -68,7 +69,18 @@ const useDimensions = (elementRef, isLive = true) => {
     }
   }, [isLive, elementRef]);
 
-  return { dimensions, checkDimensions };
+  const setElement = useCallback(
+    (element) => {
+      if (element) {
+        // @ts-ignore
+        elementRef.current = element;
+        checkDimensions();
+      }
+    },
+    [elementRef, checkDimensions],
+  );
+
+  return { dimensions, checkDimensions, setElement };
 };
 
 export default useDimensions;

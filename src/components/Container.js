@@ -34,7 +34,7 @@ const Container = (props) => {
   const style = {};
 
   const elementRef = useRef();
-  const { dimensions, checkDimensions } = useDimensions(elementRef, !size);
+  const { dimensions, setElement } = useDimensions(elementRef, !size);
   const { portion } = useSizeProperties();
   const id = getIdBy(children);
   const currentSize = dimensions[portion];
@@ -72,15 +72,10 @@ const Container = (props) => {
   } else {
     assign(style, { flex: 'auto' });
   }
-
-  useEffect(() => {
-    checkDimensions();
-  }, [size, checkDimensions]);
-
   const content = getContent(dimensions, children, id);
 
   return (
-    <div ref={elementRef} className="rdl-container" style={style}>
+    <div ref={setElement} className="rdl-container" style={style}>
       {content}
     </div>
   );

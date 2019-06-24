@@ -90,7 +90,9 @@ const useLayoutDimensions = (elementRef) => {
 const Layout = (props) => {
   const variableContainersRef = useRef([]);
   const elementRef = useRef(null);
-  const { dimensions, checkDimensions } = useLayoutDimensions(elementRef);
+  const { dimensions, checkDimensions, setElement } = useLayoutDimensions(
+    elementRef,
+  );
   const { layoutEventsRef, containersEventsRef } = useEventSystem();
   const { children, type, floats } = props;
   const { current: layoutEvents } = layoutEventsRef;
@@ -174,13 +176,9 @@ const Layout = (props) => {
 
   useParentLayoutEvents({ onCheckDimensions }, dimensions);
 
-  useEffect(() => {
-    checkDimensions();
-  }, [checkDimensions]);
-
   return (
     <LayoutContext.Provider value={contextValue}>
-      <div ref={elementRef} className="rdl-layout" style={style}>
+      <div ref={setElement} className="rdl-layout" style={style}>
         {dimensionsAreZero(dimensions) ? (
           'Processing...'
         ) : (
