@@ -125,9 +125,11 @@ const Layout = (props) => {
         const { diff } = change;
 
         layoutEvents.fire('resize');
-        containersEvents.fire('resize', {
-          containers: [current, after],
+        containersEvents.fire(`resize.${current}`, {
           diff,
+        });
+        containersEvents.fire(`resize.${after}`, {
+          diff: -diff,
         });
       };
 
@@ -171,6 +173,10 @@ const Layout = (props) => {
   }, [checkDimensions]);
 
   useParentLayoutEvents({ onCheckDimensions }, dimensions);
+
+  useEffect(() => {
+    checkDimensions();
+  }, [checkDimensions]);
 
   return (
     <LayoutContext.Provider value={contextValue}>
