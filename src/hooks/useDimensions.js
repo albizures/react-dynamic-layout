@@ -32,20 +32,23 @@ const useDimensions = (elementRef, isLive = true) => {
     lastHeight: 0,
   });
 
-  const { width: currentWidth, height: currentHeight } = dimensions;
-
   const checkDimensions = useCallback(() => {
     const { current: element } = elementRef;
     const { clientWidth: width, clientHeight: height } = element;
-    if (currentWidth !== width || currentHeight !== height) {
-      setDimensions((dimensions) => ({
-        width,
-        height,
-        lastWidth: dimensions.width,
-        lastHeight: dimensions.height,
-      }));
-    }
-  }, [currentWidth, currentHeight, elementRef]);
+
+    setDimensions((dimensions) => {
+      const { width: currentWidth, height: currentHeight } = dimensions;
+      if (currentWidth !== width || currentHeight !== height) {
+        return {
+          width,
+          height,
+          lastWidth: dimensions.width,
+          lastHeight: dimensions.height,
+        };
+      }
+      return dimensions;
+    });
+  }, [elementRef]);
 
   useEffect(() => {
     const { current: element } = elementRef;

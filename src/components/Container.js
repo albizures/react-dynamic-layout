@@ -2,7 +2,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-import useDimensions from '../hooks/useDimensions';
 import useSizeProperties from '../hooks/useSizeProperties';
 import useContextLayout from '../hooks/useContextLayout';
 import { getIdBy } from '../utils/keys';
@@ -24,6 +23,22 @@ const getContent = (dimensions, children, id) => {
   return children;
 };
 
+const getDimensions = (elementRef) => {
+  const { current: element } = elementRef;
+  if (element) {
+    const { clientWidth: width, clientHeight: height } = element;
+    return {
+      width,
+      height,
+    };
+  } else {
+    return {
+      width: 0,
+      height: 0,
+    };
+  }
+};
+
 const Container = (props) => {
   const {
     containersEventsRef: { current: containersEvents },
@@ -32,17 +47,15 @@ const Container = (props) => {
   const [size, setSize] = useState();
   const { children, initialSize } = props;
   const style = {};
-
   const elementRef = useRef();
-  const { dimensions, setElement } = useDimensions(elementRef, !size);
   const { portion } = useSizeProperties();
   const id = getIdBy(children);
+  const dimensions = getDimensions(elementRef);
   const currentSize = dimensions[portion];
 
   const onLayoutResize = useCallback(
     (diff) => {
       const containerDiff = diff / variableContainers.length;
-
       setSize((size) => (size || currentSize) + containerDiff);
     },
     [variableContainers, currentSize],
@@ -65,6 +78,12 @@ const Container = (props) => {
     return () => containersEvents.off('layout-resize', onLayoutResize);
   }, [containersEvents, onLayoutResize]);
 
+  useEffect(() => {
+    if (!size && currentSize !== 0) {
+      setSize(currentSize);
+    }
+  }, [size, currentSize]);
+
   if (size) {
     assign(style, { [portion]: size });
   } else if (initialSize) {
@@ -72,10 +91,11 @@ const Container = (props) => {
   } else {
     assign(style, { flex: 'auto' });
   }
+
   const content = getContent(dimensions, children, id);
 
   return (
-    <div ref={setElement} className="rdl-container" style={style}>
+    <div ref={elementRef} className="rdl-container" style={style}>
       {content}
     </div>
   );
