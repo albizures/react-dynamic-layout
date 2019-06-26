@@ -102,6 +102,7 @@ const Layout = (props) => {
 
   const childrenArr = Children.toArray(children);
 
+  variableContainers.length = 0;
   const { content } = childrenArr.reduce(
     (result, child, index, list) => {
       const { isFixedSize, children } = child.props;
@@ -126,7 +127,6 @@ const Layout = (props) => {
       const onSizeChange = (change) => {
         const { diff } = change;
 
-        layoutEvents.fire('resize');
         containersEvents.fire(`resize.${current}`, {
           diff,
         });
@@ -160,13 +160,17 @@ const Layout = (props) => {
 
   useEffect(() => {
     const { lastHeight, lastWidth, width, height } = dimensions;
-    const diff =
-      type === layoutTypes.ROW ? width - lastWidth : height - lastHeight;
+    const diff = {
+      width: width - lastWidth,
+      height: height - lastHeight,
+    };
 
-    layoutEvents.fire('resize');
+    const containersDiff = type === layoutTypes.ROW ? diff.width : diff.height;
 
-    if (diff !== 0) {
-      containersEvents.fire('layout-resize', diff);
+    if (containersDiff !== 0) {
+      containersEvents.fire('layout-resize', containersDiff);
+    } else if (diff.width !== 0 || diff.height !== 0) {
+      layoutEvents.fire('resize');
     }
   }, [dimensions, type, layoutEvents, containersEvents]);
 

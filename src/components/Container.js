@@ -42,6 +42,7 @@ const getDimensions = (elementRef) => {
 const Container = (props) => {
   const {
     containersEventsRef: { current: containersEvents },
+    layoutEventsRef: { current: layoutEvents },
     variableContainersRef: { current: variableContainers },
   } = useContextLayout();
   const [size, setSize] = useState();
@@ -67,6 +68,10 @@ const Container = (props) => {
     },
     [currentSize],
   );
+
+  useEffect(() => {
+    layoutEvents.fire('resize');
+  }, [size, layoutEvents]);
 
   useEffect(() => {
     containersEvents.on(`resize.${id}`, onContainersResize);
