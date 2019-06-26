@@ -8,7 +8,6 @@ import useDimensions from '../hooks/useDimensions';
 import { layoutTypes } from '../utils/enums';
 import useContextLayout from '../hooks/useContextLayout';
 import { dimensionsAreZero } from '../utils/size';
-import { getIdBy } from '../utils/keys';
 import useEventSystem from '../hooks/useEventSystem';
 
 /**
@@ -105,19 +104,17 @@ const Layout = (props) => {
   variableContainers.length = 0;
   const { content } = childrenArr.reduce(
     (result, child, index, list) => {
-      const { isFixedSize, children } = child.props;
+      const { isFixedSize, id } = child.props;
       const isLast = index === list.length - 1;
       const { content } = result;
 
       content.push(child);
 
-      const current = getIdBy(children);
-
       if (isFixedSize) {
-        const index = variableContainers.indexOf(current);
+        const index = variableContainers.indexOf(id);
         variableContainers.splice(index, 1);
-      } else if (!variableContainers.includes(current)) {
-        variableContainers.push(current);
+      } else if (!variableContainers.includes(id)) {
+        variableContainers.push(id);
       }
 
       if (isFixedSize || isLast) {
@@ -127,7 +124,7 @@ const Layout = (props) => {
       const onSizeChange = (change) => {
         const { diff } = change;
 
-        containersEvents.fire(`resize.${current}`, {
+        containersEvents.fire(`resize.${id}`, {
           diff,
         });
         containersEvents.fire(`resize.${after}`, {
@@ -135,12 +132,12 @@ const Layout = (props) => {
         });
       };
 
-      const after = getIdBy(list[index + 1].props.children);
+      const after = list[index + 1].props.id;
       content.push(
         <Divider
-          before={current}
+          before={id}
           after={after}
-          key={`${current}-${after}`}
+          key={`${id}-${after}`}
           onSizeChange={onSizeChange}
         />,
       );

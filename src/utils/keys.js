@@ -16,5 +16,13 @@ export const getIdBy = (reference) => {
   counter = counter + 1;
   keys.set(reference, id);
 
-  return id;
+  return id.toString();
+};
+
+export const createId = () => {
+  const id = counter;
+
+  counter += 1;
+
+  return id.toString();
 };

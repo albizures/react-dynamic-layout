@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import useSizeProperties from '../hooks/useSizeProperties';
 import useContextLayout from '../hooks/useContextLayout';
-import { getIdBy } from '../utils/keys';
+import { createId } from '../utils/keys';
 import { dimensionsAreZero } from '../utils/size';
 
 const { assign } = Object;
@@ -46,11 +46,10 @@ const Container = (props) => {
     variableContainersRef: { current: variableContainers },
   } = useContextLayout();
   const [size, setSize] = useState();
-  const { children, initialSize } = props;
+  const { children, initialSize, id } = props;
   const style = {};
   const elementRef = useRef();
   const { portion } = useSizeProperties();
-  const id = getIdBy(children);
   const dimensions = getDimensions(elementRef);
   const currentSize = dimensions[portion];
 
@@ -100,13 +99,20 @@ const Container = (props) => {
   const content = getContent(dimensions, children, id);
 
   return (
-    <div ref={elementRef} className="rdl-container" style={style}>
+    <div data-id={id} ref={elementRef} className="rdl-container" style={style}>
       {content}
     </div>
   );
 };
 
+Container.defaultProps = {
+  get id() {
+    return createId();
+  },
+};
+
 Container.propTypes = {
+  id: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   initialSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
