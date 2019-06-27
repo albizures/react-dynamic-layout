@@ -9,7 +9,7 @@ import ShowDimensions from '../components/ShowDimensions';
 
 const Part = (props) => {
   const { deep, type, dimensions } = props;
-  if (deep > 4) {
+  if (deep >= 2) {
     return (
       <ShowDimensions width={dimensions.width} height={dimensions.height} />
     );
@@ -39,8 +39,8 @@ Part.propTypes = {
   dimensions: PropTypes.object,
 };
 
-const Fibonacci = () => {
+const Nested = () => {
   return <Part deep={0} type={Layout.ROW} />;
 };
 
-ReactDOM.render(<Fibonacci />, document.getElementById('root'));
+ReactDOM.render(<Nested />, document.getElementById('root'));

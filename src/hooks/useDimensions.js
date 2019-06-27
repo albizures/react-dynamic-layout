@@ -34,16 +34,16 @@ const useDimensions = (elementRef, isLive = true) => {
 
   const checkDimensions = useCallback(() => {
     const { current: element } = elementRef;
-    const { clientWidth: width, clientHeight: height } = element;
+    const { clientWidth, clientHeight } = element;
 
     setDimensions((dimensions) => {
-      const { width: currentWidth, height: currentHeight } = dimensions;
-      if (currentWidth !== width || currentHeight !== height) {
+      const { width, height } = dimensions;
+      if (clientWidth !== width || clientHeight !== height) {
         return {
-          width,
-          height,
-          lastWidth: dimensions.width,
-          lastHeight: dimensions.height,
+          width: clientWidth,
+          height: clientHeight,
+          lastWidth: width === 0 ? clientWidth : width,
+          lastHeight: height === 0 ? clientHeight : height,
         };
       }
       return dimensions;

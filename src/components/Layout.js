@@ -7,7 +7,6 @@ import LayoutContext from '../contexts/LayoutContext';
 import useDimensions from '../hooks/useDimensions';
 import { layoutTypes } from '../utils/enums';
 import useContextLayout from '../hooks/useContextLayout';
-import { dimensionsAreZero } from '../utils/size';
 import useEventSystem from '../hooks/useEventSystem';
 
 /**
@@ -157,6 +156,11 @@ const Layout = (props) => {
 
   useEffect(() => {
     const { lastHeight, lastWidth, width, height } = dimensions;
+
+    if (lastHeight === 0 && lastWidth === 0) {
+      return;
+    }
+
     const diff = {
       width: width - lastWidth,
       height: height - lastHeight,
@@ -180,14 +184,8 @@ const Layout = (props) => {
   return (
     <LayoutContext.Provider value={contextValue}>
       <div ref={setElement} className="rdl-layout" style={style}>
-        {dimensionsAreZero(dimensions) ? (
-          'Processing...'
-        ) : (
-          <>
-            {content}
-            {floats}
-          </>
-        )}
+        {content}
+        {floats}
       </div>
     </LayoutContext.Provider>
   );

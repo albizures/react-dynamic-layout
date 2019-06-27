@@ -45,8 +45,8 @@ const Container = (props) => {
     layoutEventsRef: { current: layoutEvents },
     variableContainersRef: { current: variableContainers },
   } = useContextLayout();
-  const [size, setSize] = useState();
   const { children, initialSize, id } = props;
+  const [size, setSize] = useState(initialSize);
   const style = {};
   const elementRef = useRef();
   const { portion } = useSizeProperties();
@@ -90,8 +90,6 @@ const Container = (props) => {
 
   if (size) {
     assign(style, { [portion]: size });
-  } else if (initialSize) {
-    assign(style, { [portion]: initialSize });
   } else {
     assign(style, { flex: 'auto' });
   }
