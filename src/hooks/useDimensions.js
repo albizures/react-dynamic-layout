@@ -1,5 +1,5 @@
 // @ts-check
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 
 import { debounce } from '../utils';
 
@@ -13,7 +13,7 @@ import { debounce } from '../utils';
 
 /**
  * @typedef {object} UseDimensions
- * @property {Dimensions} dimensions
+ * @property {object} dimensions
  * @property {Function} checkDimensions
  * @property {(element: HTMLDivElement) => void} setElement
  */
@@ -25,43 +25,38 @@ import { debounce } from '../utils';
  * @returns {UseDimensions}
  */
 const useDimensions = (elementRef, isLive = true) => {
-  const [dimensions, setDimensions] = useState({
-    width: 0,
-    height: 0,
-    lastWidth: 0,
-    lastHeight: 0,
-  });
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const lastWidthRef = useRef(0);
+  const lastHeightRef = useRef(0);
 
-  const checkDimensions = useCallback(() => {
-    const { current: element } = elementRef;
-    const { clientWidth, clientHeight } = element;
+  const checkDimensions = useMemo(() => {
+    return () => {
+      const { current: element } = elementRef;
+      const {
+        clientWidth: currentWidth,
+        clientHeight: currentHeight,
+      } = element;
 
-    setDimensions((dimensions) => {
-      const { width, height } = dimensions;
-      if (clientWidth !== width || clientHeight !== height) {
-        return {
-          width: clientWidth,
-          height: clientHeight,
-          lastWidth: width === 0 ? clientWidth : width,
-          lastHeight: height === 0 ? clientHeight : height,
-        };
-      }
-      return dimensions;
-    });
+      setWidth((width) => {
+        if (width !== currentWidth) {
+          lastWidthRef.current = width;
+        }
+
+        return currentWidth;
+      });
+      setHeight((height) => {
+        if (height !== currentWidth) {
+          lastHeightRef.current = height;
+        }
+        return currentHeight;
+      });
+    };
   }, [elementRef]);
 
   useEffect(() => {
-    const { current: element } = elementRef;
     if (isLive) {
-      const saveDimensions = debounce(() => {
-        const { clientWidth, clientHeight } = element;
-        setDimensions(({ width, height }) => ({
-          width: clientWidth,
-          height: clientHeight,
-          lastWidth: width === 0 ? clientWidth : width,
-          lastHeight: height === 0 ? clientHeight : height,
-        }));
-      }, 300);
+      const saveDimensions = debounce(checkDimensions, 300);
 
       window.addEventListener('resize', saveDimensions);
 
@@ -70,7 +65,7 @@ const useDimensions = (elementRef, isLive = true) => {
         window.removeEventListener('resize', saveDimensions);
       };
     }
-  }, [isLive, elementRef]);
+  }, [isLive, checkDimensions]);
 
   const setElement = useCallback(
     (element) => {
@@ -82,6 +77,13 @@ const useDimensions = (elementRef, isLive = true) => {
     },
     [elementRef, checkDimensions],
   );
+
+  const dimensions = {
+    width,
+    height,
+    lastWidthRef,
+    lastHeightRef,
+  };
 
   return { dimensions, checkDimensions, setElement };
 };

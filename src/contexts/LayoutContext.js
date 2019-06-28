@@ -17,7 +17,6 @@ import React from 'react';
 
 /**
  * @typedef {object} LayoutContextType
- * @property {Dimensions} dimensions
  * @property {string} [type]
  * @property {boolean} isRoot
  * @property {EventSystemRef} [layoutEventsRef]
@@ -27,12 +26,6 @@ import React from 'react';
 
 /** @type {LayoutContextType} */
 const initialValue = {
-  dimensions: {
-    width: 0,
-    height: 0,
-    lastWidth: 0,
-    lastHeight: 0,
-  },
   isRoot: true,
 };
 

@@ -9,7 +9,7 @@ import ShowDimensions from '../components/ShowDimensions';
 
 const Part = (props) => {
   const { deep, type, dimensions } = props;
-  if (deep >= 2) {
+  if (deep >= 4) {
     return (
       <ShowDimensions width={dimensions.width} height={dimensions.height} />
     );

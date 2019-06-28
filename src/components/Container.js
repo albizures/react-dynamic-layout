@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 import useSizeProperties from '../hooks/useSizeProperties';
 import useContextLayout from '../hooks/useContextLayout';
+import useDimensions from '../hooks/useDimensions';
 import { createId } from '../utils/keys';
-import { dimensionsAreZero } from '../utils/size';
 
 const { assign } = Object;
 
-const getContent = (dimensions, children, id) => {
+const getContent = (size, children, id, dimensions) => {
   const childrenIsFunction = typeof children === 'function';
 
-  if (dimensionsAreZero(dimensions)) {
+  if (!size) {
     return 'Processing2...';
   }
 
@@ -21,22 +21,6 @@ const getContent = (dimensions, children, id) => {
   }
 
   return children;
-};
-
-const getDimensions = (elementRef) => {
-  const { current: element } = elementRef;
-  if (element) {
-    const { clientWidth: width, clientHeight: height } = element;
-    return {
-      width,
-      height,
-    };
-  } else {
-    return {
-      width: 0,
-      height: 0,
-    };
-  }
 };
 
 const Container = (props) => {
@@ -50,15 +34,21 @@ const Container = (props) => {
   const style = {};
   const elementRef = useRef();
   const { portion } = useSizeProperties();
-  const dimensions = getDimensions(elementRef);
+  const { dimensions, checkDimensions } = useDimensions(elementRef, false);
   const currentSize = dimensions[portion];
+  const { width, height } = dimensions;
 
   const onLayoutResize = useCallback(
     (diff) => {
       const containerDiff = diff / variableContainers.length;
-      setSize((size) => (size || currentSize) + containerDiff);
+
+      if (diff !== 0) {
+        setSize((size) => (size || currentSize) + containerDiff);
+      }
+
+      checkDimensions();
     },
-    [variableContainers, currentSize],
+    [variableContainers, currentSize, checkDimensions],
   );
 
   const onContainersResize = useCallback(
@@ -70,7 +60,7 @@ const Container = (props) => {
 
   useEffect(() => {
     layoutEvents.fire('resize');
-  }, [size, layoutEvents]);
+  }, [width, height, layoutEvents]);
 
   useEffect(() => {
     containersEvents.on(`resize.${id}`, onContainersResize);
@@ -88,13 +78,19 @@ const Container = (props) => {
     }
   }, [size, currentSize]);
 
-  if (size) {
-    assign(style, { [portion]: size });
+  useEffect(() => {
+    checkDimensions();
+  }, [size, checkDimensions]);
+
+  if (typeof size === 'number') {
+    assign(style, { flex: `0 0 ${size}px` });
+  } else if (typeof size === 'string') {
+    assign(style, { flex: `0 0 ${size}` });
   } else {
     assign(style, { flex: 'auto' });
   }
 
-  const content = getContent(dimensions, children, id);
+  const content = getContent(size, children, id, dimensions);
 
   return (
     <div data-id={id} ref={elementRef} className="rdl-container" style={style}>

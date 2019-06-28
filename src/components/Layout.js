@@ -43,7 +43,6 @@ import useEventSystem from '../hooks/useEventSystem';
  *
  * @param {object} params
  * @param {string} params.type
- * @param {Dimensions} params.dimensions
  * @param {object} params.variableContainersRef
  * @param {object} params.layoutEventsRef
  * @param {object} params.containersEventsRef
@@ -51,7 +50,6 @@ import useEventSystem from '../hooks/useEventSystem';
  */
 const createLayoutContext = ({
   type,
-  dimensions,
   variableContainersRef,
   layoutEventsRef,
   containersEventsRef,
@@ -61,12 +59,11 @@ const createLayoutContext = ({
     containersEventsRef,
     variableContainersRef,
     isRoot: false,
-    dimensions,
     type,
   };
 };
 
-const useParentLayoutEvents = ({ onCheckDimensions }, dimensions) => {
+const useParentLayoutEvents = ({ onCheckDimensions }) => {
   const { layoutEventsRef } = useContextLayout();
   useEffect(() => {
     const isRoot = !layoutEventsRef;
@@ -76,7 +73,7 @@ const useParentLayoutEvents = ({ onCheckDimensions }, dimensions) => {
 
       return () => layoutEvents.off('resize', onCheckDimensions);
     }
-  }, [onCheckDimensions, layoutEventsRef, dimensions]);
+  }, [onCheckDimensions, layoutEventsRef]);
 };
 
 const useLayoutDimensions = (elementRef) => {
@@ -97,7 +94,7 @@ const Layout = (props) => {
   const { current: containersEvents } = containersEventsRef;
   const { current: variableContainers } = variableContainersRef;
   const style = { flexDirection: type };
-
+  const { lastHeightRef, lastWidthRef, width, height } = dimensions;
   const childrenArr = Children.toArray(children);
 
   variableContainers.length = 0;
@@ -150,36 +147,49 @@ const Layout = (props) => {
     layoutEventsRef,
     containersEventsRef,
     type,
-    dimensions,
     variableContainersRef,
   });
 
   useEffect(() => {
-    const { lastHeight, lastWidth, width, height } = dimensions;
+    const { current: lastWidth } = lastWidthRef;
+    const { current: lastHeight } = lastHeightRef;
+    const diff = {
+      width: 0,
+      height: 0,
+    };
 
-    if (lastHeight === 0 && lastWidth === 0) {
-      return;
+    if (!(width === 0 || lastWidth === 0)) {
+      diff.width = width - lastWidth;
     }
 
-    const diff = {
-      width: width - lastWidth,
-      height: height - lastHeight,
-    };
+    if (!(height === 0 || lastHeight === 0)) {
+      diff.height = height - lastHeight;
+    }
 
     const containersDiff = type === layoutTypes.ROW ? diff.width : diff.height;
 
-    if (containersDiff !== 0) {
-      containersEvents.fire('layout-resize', containersDiff);
-    } else if (diff.width !== 0 || diff.height !== 0) {
+    containersEvents.fire('layout-resize', containersDiff);
+    lastWidthRef.current = width;
+    lastHeightRef.current = height;
+
+    if (diff.width !== 0 || diff.height !== 0) {
       layoutEvents.fire('resize');
     }
-  }, [dimensions, type, layoutEvents, containersEvents]);
+  }, [
+    type,
+    layoutEvents,
+    containersEvents,
+    width,
+    height,
+    lastWidthRef,
+    lastHeightRef,
+  ]);
 
   const onCheckDimensions = useCallback(() => {
     checkDimensions();
   }, [checkDimensions]);
 
-  useParentLayoutEvents({ onCheckDimensions }, dimensions);
+  useParentLayoutEvents({ onCheckDimensions });
 
   return (
     <LayoutContext.Provider value={contextValue}>
