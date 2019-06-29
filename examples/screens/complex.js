@@ -42,11 +42,16 @@ const Complex = () => {
   ];
   return (
     <Layout floats={floats} type={Layout.ROW}>
-      <Container initialSize="50%">
-        {() => (
-          <button onClick={() => setIsModalOpen(toggle)}>
-            {isModalOpen ? 'Close' : 'Open'}
-          </button>
+      <Container initialSize="20%">
+        <button onClick={() => setIsModalOpen(toggle)}>
+          {isModalOpen ? 'Close' : 'Open'}
+        </button>
+      </Container>
+      <Container isFixedSize={true} initialSize="20%">
+        {({ dimensions }) => (
+          <CenterName
+            name={`Tab 1 - ${dimensions.width} x ${dimensions.height}`}
+          />
         )}
       </Container>
       <Container>
