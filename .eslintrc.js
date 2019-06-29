@@ -29,6 +29,8 @@ module.exports = {
     },
   },
   rules: {
+    'consistent-return': 'off',
+    'no-param-reassign': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
   },

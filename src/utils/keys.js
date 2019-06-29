@@ -13,7 +13,7 @@ export const getIdBy = (reference) => {
   }
 
   const id = counter.toString();
-  counter = counter + 1;
+  counter += 1;
   keys.set(reference, id);
 
   return id.toString();

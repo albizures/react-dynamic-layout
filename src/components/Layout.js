@@ -102,13 +102,13 @@ const Layout = (props) => {
     (result, child, index, list) => {
       const { isFixedSize, id } = child.props;
       const isLast = index === list.length - 1;
-      const { content } = result;
+      const { content: currentContent } = result;
 
-      content.push(child);
+      currentContent.push(child);
 
       if (isFixedSize) {
-        const index = variableContainers.indexOf(id);
-        variableContainers.splice(index, 1);
+        const indexContainer = variableContainers.indexOf(id);
+        variableContainers.splice(indexContainer, 1);
       } else if (!variableContainers.includes(id)) {
         variableContainers.push(id);
       }
@@ -116,6 +116,8 @@ const Layout = (props) => {
       if (isFixedSize || isLast) {
         return result;
       }
+
+      const after = list[index + 1].props.id;
 
       const onSizeChange = (change) => {
         const { diff } = change;
@@ -128,8 +130,7 @@ const Layout = (props) => {
         });
       };
 
-      const after = list[index + 1].props.id;
-      content.push(
+      currentContent.push(
         <Divider
           before={id}
           after={after}

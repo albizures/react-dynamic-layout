@@ -8,8 +8,9 @@ import Container from '../../src/components/Container';
 import ShowDimensions from '../components/ShowDimensions';
 
 const Part = (props) => {
-  const { deep, type, dimensions } = props;
+  const { deep, type } = props;
   if (deep >= 4) {
+    const { dimensions } = props;
     return (
       <ShowDimensions width={dimensions.width} height={dimensions.height} />
     );

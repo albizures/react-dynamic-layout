@@ -18,8 +18,8 @@ const Divider = (props) => {
   };
 
   const onDiffChange = useCallback(
-    (diff) => {
-      const { left, top } = diff;
+    (newDiff) => {
+      const { left, top } = newDiff;
       const currentDiff = isRow ? left : top;
 
       setDiff(currentDiff);
@@ -28,8 +28,8 @@ const Divider = (props) => {
   );
 
   const onDiffLastChange = useCallback(
-    (diff) => {
-      const { left, top } = diff;
+    (newDiff) => {
+      const { left, top } = newDiff;
       const currentDiff = isRow ? left : top;
 
       onSizeChange({ before, after, diff: currentDiff });

@@ -43,10 +43,10 @@ const { assign, keys } = Object;
 const resize = (state, diff) => {
   const diffByElement = diff / state.variableSizes.length;
 
-  const map = state.variableSizes.reduce((map, key) => {
-    map[key].size.px = map[key].size.px + diffByElement;
+  const map = state.variableSizes.reduce((currentMap, key) => {
+    currentMap[key].size.px += diffByElement;
 
-    return map;
+    return currentMap;
   }, state.map);
 
   return {
@@ -67,7 +67,7 @@ export const reducer = (state, action) => {
   const { map, keyList } = state;
 
   if (Array.isArray(action)) {
-    return action.reduce((state, action) => reducer(state, action), state);
+    return action.reduce(reducer, state);
   }
 
   switch (type) {
@@ -134,8 +134,8 @@ export const actions = {
    * @param {Action[]} actions
    * @returns {Action[]}
    */
-  batch(actions) {
-    return actions;
+  batch(actionsBatch) {
+    return actionsBatch;
   },
 
   /**

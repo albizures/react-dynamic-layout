@@ -8,6 +8,8 @@ import Float from '../../src/components/Float';
 
 import CenterName from '../components/CenterName';
 
+const toggle = (val) => !val;
+
 const Complex = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const floats = [
@@ -21,7 +23,7 @@ const Complex = () => {
     >
       <Layout type={Layout.COLUMN}>
         <Container>
-          <button onClick={() => setIsModalOpen((isModalOpen) => !isModalOpen)}>
+          <button onClick={() => setIsModalOpen(toggle)}>
             {isModalOpen ? 'Close' : 'Open'}
           </button>
         </Container>
@@ -42,7 +44,7 @@ const Complex = () => {
     <Layout floats={floats} type={Layout.ROW}>
       <Container initialSize="50%">
         {() => (
-          <button onClick={() => setIsModalOpen((isModalOpen) => !isModalOpen)}>
+          <button onClick={() => setIsModalOpen(toggle)}>
             {isModalOpen ? 'Close' : 'Open'}
           </button>
         )}

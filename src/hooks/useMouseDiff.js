@@ -18,7 +18,9 @@ const useMouseDiff = (options) => {
         left: currentPosition.left - initialPosition.left,
         top: currentPosition.top - initialPosition.top,
       };
-      onDiffChange && onDiffChange(diffRef.current);
+      if (onDiffChange) {
+        onDiffChange(diffRef.current);
+      }
     },
     [onDiffChange],
   );
@@ -26,7 +28,9 @@ const useMouseDiff = (options) => {
   const onRemoveListener = useCallback(
     (currentPosition) => {
       setDiff(currentPosition);
-      onDiffLastChange && onDiffLastChange(diffRef.current);
+      if (onDiffLastChange) {
+        onDiffLastChange(diffRef.current);
+      }
     },
     [onDiffLastChange, setDiff],
   );

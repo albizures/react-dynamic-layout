@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import Label from './Label';
 
-function Size(props) {
-  return <Label text={props.rdWidth + 'x' + props.rdHeight} />;
+function Size({ rdWidth, rdHeight }) {
+  return <Label text={`${rdWidth}x${rdHeight}`} />;
 }
 
 Size.propTypes = {

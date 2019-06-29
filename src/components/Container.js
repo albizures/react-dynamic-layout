@@ -43,7 +43,7 @@ const Container = (props) => {
       const containerDiff = diff / variableContainers.length;
 
       if (diff !== 0) {
-        setSize((size) => (size || currentSize) + containerDiff);
+        setSize((lastSize) => (lastSize || currentSize) + containerDiff);
       }
 
       checkDimensions();
@@ -53,7 +53,7 @@ const Container = (props) => {
 
   const onContainersResize = useCallback(
     ({ diff }) => {
-      setSize((size) => (size || currentSize) + diff);
+      setSize((lastSize) => (lastSize || currentSize) + diff);
     },
     [currentSize],
   );

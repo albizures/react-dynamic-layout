@@ -38,16 +38,16 @@ const useDimensions = (elementRef, isLive = true) => {
         clientHeight: currentHeight,
       } = element;
 
-      setWidth((width) => {
-        if (width !== currentWidth) {
-          lastWidthRef.current = width;
+      setWidth((lastWidth) => {
+        if (lastWidth !== currentWidth) {
+          lastWidthRef.current = lastWidth;
         }
 
         return currentWidth;
       });
-      setHeight((height) => {
-        if (height !== currentWidth) {
-          lastHeightRef.current = height;
+      setHeight((lastHeight) => {
+        if (lastHeight !== currentWidth) {
+          lastHeightRef.current = lastHeight;
         }
         return currentHeight;
       });
