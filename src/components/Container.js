@@ -73,7 +73,7 @@ const Container = (props) => {
   }, [containersEvents, onLayoutResize]);
 
   useEffect(() => {
-    if (!size && currentSize !== 0) {
+    if ((!size || typeof size === 'string') && currentSize !== 0) {
       setSize(currentSize);
     }
   }, [size, currentSize]);
