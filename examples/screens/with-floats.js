@@ -5,6 +5,8 @@ import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 import Float from '../../src/components/Float';
 
+const toggle = (val) => !val;
+
 const WithFloats = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const floats = [
@@ -18,7 +20,7 @@ const WithFloats = () => {
     >
       <Layout type={Layout.COLUMN}>
         <Container>
-          <button onClick={() => setIsModalOpen((isModalOpen) => !isModalOpen)}>
+          <button onClick={() => setIsModalOpen(toggle)}>
             {isModalOpen ? 'Close' : 'Open'}
           </button>
         </Container>
@@ -28,7 +30,7 @@ const WithFloats = () => {
   return (
     <Layout floats={floats} type={Layout.COLUMN}>
       <Container>
-        <button onClick={() => setIsModalOpen((isModalOpen) => !isModalOpen)}>
+        <button onClick={() => setIsModalOpen(toggle)}>
           {isModalOpen ? 'Close' : 'Open'}
         </button>
       </Container>

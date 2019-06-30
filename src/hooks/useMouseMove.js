@@ -34,7 +34,7 @@ const useMouseMove = () => {
   }, []);
 
   const addEventListener = useCallback(
-    (onMouseMove, { offset, onRemoveListener } = {}) => {
+    (onMouseMove, { offset: newOffset, onRemoveListener } = {}) => {
       // NOTE: the extra arrow function is needed
       // because onMouseMove is a function and
       // if it's only provided to setEventListener,
@@ -42,7 +42,7 @@ const useMouseMove = () => {
       // to generate the next state.
       setEventListener(() => onMouseMove);
       onRemoveListenerReff.current = onRemoveListener;
-      setOffset(offset);
+      setOffset(newOffset);
       return removeEventListener;
     },
     [removeEventListener],

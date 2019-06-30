@@ -9,7 +9,7 @@ import useMouseDiff from '../hooks/useMouseDiff';
 const Divider = (props) => {
   const elementRef = useRef();
   const [diff, setDiff] = useState(undefined);
-  const { before, after, onSizeChange } = props;
+  const { before, after, containersEvents } = props;
   const { type: typeLayout } = useContextLayout();
   const className = classNames('rdl-divider', `rdl-divider--${typeLayout}`);
   const isRow = typeLayout === layoutTypes.ROW;
@@ -18,8 +18,8 @@ const Divider = (props) => {
   };
 
   const onDiffChange = useCallback(
-    (diff) => {
-      const { left, top } = diff;
+    (newDiff) => {
+      const { left, top } = newDiff;
       const currentDiff = isRow ? left : top;
 
       setDiff(currentDiff);
@@ -28,14 +28,19 @@ const Divider = (props) => {
   );
 
   const onDiffLastChange = useCallback(
-    (diff) => {
-      const { left, top } = diff;
+    (newDiff) => {
+      const { left, top } = newDiff;
       const currentDiff = isRow ? left : top;
 
-      onSizeChange({ before, after, diff: currentDiff });
+      containersEvents.fire(`resize.${before}`, {
+        diff: currentDiff,
+      });
+      containersEvents.fire(`resize.${after}`, {
+        diff: -currentDiff,
+      });
       setDiff(undefined);
     },
-    [before, after, onSizeChange, isRow],
+    [before, after, isRow, containersEvents],
   );
 
   const onMouseDown = useMouseDiff({
@@ -61,9 +66,9 @@ const Divider = (props) => {
 };
 
 Divider.propTypes = {
-  onSizeChange: PropTypes.func.isRequired,
   before: PropTypes.string.isRequired,
   after: PropTypes.string.isRequired,
+  containersEvents: PropTypes.object.isRequired,
 };
 
 export default Divider;

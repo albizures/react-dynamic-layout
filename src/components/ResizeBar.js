@@ -78,13 +78,13 @@ const ResizeBar = (props) => {
 
   const style = getDiff(type, diff);
 
-  const onDiffChange = useCallback((diff) => {
-    setDiff(diff);
+  const onDiffChange = useCallback((newDiff) => {
+    setDiff(newDiff);
   }, []);
 
   const onDiffLastChange = useCallback(
-    (diff) => {
-      onSizeChange(getDiff(type, diff));
+    (newDiff) => {
+      onSizeChange(getDiff(type, newDiff));
       setDiff(undefined);
     },
     [onSizeChange, type],

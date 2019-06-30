@@ -17,8 +17,6 @@ import useEventSystem from '../hooks/useEventSystem';
  * @typedef {import('../utils/events').OnEvent} OnEvent
  * @typedef {import('../utils/events').OffEvent} OffEvent
  * @typedef {import('../utils/events').FireEvent} FireEvent
- * @typedef {import('../store/containers').ContainersState} ContainersState
- * @typedef {import('../store/containers').Container} Container
  */
 
 /**
@@ -98,50 +96,36 @@ const Layout = (props) => {
   const childrenArr = Children.toArray(children);
 
   variableContainers.length = 0;
-  const { content } = childrenArr.reduce(
-    (result, child, index, list) => {
-      const { isFixedSize, id } = child.props;
-      const isLast = index === list.length - 1;
-      const { content } = result;
+  const content = childrenArr.reduce((result, child, index, list) => {
+    const { isFixedSize, id } = child.props;
+    const isLast = index === list.length - 1;
 
-      content.push(child);
+    result.push(child);
 
-      if (isFixedSize) {
-        const index = variableContainers.indexOf(id);
-        variableContainers.splice(index, 1);
-      } else if (!variableContainers.includes(id)) {
-        variableContainers.push(id);
-      }
+    if (isFixedSize) {
+      const indexContainer = variableContainers.indexOf(id);
+      variableContainers.splice(indexContainer, 1);
+    } else if (!variableContainers.includes(id)) {
+      variableContainers.push(id);
+    }
 
-      if (isFixedSize || isLast) {
-        return result;
-      }
-
-      const onSizeChange = (change) => {
-        const { diff } = change;
-
-        containersEvents.fire(`resize.${id}`, {
-          diff,
-        });
-        containersEvents.fire(`resize.${after}`, {
-          diff: -diff,
-        });
-      };
-
-      const after = list[index + 1].props.id;
-      content.push(
-        <Divider
-          before={id}
-          after={after}
-          key={`${id}-${after}`}
-          onSizeChange={onSizeChange}
-        />,
-      );
-
+    if (isFixedSize || isLast) {
       return result;
-    },
-    { content: [] },
-  );
+    }
+
+    const after = list[index + 1].props.id;
+
+    result.push(
+      <Divider
+        before={id}
+        after={after}
+        containersEvents={containersEvents}
+        key={`${id}-${after}`}
+      />,
+    );
+
+    return result;
+  }, []);
 
   const contextValue = createLayoutContext({
     layoutEventsRef,

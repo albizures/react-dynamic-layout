@@ -43,7 +43,7 @@ const Container = (props) => {
       const containerDiff = diff / variableContainers.length;
 
       if (diff !== 0) {
-        setSize((size) => (size || currentSize) + containerDiff);
+        setSize((lastSize) => (lastSize || currentSize) + containerDiff);
       }
 
       checkDimensions();
@@ -53,7 +53,7 @@ const Container = (props) => {
 
   const onContainersResize = useCallback(
     ({ diff }) => {
-      setSize((size) => (size || currentSize) + diff);
+      setSize((lastSize) => (lastSize || currentSize) + diff);
     },
     [currentSize],
   );
@@ -73,7 +73,7 @@ const Container = (props) => {
   }, [containersEvents, onLayoutResize]);
 
   useEffect(() => {
-    if (!size && currentSize !== 0) {
+    if ((!size || typeof size === 'string') && currentSize !== 0) {
       setSize(currentSize);
     }
   }, [size, currentSize]);
@@ -106,8 +106,9 @@ Container.defaultProps = {
 };
 
 Container.propTypes = {
-  id: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+  id: PropTypes.string,
+  isFixedSize: PropTypes.bool,
   initialSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
