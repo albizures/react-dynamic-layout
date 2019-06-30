@@ -35,9 +35,11 @@
     "react": ">= 16.8 < 17",
     "prop-types": "*"
   },
+  "types": "index.d.ts",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "index.d.ts"
   ],
   "dependencies": {
     "classnames": "^2.2.6",

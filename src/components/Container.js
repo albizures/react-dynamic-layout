@@ -108,6 +108,7 @@ Container.defaultProps = {
 Container.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   id: PropTypes.string,
+  isFixedSize: PropTypes.bool,
   initialSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
