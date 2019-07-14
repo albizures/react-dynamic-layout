@@ -2,7 +2,6 @@ import React, { useCallback, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { layoutTypes } from '../utils/enums';
 import useContextLayout from '../hooks/useContextLayout';
 import useMouseDiff from '../hooks/useMouseDiff';
 
@@ -12,7 +11,7 @@ const Divider = (props) => {
   const { before, after, containersEvents } = props;
   const { type: typeLayout } = useContextLayout();
   const className = classNames('rdl-divider', `rdl-divider--${typeLayout}`);
-  const isRow = typeLayout === layoutTypes.ROW;
+  const isRow = typeLayout === 'row';
   const style = {
     [isRow ? 'left' : 'top']: diff,
   };

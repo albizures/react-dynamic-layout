@@ -1,7 +1,5 @@
 // @ts-check
 
-import { layoutTypes } from './enums';
-
 /**
  * @typedef {import('../hooks/useDimensions').Dimensions} Dimensions
  */
@@ -24,7 +22,7 @@ import { layoutTypes } from './enums';
  * @returns {SizeProperty}
  */
 export const getSizeProperty = (type) => {
-  if (type === layoutTypes.ROW) {
+  if (type === 'row') {
     return { portion: 'width', total: 'height' };
   }
 

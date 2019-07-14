@@ -6,14 +6,15 @@ import useSizeProperties from '../hooks/useSizeProperties';
 import useContextLayout from '../hooks/useContextLayout';
 import useDimensions from '../hooks/useDimensions';
 import { createId } from '../utils/keys';
+import { dimensionsAreZero } from '../utils/size';
 
 const { assign } = Object;
 
 const getContent = (size, children, id, dimensions) => {
   const childrenIsFunction = typeof children === 'function';
 
-  if (!size) {
-    return 'Processing2...';
+  if (!size || dimensionsAreZero(dimensions)) {
+    return null;
   }
 
   if (childrenIsFunction) {
@@ -29,7 +30,7 @@ const Container = (props) => {
     layoutEventsRef: { current: layoutEvents },
     variableContainersRef: { current: variableContainers },
   } = useContextLayout();
-  const { children, initialSize, id } = props;
+  const { children, initialSize, id, isFixedSize } = props;
   const [size, setSize] = useState(initialSize);
   const style = {};
   const elementRef = useRef();
@@ -48,7 +49,7 @@ const Container = (props) => {
 
       checkDimensions();
     },
-    [variableContainers, currentSize, checkDimensions],
+    [variableContainers.length, currentSize, checkDimensions],
   );
 
   const onContainersResize = useCallback(
@@ -68,15 +69,18 @@ const Container = (props) => {
   }, [containersEvents, onContainersResize, id]);
 
   useEffect(() => {
+    if (isFixedSize) {
+      return;
+    }
     containersEvents.on('layout-resize', onLayoutResize);
     return () => containersEvents.off('layout-resize', onLayoutResize);
-  }, [containersEvents, onLayoutResize]);
+  }, [containersEvents, onLayoutResize, isFixedSize]);
 
   useEffect(() => {
     if ((!size || typeof size === 'string') && currentSize !== 0) {
       setSize(currentSize);
     }
-  }, [size, currentSize]);
+  }, [size, currentSize, id]);
 
   useEffect(() => {
     checkDimensions();

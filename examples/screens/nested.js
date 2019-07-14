@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 
-import ShowDimensions from '../components/ShowDimensions';
+import ShowDimensions from '../components/ShowDimensions.tsx';
 
 const Part = (props) => {
   const { deep, type } = props;

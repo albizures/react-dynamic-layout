@@ -5,7 +5,7 @@ import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 import Tabs from '../../src/components/Tabs';
 
-import CenterName from '../components/CenterName';
+import CenterName from '../components/CenterName.tsx';
 
 const WidthTabs = () => {
   const [tab, setTab] = useState();

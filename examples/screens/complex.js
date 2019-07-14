@@ -6,7 +6,7 @@ import Container from '../../src/components/Container';
 import Tabs from '../../src/components/Tabs';
 import Float from '../../src/components/Float';
 
-import CenterName from '../components/CenterName';
+import CenterName from '../components/CenterName.tsx';
 
 const toggle = (val) => !val;
 

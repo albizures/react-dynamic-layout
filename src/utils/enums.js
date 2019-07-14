@@ -1,11 +1,4 @@
-/**
- * @readonly
- * @enum {string}
- */
-export const layoutTypes = {
-  ROW: 'row',
-  COLUMN: 'column',
-};
+// @ts-check
 
 /**
  * @readonly

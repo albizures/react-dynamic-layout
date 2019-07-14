@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import Divider from './Divider';
 import LayoutContext from '../contexts/LayoutContext';
 import useDimensions from '../hooks/useDimensions';
-import { layoutTypes } from '../utils/enums';
 import useContextLayout from '../hooks/useContextLayout';
 import useEventSystem from '../hooks/useEventSystem';
 
 /**
+ * @typedef {import('../types').Layout} LayoutType
  * @typedef {import('../hooks/useDimensions').Dimensions} Dimensions
  * @typedef {import('../contexts/LayoutContext').LayoutContextType} LayoutContextType
  * @typedef {import('../utils/size').SizeDescriptor} SizeDescriptor
@@ -80,6 +80,7 @@ const useLayoutDimensions = (elementRef) => {
   return useDimensions(elementRef, isRoot);
 };
 
+/** @type {LayoutType} */
 const Layout = (props) => {
   const variableContainersRef = useRef([]);
   const elementRef = useRef(null);
@@ -93,10 +94,18 @@ const Layout = (props) => {
   const { current: variableContainers } = variableContainersRef;
   const style = { flexDirection: type };
   const { lastHeightRef, lastWidthRef, width, height } = dimensions;
+
   const childrenArr = Children.toArray(children);
 
   variableContainers.length = 0;
-  const content = childrenArr.reduce((result, child, index, list) => {
+
+  /**
+   * @param {React.ReactNode[]} result
+   * @param {React.ReactNode & { props: object }} child
+   * @param {number} index
+   * @param {Array<{ props: object }>} list
+   */
+  const reducer = (result, child, index, list) => {
     const { isFixedSize, id } = child.props;
     const isLast = index === list.length - 1;
 
@@ -104,7 +113,9 @@ const Layout = (props) => {
 
     if (isFixedSize) {
       const indexContainer = variableContainers.indexOf(id);
-      variableContainers.splice(indexContainer, 1);
+      if (indexContainer !== -1) {
+        variableContainers.splice(indexContainer, 1);
+      }
     } else if (!variableContainers.includes(id)) {
       variableContainers.push(id);
     }
@@ -113,7 +124,13 @@ const Layout = (props) => {
       return result;
     }
 
-    const after = list[index + 1].props.id;
+    const next = list[index + 1];
+    const after = next.props.id;
+    const nextHasFixedSize = next.props.isFixedSize;
+
+    if (nextHasFixedSize) {
+      return result;
+    }
 
     result.push(
       <Divider
@@ -125,7 +142,11 @@ const Layout = (props) => {
     );
 
     return result;
-  }, []);
+  };
+  /** @type {React.ReactNode[]} */
+  const initContent = [];
+  // @ts-ignore
+  const content = childrenArr.reduce(reducer, initContent);
 
   const contextValue = createLayoutContext({
     layoutEventsRef,
@@ -150,7 +171,7 @@ const Layout = (props) => {
       diff.height = height - lastHeight;
     }
 
-    const containersDiff = type === layoutTypes.ROW ? diff.width : diff.height;
+    const containersDiff = type === 'row' ? diff.width : diff.height;
 
     containersEvents.fire('layout-resize', containersDiff);
     lastWidthRef.current = width;
@@ -185,17 +206,18 @@ const Layout = (props) => {
   );
 };
 
-Layout.defaultValues = {
-  type: layoutTypes.ROW,
+Layout.defaultProps = {
+  type: 'row',
   floats: [],
 };
 
 Layout.propTypes = {
   floats: PropTypes.array,
   children: PropTypes.node.isRequired,
-  type: PropTypes.oneOf(Object.values(layoutTypes)),
+  type: PropTypes.oneOf(['row', 'column']),
 };
 
-Object.assign(Layout, layoutTypes);
+Layout.ROW = 'row';
+Layout.COLUMN = 'column';
 
 export default Layout;
