@@ -1,4 +1,7 @@
-type LayoutType = 'row' | 'column';
+enum LayoutType {
+  ROW = 'row',
+  COLUMN = 'column',
+}
 type Dimensions = {
   height: number;
   width: number;
@@ -22,13 +25,13 @@ type Container = React.FC<ContainerProps>;
 
 type LayoutProps = {
   floats?: React.ReactNode;
-  type?: 'row' | 'column';
+  type?: LayoutType;
   children: React.ReactNode;
 };
 
 type Layout = React.FC<LayoutProps> & {
-  ROW: 'row';
-  COLUMN: 'column';
+  ROW: LayoutType.ROW;
+  COLUMN: LayoutType.COLUMN;
 };
 
 export {

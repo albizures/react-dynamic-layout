@@ -1,13 +1,7 @@
-/* eslint-disable import/prefer-default-export */
 const keys = new WeakMap();
 let counter = 0;
 
-/**
- *
- * @param {object} reference
- * @returns {string}
- */
-export const getIdBy = (reference) => {
+const getIdBy = (reference: object): string => {
   if (keys.has(reference)) {
     return keys.get(reference);
   }
@@ -19,10 +13,12 @@ export const getIdBy = (reference) => {
   return id.toString();
 };
 
-export const createId = () => {
+const createId = (): string => {
   const id = counter;
 
   counter += 1;
 
   return id.toString();
 };
+
+export { getIdBy, createId };

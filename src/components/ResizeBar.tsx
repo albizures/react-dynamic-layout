@@ -1,65 +1,64 @@
 import React, { useRef, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { resizeBarTypes } from '../utils/enums';
-import useMouseDiff from '../hooks/useMouseDiff';
+import { ResizeBarTypes } from '../utils/enums';
+import useMouseDiff, { Position } from '../hooks/useMouseDiff';
 
-const resizeBarTypesList = Object.values(resizeBarTypes);
+const ResizeBarTypesList = Object.values(ResizeBarTypes);
 
-const getDiff = (type, diff) => {
+const getDiff = (type: ResizeBarTypes, diff: Position | undefined) => {
   if (!diff) {
     return undefined;
   }
 
   const { left, top } = diff;
 
-  if (type === resizeBarTypes.NORTH) {
+  if (type === ResizeBarTypes.NORTH) {
     return {
       top,
     };
   }
 
-  if (type === resizeBarTypes.SOUTH) {
+  if (type === ResizeBarTypes.SOUTH) {
     return {
       bottom: -top,
     };
   }
 
-  if (type === resizeBarTypes.EAST) {
+  if (type === ResizeBarTypes.EAST) {
     return {
       right: -left,
     };
   }
 
-  if (type === resizeBarTypes.WEST) {
+  if (type === ResizeBarTypes.WEST) {
     return {
       left,
     };
   }
 
-  if (type === resizeBarTypes.SOUTH_EAST) {
+  if (type === ResizeBarTypes.SOUTH_EAST) {
     return {
       bottom: -top,
       right: -left,
     };
   }
 
-  if (type === resizeBarTypes.SOUTH_WEST) {
+  if (type === ResizeBarTypes.SOUTH_WEST) {
     return {
       bottom: -top,
       left,
     };
   }
 
-  if (type === resizeBarTypes.NORTH_EAST) {
+  if (type === ResizeBarTypes.NORTH_EAST) {
     return {
       top,
       right: -left,
     };
   }
 
-  if (type === resizeBarTypes.NORTH_WEST) {
+  if (type === ResizeBarTypes.NORTH_WEST) {
     return {
       top,
       left,
@@ -67,13 +66,18 @@ const getDiff = (type, diff) => {
   }
 };
 
-const ResizeBar = (props) => {
-  const [diff, setDiff] = useState(undefined);
+interface PropType {
+  type: ResizeBarTypes;
+  onSizeChange: Function;
+}
+
+const ResizeBar: React.FC<PropType> = (props) => {
+  const [diff, setDiff] = useState<Position>();
   const { type, onSizeChange } = props;
-  const elementRef = useRef();
+  const elementRef = useRef<HTMLDivElement>(null);
   const className = classNames({
     'rdl-resize-bar': true,
-    [`rdl-resize-bar--${type}`]: resizeBarTypesList.includes(type),
+    [`rdl-resize-bar--${type}`]: ResizeBarTypesList.includes(type),
   });
 
   const style = getDiff(type, diff);
@@ -103,16 +107,6 @@ const ResizeBar = (props) => {
       className={className}
     />
   );
-};
-
-ResizeBar.defaultProps = {
-  isModal: false,
-  closeLabel: 'Close',
-};
-
-ResizeBar.propTypes = {
-  type: PropTypes.oneOf(Object.values(resizeBarTypes)).isRequired,
-  onSizeChange: PropTypes.func.isRequired,
 };
 
 export default ResizeBar;

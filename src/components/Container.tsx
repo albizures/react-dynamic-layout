@@ -1,16 +1,25 @@
 // @ts-check
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 
 import useSizeProperties from '../hooks/useSizeProperties';
 import useContextLayout from '../hooks/useContextLayout';
-import useDimensions from '../hooks/useDimensions';
+import useDimensions, { Dimensions } from '../hooks/useDimensions';
 import { createId } from '../utils/keys';
 import { dimensionsAreZero } from '../utils/size';
 
 const { assign } = Object;
 
-const getContent = (size, children, id, dimensions) => {
+type RenderChildren = (options: {
+  dimensions: Dimensions;
+  id: string | undefined;
+}) => React.ReactNode;
+
+const getContent = (
+  size: number | string | undefined,
+  children: RenderChildren | React.ReactNode,
+  id: string | undefined,
+  dimensions: Dimensions,
+) => {
   const childrenIsFunction = typeof children === 'function';
 
   if (!size || dimensionsAreZero(dimensions)) {
@@ -18,22 +27,29 @@ const getContent = (size, children, id, dimensions) => {
   }
 
   if (childrenIsFunction) {
-    return children({ dimensions, id });
+    return (children as RenderChildren)({ dimensions, id });
   }
 
   return children;
 };
 
-const Container = (props) => {
+interface PropTypes {
+  children: RenderChildren | React.ReactNode;
+  initialSize?: number | string;
+  id?: string;
+  isFixedSize?: boolean;
+}
+
+const Container: React.FC<PropTypes> = (props) => {
   const {
     containersEventsRef: { current: containersEvents },
     layoutEventsRef: { current: layoutEvents },
     variableContainersRef: { current: variableContainers },
   } = useContextLayout();
-  const { children, initialSize, id, isFixedSize } = props;
+  const { children, initialSize, id, isFixedSize = false } = props;
   const [size, setSize] = useState(initialSize);
   const style = {};
-  const elementRef = useRef();
+  const elementRef = useRef<HTMLDivElement>(null);
   const { portion } = useSizeProperties();
   const { dimensions, checkDimensions } = useDimensions(elementRef, false);
   const currentSize = dimensions[portion];
@@ -41,7 +57,7 @@ const Container = (props) => {
 
   const onLayoutResize = useCallback(
     (diff) => {
-      const containerDiff = diff / variableContainers.length;
+      const containerDiff = diff / variableContainers!.length;
 
       if (diff !== 0) {
         setSize((lastSize) => (lastSize || currentSize) + containerDiff);
@@ -49,7 +65,7 @@ const Container = (props) => {
 
       checkDimensions();
     },
-    [variableContainers.length, currentSize, checkDimensions],
+    [variableContainers!.length, currentSize, checkDimensions],
   );
 
   const onContainersResize = useCallback(
@@ -60,20 +76,20 @@ const Container = (props) => {
   );
 
   useEffect(() => {
-    layoutEvents.fire('resize');
+    layoutEvents!.fire('resize');
   }, [width, height, layoutEvents]);
 
   useEffect(() => {
-    containersEvents.on(`resize.${id}`, onContainersResize);
-    return () => containersEvents.off(`resize.${id}`, onContainersResize);
+    containersEvents!.on(`resize.${id}`, onContainersResize);
+    return () => containersEvents!.off(`resize.${id}`, onContainersResize);
   }, [containersEvents, onContainersResize, id]);
 
   useEffect(() => {
     if (isFixedSize) {
       return;
     }
-    containersEvents.on('layout-resize', onLayoutResize);
-    return () => containersEvents.off('layout-resize', onLayoutResize);
+    containersEvents!.on('layout-resize', onLayoutResize);
+    return () => containersEvents!.off('layout-resize', onLayoutResize);
   }, [containersEvents, onLayoutResize, isFixedSize]);
 
   useEffect(() => {
@@ -107,13 +123,6 @@ Container.defaultProps = {
   get id() {
     return createId();
   },
-};
-
-Container.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-  id: PropTypes.string,
-  isFixedSize: PropTypes.bool,
-  initialSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Container;

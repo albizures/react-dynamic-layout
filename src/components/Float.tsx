@@ -3,21 +3,31 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import ResizeBar from './ResizeBar';
-import { resizeBarTypes } from '../utils/enums';
+import { ResizeBarTypes } from '../utils/enums';
 import useMouseMove from '../hooks/useMouseMove';
 import useContextLayout from '../hooks/useContextLayout';
 
-const Float = (props) => {
+interface PropTypes {
+  closeLabel?: string;
+  initialTop?: number;
+  initialLeft?: number;
+  initialWidth: number;
+  initialHeight: number;
+  isOpen?: boolean;
+  children: React.ReactNode;
+  isFixedSize?: boolean;
+}
+const Float: React.FC<PropTypes> = (props) => {
   const {
     layoutEventsRef: { current: layoutEvents },
   } = useContextLayout();
 
   const addEventListener = useMouseMove();
-  const elementRef = useRef();
+  const elementRef = useRef<HTMLDivElement>(null);
   const {
     closeLabel,
-    initialTop,
-    initialLeft,
+    initialTop = 0,
+    initialLeft = 0,
     initialWidth,
     initialHeight,
     isOpen,
@@ -78,14 +88,14 @@ const Float = (props) => {
         height: height - diffTop - diffBottom,
       });
 
-      layoutEvents.fire('resize');
+      layoutEvents!.fire('resize');
     },
     [width, height, top, left, layoutEvents],
   );
 
   useEffect(() => {
     if (isOpen) {
-      layoutEvents.fire('resize');
+      layoutEvents!.fire('resize');
     }
   }, [isOpen, layoutEvents]);
 
@@ -124,25 +134,25 @@ const Float = (props) => {
       </div>
       {!isFixedSize ? (
         <>
-          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.NORTH} />
-          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.SOUTH} />
-          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.EAST} />
-          <ResizeBar onSizeChange={onSizeChange} type={resizeBarTypes.WEST} />
+          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.NORTH} />
+          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.SOUTH} />
+          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.EAST} />
+          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.WEST} />
           <ResizeBar
             onSizeChange={onSizeChange}
-            type={resizeBarTypes.NORTH_EAST}
+            type={ResizeBarTypes.NORTH_EAST}
           />
           <ResizeBar
             onSizeChange={onSizeChange}
-            type={resizeBarTypes.NORTH_WEST}
+            type={ResizeBarTypes.NORTH_WEST}
           />
           <ResizeBar
             onSizeChange={onSizeChange}
-            type={resizeBarTypes.SOUTH_WEST}
+            type={ResizeBarTypes.SOUTH_WEST}
           />
           <ResizeBar
             onSizeChange={onSizeChange}
-            type={resizeBarTypes.SOUTH_EAST}
+            type={ResizeBarTypes.SOUTH_EAST}
           />
         </>
       ) : null}
@@ -155,20 +165,6 @@ Float.defaultProps = {
   isOpen: false,
   closeLabel: 'Close',
   isFixedSize: false,
-  initialTop: 0,
-  initialLeft: 0,
-};
-
-Float.propTypes = {
-  isFixedSize: PropTypes.bool,
-  children: PropTypes.node.isRequired,
-  closeLabel: PropTypes.string,
-  isModal: PropTypes.bool,
-  isOpen: PropTypes.bool,
-  initialWidth: PropTypes.number.isRequired,
-  initialHeight: PropTypes.number.isRequired,
-  initialTop: PropTypes.number,
-  initialLeft: PropTypes.number,
 };
 
 export default Float;

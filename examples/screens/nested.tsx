@@ -5,12 +5,19 @@ import ReactDOM from 'react-dom';
 import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 
-import ShowDimensions from '../components/ShowDimensions.tsx';
+import ShowDimensions from '../components/ShowDimensions';
+import { LayoutType } from '../../src/types';
+import { Dimensions } from '../../src/hooks/useDimensions';
 
-const Part = (props) => {
-  const { deep, type } = props;
-  if (deep >= 4) {
-    const { dimensions } = props;
+interface PropTypes {
+  deep: number;
+  type: LayoutType;
+  dimensions?: Dimensions;
+}
+
+const Part: React.FC<PropTypes> = (props) => {
+  const { deep, type, dimensions } = props;
+  if (deep >= 4 && dimensions) {
     return (
       <ShowDimensions width={dimensions.width} height={dimensions.height} />
     );
@@ -32,12 +39,6 @@ const Part = (props) => {
       </Container>
     </Layout>
   );
-};
-
-Part.propTypes = {
-  deep: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
-  dimensions: PropTypes.object,
 };
 
 const Nested = () => {

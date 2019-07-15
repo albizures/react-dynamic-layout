@@ -8,6 +8,7 @@
     "@babel/core": "^7.5.4",
     "@babel/preset-env": "^7.5.4",
     "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^8.0.5",
     "@types/jest": "^24.0.15",
@@ -38,26 +39,28 @@
     "react": ">= 16.8 < 17",
     "prop-types": "*"
   },
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "README.md",
-    "index.d.ts"
+    "README.md"
   ],
   "dependencies": {
+    "@types/classnames": "^2.2.9",
     "classnames": "^2.2.6",
     "create-react-class": "^15.6.3",
     "react-is": "^16.8.6"
   },
   "scripts": {
     "commit": "git-cz",
+    "check-types": "tsc --noEmit",
     "start": "parcel examples/index.html",
     "prebuild": "rimraf dist && rimraf .cache && npm run test",
-    "build": "npm run build:js && npm run build:css",
-    "build:js": "babel src/ --out-dir dist",
+    "build": "npm run build:js && npm run build:css && npm run generate-d-files",
+    "generate-d-files": "tsc --emitDeclarationOnly",
+    "build:js": "babel src/ --out-dir dist --extensions '.js,.ts,.tsx' --ignore '**/__tests__/**'",
     "build:css": "parcel build src/style/**/index.scss --out-dir dist/style --no-source-maps",
     "test": "jest",
-    "pretest": "npm run lint",
+    "pretest": "npm run lint && npm run check-types",
     "lint": "eslint .",
     "semantic-release": "semantic-release"
   },

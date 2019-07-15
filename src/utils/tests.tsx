@@ -1,15 +1,34 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { within, render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import {
+  within,
+  render,
+  fireEvent,
+  BoundFunctions,
+  Queries,
+} from '@testing-library/react';
 
-export const renderComponentFactory = (options, componentRender) => {
+type TestQueries = BoundFunctions<Queries> & {
+  container: Element;
+  debug: Function;
+};
+
+interface Options {
+  defaultProps: object;
+  selector: string;
+}
+
+export const renderComponentFactory = (
+  options: Options,
+  componentRender: Function,
+) => {
   const { defaultProps, selector } = options;
-  return (props = defaultProps, renderFunction = render) => {
+  return (props = defaultProps, renderFunction = render): TestQueries => {
     const { container, debug } = renderFunction(componentRender(props));
-    const [element] = container.querySelectorAll(selector);
-    const queries = within(element);
-    queries.container = element;
-    queries.debug = () => debug(element);
-    return queries;
+    const element = container.querySelectorAll(selector)[0];
+    const queries: unknown = within(element as HTMLElement);
+    (queries as TestQueries).container = element;
+    (queries as TestQueries).debug = () => debug(element as HTMLElement);
+    return queries as TestQueries;
   };
 };
 

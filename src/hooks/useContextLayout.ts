@@ -5,4 +5,5 @@ const useContextLayout = () => {
   return useContext(LayoutContext);
 };
 
+export { LayoutContext };
 export default useContextLayout;

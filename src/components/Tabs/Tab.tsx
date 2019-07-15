@@ -1,8 +1,14 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
-const Tab = (props) => {
+interface PropTypes {
+  children: React.ReactNode;
+  onClick: Function;
+  name: string;
+  isActive?: boolean;
+}
+
+const Tab: React.FC<PropTypes> = (props) => {
   const { children, onClick, name, isActive } = props;
   const onClickHandler = useCallback(() => {
     onClick(name);
@@ -22,13 +28,6 @@ const Tab = (props) => {
 
 Tab.defaultProps = {
   isActive: false,
-};
-
-Tab.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  isActive: PropTypes.bool,
 };
 
 export default Tab;

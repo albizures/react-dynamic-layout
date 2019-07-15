@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
+import { Position } from './useMouseDiff';
 
 const getPosition = (event, offset) => {
   const { clientX, clientY } = event;
@@ -19,16 +20,16 @@ const getPosition = (event, offset) => {
 
 const useMouseMove = () => {
   const [eventListener, setEventListener] = useState();
-  const onRemoveListenerReff = useRef();
-  const [offset, setOffset] = useState();
+  const onRemoveListenerRef = useRef<Function>();
+  const [offset, setOffset] = useState<Position>();
 
   const removeEventListener = useCallback((position) => {
     setEventListener(undefined);
     setOffset(undefined);
-    if (onRemoveListenerReff.current) {
-      const { current: onRemoveListener } = onRemoveListenerReff;
+    if (onRemoveListenerRef.current) {
+      const { current: onRemoveListener } = onRemoveListenerRef;
 
-      onRemoveListenerReff.current = undefined;
+      onRemoveListenerRef.current = undefined;
       onRemoveListener(position);
     }
   }, []);
@@ -41,7 +42,7 @@ const useMouseMove = () => {
       // setEventListener is going to use onMouseMove
       // to generate the next state.
       setEventListener(() => onMouseMove);
-      onRemoveListenerReff.current = onRemoveListener;
+      onRemoveListenerRef.current = onRemoveListener;
       setOffset(newOffset);
       return removeEventListener;
     },

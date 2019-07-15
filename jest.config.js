@@ -1,15 +1,15 @@
 module.exports = {
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      branches: 40,
+      functions: 60,
+      lines: 50,
+      statements: 50,
     },
   },
-  collectCoverageFrom: ['src/**/*.{js}'],
+  testPathIgnorePatterns: ['dist', 'coverage', 'examples'],
+  collectCoverageFrom: ['src/**/*.{ts, tsx}'],
   coverageReporters: ['html'],
   collectCoverage: true,
   coveragePathIgnorePatterns: ['examples'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };

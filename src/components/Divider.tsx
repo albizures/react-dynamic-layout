@@ -4,9 +4,16 @@ import classNames from 'classnames';
 
 import useContextLayout from '../hooks/useContextLayout';
 import useMouseDiff from '../hooks/useMouseDiff';
+import { EventSystem } from '../utils/events';
 
-const Divider = (props) => {
-  const elementRef = useRef();
+interface PropTypes {
+  before: string;
+  after: string;
+  containersEvents: EventSystem;
+}
+
+const Divider: React.FC<PropTypes> = (props) => {
+  const elementRef = useRef<HTMLDivElement>(null);
   const [diff, setDiff] = useState(undefined);
   const { before, after, containersEvents } = props;
   const { type: typeLayout } = useContextLayout();
@@ -62,12 +69,6 @@ const Divider = (props) => {
       />
     </div>
   );
-};
-
-Divider.propTypes = {
-  before: PropTypes.string.isRequired,
-  after: PropTypes.string.isRequired,
-  containersEvents: PropTypes.object.isRequired,
 };
 
 export default Divider;

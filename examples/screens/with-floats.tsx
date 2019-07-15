@@ -5,7 +5,7 @@ import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 import Float from '../../src/components/Float';
 
-const toggle = (val) => !val;
+const toggle = (val: boolean) => !val;
 
 const WithFloats = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

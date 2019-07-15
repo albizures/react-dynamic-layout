@@ -1,13 +1,14 @@
+import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 
 import ResizeBar from '../ResizeBar';
-import { resizeBarTypes } from '../../utils/enums';
+import { ResizeBarTypes } from '../../utils/enums';
 import { renderComponentFactory } from '../../utils/tests';
 
 const defaultProps = {
   onSizeChange: () => ({}),
-  type: resizeBarTypes.NORTH,
+  type: ResizeBarTypes.NORTH,
 };
 
 const renderComponent = renderComponentFactory(
@@ -27,7 +28,7 @@ describe('ResizeBar', () => {
   });
 
   it('should render a resize bar of the given type', () => {
-    const type = resizeBarTypes.SOUTH_WEST;
+    const type = ResizeBarTypes.SOUTH_WEST;
     const { container } = renderComponent({ type, onSizeChange: () => ({}) });
 
     expect(container).toBeInTheDocument();
@@ -35,7 +36,7 @@ describe('ResizeBar', () => {
   });
 
   it('should call onSizeChange with the change until the last change', () => {
-    const type = resizeBarTypes.SOUTH_WEST;
+    const type = ResizeBarTypes.SOUTH_WEST;
     const onSizeChange = jest.fn();
     const { container } = renderComponent({ type, onSizeChange });
 

@@ -1,38 +1,37 @@
-// @ts-check
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 
 import { debounce } from '../utils';
 
-/**
- * @typedef {object} Dimensions
- * @property {number} width
- * @property {number} height
- * @property {number} lastWidth
- * @property {number} lastHeight
- */
+interface Dimensions {
+  width: number;
+  height: number;
+  lastWidthRef: React.MutableRefObject<number>;
+  lastHeightRef: React.MutableRefObject<number>;
+}
 
-/**
- * @typedef {object} UseDimensions
- * @property {object} dimensions
- * @property {Function} checkDimensions
- * @property {(element: HTMLDivElement) => void} setElement
- */
+interface UseDimensions {
+  dimensions: Dimensions;
+  checkDimensions: Function;
+  setElement: (element: HTMLDivElement) => void;
+}
 
-/**
- *
- * @param {React.RefObject<HTMLElement>} elementRef
- * @param {boolean} isLive
- * @returns {UseDimensions}
- */
-const useDimensions = (elementRef, isLive = true) => {
+const useDimensions = (
+  elementRef: React.RefObject<HTMLElement>,
+  isLive: boolean = true,
+): UseDimensions => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const lastWidthRef = useRef(0);
-  const lastHeightRef = useRef(0);
+  const lastWidthRef = useRef<number>(0);
+  const lastHeightRef = useRef<number>(0);
 
   const checkDimensions = useMemo(() => {
     return () => {
       const { current: element } = elementRef;
+
+      if (element === null) {
+        return;
+      }
+
       const {
         clientWidth: currentWidth,
         clientHeight: currentHeight,
@@ -88,4 +87,5 @@ const useDimensions = (elementRef, isLive = true) => {
   return { dimensions, checkDimensions, setElement };
 };
 
+export { Dimensions };
 export default useDimensions;

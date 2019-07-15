@@ -1,10 +1,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "composite": true,
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "allowJs": true,
+    "strictNullChecks": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
@@ -14,10 +15,12 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "baseUrl": ".",
-    "noEmit": true,
-    "typeRoots": ["./node_modules/@types", "./index.d.ts"],
-    "lib": ["dom", "es2015", "es2016"]
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["dom", "es2015", "es2016"],
+    "declarationDir": "dist",
+    "rootDir": "./src"
   },
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
     "dist",

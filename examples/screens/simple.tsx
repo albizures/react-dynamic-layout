@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 
-import CenterName from '../components/CenterName.tsx';
-import ShowDimensions from '../components/ShowDimensions.tsx';
+import CenterName from '../components/CenterName';
+import ShowDimensions from '../components/ShowDimensions';
 
 const SimpleExample = () => (
   <Layout type={Layout.COLUMN}>

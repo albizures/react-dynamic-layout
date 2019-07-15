@@ -7,6 +7,7 @@ import LayoutContext from '../contexts/LayoutContext';
 import useDimensions from '../hooks/useDimensions';
 import useContextLayout from '../hooks/useContextLayout';
 import useEventSystem from '../hooks/useEventSystem';
+import { LayoutType } from '../types';
 
 /**
  * @typedef {import('../types').Layout} LayoutType
@@ -67,9 +68,9 @@ const useParentLayoutEvents = ({ onCheckDimensions }) => {
     const isRoot = !layoutEventsRef;
     if (!isRoot) {
       const { current: layoutEvents } = layoutEventsRef;
-      layoutEvents.on('resize', onCheckDimensions);
+      layoutEvents!.on('resize', onCheckDimensions);
 
-      return () => layoutEvents.off('resize', onCheckDimensions);
+      return () => layoutEvents!.off('resize', onCheckDimensions);
     }
   }, [onCheckDimensions, layoutEventsRef]);
 };
@@ -80,15 +81,25 @@ const useLayoutDimensions = (elementRef) => {
   return useDimensions(elementRef, isRoot);
 };
 
-/** @type {LayoutType} */
-const Layout = (props) => {
-  const variableContainersRef = useRef([]);
+interface PropTypes {
+  children: React.ReactNode;
+  type: LayoutType;
+  floats?: React.ReactNode[];
+}
+
+type Layout = React.FC<PropTypes> & {
+  ROW: LayoutType;
+  COLUMN: LayoutType;
+};
+
+const Layout: Layout = (props) => {
+  const variableContainersRef = useRef<string[]>([]);
   const elementRef = useRef(null);
   const { dimensions, checkDimensions, setElement } = useLayoutDimensions(
     elementRef,
   );
   const { layoutEventsRef, containersEventsRef } = useEventSystem();
-  const { children, type, floats } = props;
+  const { children, type = LayoutType.ROW, floats = [] } = props;
   const { current: layoutEvents } = layoutEventsRef;
   const { current: containersEvents } = containersEventsRef;
   const { current: variableContainers } = variableContainersRef;
@@ -105,7 +116,12 @@ const Layout = (props) => {
    * @param {number} index
    * @param {Array<{ props: object }>} list
    */
-  const reducer = (result, child, index, list) => {
+  const reducer = (
+    result,
+    child: { props: { id: string; isFixedSize: boolean } },
+    index: number,
+    list: any[],
+  ) => {
     const { isFixedSize, id } = child.props;
     const isLast = index === list.length - 1;
 
@@ -164,11 +180,11 @@ const Layout = (props) => {
     };
 
     if (!(width === 0 || lastWidth === 0)) {
-      diff.width = width - lastWidth;
+      diff.width = width - lastWidth!;
     }
 
     if (!(height === 0 || lastHeight === 0)) {
-      diff.height = height - lastHeight;
+      diff.height = height - lastHeight!;
     }
 
     const containersDiff = type === 'row' ? diff.width : diff.height;
@@ -206,18 +222,7 @@ const Layout = (props) => {
   );
 };
 
-Layout.defaultProps = {
-  type: 'row',
-  floats: [],
-};
-
-Layout.propTypes = {
-  floats: PropTypes.array,
-  children: PropTypes.node.isRequired,
-  type: PropTypes.oneOf(['row', 'column']),
-};
-
-Layout.ROW = 'row';
-Layout.COLUMN = 'column';
+Layout.ROW = LayoutType.ROW;
+Layout.COLUMN = LayoutType.COLUMN;
 
 export default Layout;

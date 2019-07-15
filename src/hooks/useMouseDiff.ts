@@ -1,22 +1,32 @@
 import { useCallback, useRef } from 'react';
 import useMouseMove from './useMouseMove';
 
-const useMouseDiff = (options) => {
+interface Position {
+  left: number;
+  top: number;
+}
+
+interface UseMouseDiffOptions {
+  onDiffChange: Function;
+  onDiffLastChange: Function;
+}
+
+const useMouseDiff = (options: UseMouseDiffOptions) => {
   const { onDiffChange, onDiffLastChange } = options;
   const addEventListener = useMouseMove();
-  const diffRef = useRef({
+  const diffRef = useRef<Position>({
     left: 0,
     top: 0,
   });
-  const initialPositionRef = useRef();
+  const initialPositionRef = useRef<Position>();
 
   const setDiff = useCallback(
     (currentPosition) => {
       const { current: initialPosition } = initialPositionRef;
 
       diffRef.current = {
-        left: currentPosition.left - initialPosition.left,
-        top: currentPosition.top - initialPosition.top,
+        left: currentPosition.left - initialPosition!.left,
+        top: currentPosition.top - initialPosition!.top,
       };
       if (onDiffChange) {
         onDiffChange(diffRef.current);
@@ -36,7 +46,7 @@ const useMouseDiff = (options) => {
   );
 
   const onMouseDown = useCallback(
-    (event) => {
+    (event: React.MouseEvent) => {
       const { clientX, clientY } = event;
 
       initialPositionRef.current = {
@@ -53,5 +63,7 @@ const useMouseDiff = (options) => {
 
   return onMouseDown;
 };
+
+export { Position };
 
 export default useMouseDiff;
