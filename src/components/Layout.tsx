@@ -1,6 +1,4 @@
-// @ts-check
 import React, { Children, useRef, useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import Divider from './Divider';
 import LayoutContext from '../contexts/LayoutContext';
@@ -9,44 +7,6 @@ import useContextLayout from '../hooks/useContextLayout';
 import useEventSystem from '../hooks/useEventSystem';
 import { LayoutType } from '../types';
 
-/**
- * @typedef {import('../types').Layout} LayoutType
- * @typedef {import('../hooks/useDimensions').Dimensions} Dimensions
- * @typedef {import('../contexts/LayoutContext').LayoutContextType} LayoutContextType
- * @typedef {import('../utils/size').SizeDescriptor} SizeDescriptor
- * @typedef {import('../utils/events').EventSystem} EventSystem
- * @typedef {import('../utils/events').OnEvent} OnEvent
- * @typedef {import('../utils/events').OffEvent} OffEvent
- * @typedef {import('../utils/events').FireEvent} FireEvent
- */
-
-/**
- *
- * @typedef ResultChildrenReducer
- * @property {Container} containers
- * @property {number} totalSize
- * @property {number[]} autoSizes
- * @property {number[]} variableSizes
- */
-
-/**
- *
- * @callback ChildrenReducer
- * @param {ResultChildrenReducer} result
- * @param {object} child
- * @param {number} index
- * @returns {ResultChildrenReducer}
- */
-
-/**
- *
- * @param {object} params
- * @param {string} params.type
- * @param {object} params.variableContainersRef
- * @param {object} params.layoutEventsRef
- * @param {object} params.containersEventsRef
- * @returns {LayoutContextType}
- */
 const createLayoutContext = ({
   type,
   variableContainersRef,

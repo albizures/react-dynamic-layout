@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import useContextLayout from '../hooks/useContextLayout';

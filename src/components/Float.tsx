@@ -1,5 +1,4 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import ResizeBar from './ResizeBar';
