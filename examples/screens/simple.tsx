@@ -7,7 +7,7 @@ import Container from '../../src/components/Container';
 import CenterName from '../components/CenterName';
 import ShowDimensions from '../components/ShowDimensions';
 
-const SimpleExample = () => (
+const SimpleExample: React.FC = () => (
   <Layout type={Layout.COLUMN}>
     <Container>
       <CenterName name="Top" />

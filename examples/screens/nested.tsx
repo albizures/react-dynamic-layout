@@ -15,10 +15,13 @@ interface PropTypes {
 }
 
 const Part: React.FC<PropTypes> = (props) => {
-  const { deep, type, dimensions } = props;
-  if (deep >= 4 && dimensions) {
+  const { deep, type, dimensions: currentDimensions } = props;
+  if (deep >= 4 && currentDimensions) {
     return (
-      <ShowDimensions width={dimensions.width} height={dimensions.height} />
+      <ShowDimensions
+        width={currentDimensions.width}
+        height={currentDimensions.height}
+      />
     );
   }
 
@@ -40,7 +43,7 @@ const Part: React.FC<PropTypes> = (props) => {
   );
 };
 
-const Nested = () => {
+const Nested: React.FC = () => {
   return <Part deep={0} type={Layout.ROW} />;
 };
 

@@ -5,9 +5,9 @@ type OnEvent = (evetName: string, listener: Function) => void;
 type OffEvent = (evetName: string, listener: Function) => void;
 type FireEvent = (evetName: string, data?: any) => void;
 
-type Events = {
+interface Events {
   [key: string]: Function[];
-};
+}
 
 interface EventSystem {
   events: Events;
@@ -27,7 +27,7 @@ type OnEventFactorty = (eventSystem: PartialEventSystem) => OnEvent;
 type OffEventFactorty = (eventSystem: PartialEventSystem) => OffEvent;
 type FireEventFactorty = (eventSystem: PartialEventSystem) => FireEvent;
 
-const checkEvent = (eventSystem: object, event: string) => {
+const checkEvent = (eventSystem: object, event: string): void => {
   if (!eventSystem[event]) {
     eventSystem[event] = [];
   }

@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import LayoutContext from '../contexts/LayoutContext';
-import { getSizeProperty } from '../utils/size';
+import { getSizeProperty, SizeProperty } from '../utils/size';
 
-const useSizeProperties = () => {
+const useSizeProperties = (): SizeProperty => {
   const { type } = useContext(LayoutContext);
 
   return getSizeProperty(type);

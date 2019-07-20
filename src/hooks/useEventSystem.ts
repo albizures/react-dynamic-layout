@@ -7,7 +7,12 @@ import {
   createEventSystem,
 } from '../utils/events';
 
-const useEventSystem = () => {
+interface LayoutEventSystem {
+  layoutEventsRef: React.RefObject<EventSystem>;
+  containersEventsRef: React.RefObject<EventSystem>;
+}
+
+const useEventSystem = (): LayoutEventSystem => {
   const layout = createEventSystem();
   const containers = createEventSystem();
 

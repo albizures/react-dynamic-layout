@@ -19,7 +19,7 @@ const getContent = (
   children: RenderChildren | React.ReactNode,
   id: string | undefined,
   dimensions: Dimensions,
-) => {
+): null | React.ReactNode => {
   const childrenIsFunction = typeof children === 'function';
 
   if (!size || dimensionsAreZero(dimensions)) {
@@ -54,10 +54,12 @@ const Container: React.FC<PropTypes> = (props) => {
   const { dimensions, checkDimensions } = useDimensions(elementRef, false);
   const currentSize = dimensions[portion];
   const { width, height } = dimensions;
+  const numberOfVariableContainers =
+    (variableContainers && variableContainers.length) || 1;
 
   const onLayoutResize = useCallback(
     (diff) => {
-      const containerDiff = diff / variableContainers!.length;
+      const containerDiff = diff / numberOfVariableContainers;
 
       if (diff !== 0) {
         setSize((lastSize) => (lastSize || currentSize) + containerDiff);
@@ -65,7 +67,7 @@ const Container: React.FC<PropTypes> = (props) => {
 
       checkDimensions();
     },
-    [variableContainers!.length, currentSize, checkDimensions],
+    [numberOfVariableContainers, currentSize, checkDimensions],
   );
 
   const onContainersResize = useCallback(
@@ -76,20 +78,28 @@ const Container: React.FC<PropTypes> = (props) => {
   );
 
   useEffect(() => {
-    layoutEvents!.fire('resize');
+    if (layoutEvents === null) {
+      return;
+    }
+
+    layoutEvents.fire('resize');
   }, [width, height, layoutEvents]);
 
   useEffect(() => {
-    containersEvents!.on(`resize.${id}`, onContainersResize);
-    return () => containersEvents!.off(`resize.${id}`, onContainersResize);
+    if (containersEvents === null) {
+      return;
+    }
+
+    containersEvents.on(`resize.${id}`, onContainersResize);
+    return () => containersEvents.off(`resize.${id}`, onContainersResize);
   }, [containersEvents, onContainersResize, id]);
 
   useEffect(() => {
-    if (isFixedSize) {
+    if (isFixedSize || containersEvents === null) {
       return;
     }
-    containersEvents!.on('layout-resize', onLayoutResize);
-    return () => containersEvents!.off('layout-resize', onLayoutResize);
+    containersEvents.on('layout-resize', onLayoutResize);
+    return () => containersEvents.off('layout-resize', onLayoutResize);
   }, [containersEvents, onLayoutResize, isFixedSize]);
 
   useEffect(() => {

@@ -23,8 +23,8 @@ type TestQueries = BoundFunctions<Queries> & {
   rerender: Function;
 };
 
-const createEventSystem = (mock) => {
-  const layoutEventsRef: React.MutableRefObject<any> = React.createRef();
+const createEventSystem = (mock: object): React.MutableRefObject<object> => {
+  const layoutEventsRef: React.MutableRefObject<object> = React.createRef();
   layoutEventsRef.current = mock;
 
   return layoutEventsRef;

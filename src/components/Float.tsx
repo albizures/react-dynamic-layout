@@ -87,14 +87,16 @@ const Float: React.FC<PropTypes> = (props) => {
         height: height - diffTop - diffBottom,
       });
 
-      layoutEvents!.fire('resize');
+      if (layoutEvents !== null) {
+        layoutEvents.fire('resize');
+      }
     },
     [width, height, top, left, layoutEvents],
   );
 
   useEffect(() => {
-    if (isOpen) {
-      layoutEvents!.fire('resize');
+    if (isOpen && layoutEvents !== null) {
+      layoutEvents.fire('resize');
     }
   }, [isOpen, layoutEvents]);
 

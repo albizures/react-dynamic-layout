@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-const getRandomColorPart = () => Math.floor(Math.random() * 200);
+const getRandomColorPart = (): number => Math.floor(Math.random() * 200);
 
 type RandomColorFactory = () => (transparency: number) => string;
 
@@ -29,11 +29,11 @@ const CenterName: React.FC<PropTypes> = (props) => {
     backgroundColor: color(transparency),
   };
 
-  const onMouseEnter = () => {
+  const onMouseEnter = (): void => {
     setTransparencyTo(0.3);
   };
 
-  const onMouseLeave = () => {
+  const onMouseLeave = (): void => {
     setTransparencyTo(defaultTransparency);
   };
 

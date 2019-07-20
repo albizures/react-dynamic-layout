@@ -6,7 +6,16 @@ import useMouseDiff, { Position } from '../hooks/useMouseDiff';
 
 const ResizeBarTypesList = Object.values(ResizeBarTypes);
 
-const getDiff = (type: ResizeBarTypes, diff: Position | undefined) => {
+type Diff =
+  | undefined
+  | {
+      top?: number;
+      left?: number;
+      bottom?: number;
+      right?: number;
+    };
+
+const getDiff = (type: ResizeBarTypes, diff: Position | undefined): Diff => {
   if (!diff) {
     return undefined;
   }

@@ -7,7 +7,7 @@ import Tabs from '../../src/components/Tabs';
 
 import CenterName from '../components/CenterName';
 
-const WidthTabs = () => {
+const WidthTabs: React.FC = () => {
   const [tab, setTab] = useState();
 
   return (

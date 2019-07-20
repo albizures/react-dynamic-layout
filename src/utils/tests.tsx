@@ -17,12 +17,17 @@ interface Options {
   selector: string;
 }
 
-export const renderComponentFactory = (
+type RenderComponentFactory = (
   options: Options,
   componentRender: Function,
+) => (props: object, renderFunction: Function) => TestQueries;
+
+export const renderComponentFactory: RenderComponentFactory = (
+  options,
+  componentRender,
 ) => {
   const { defaultProps, selector } = options;
-  return (props = defaultProps, renderFunction = render): TestQueries => {
+  return (props = defaultProps, renderFunction = render) => {
     const { container, debug } = renderFunction(componentRender(props));
     const element = container.querySelectorAll(selector)[0];
     const queries: unknown = within(element as HTMLElement);
@@ -39,7 +44,7 @@ export const testResizeBar = ({
   move,
   up,
   moveAfterDrop,
-}) => {
+}): void => {
   const [resizeBar] = container.getElementsByClassName(
     `rdl-resize-bar--${type}`,
   );

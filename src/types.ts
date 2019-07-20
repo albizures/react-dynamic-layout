@@ -2,32 +2,32 @@ enum LayoutType {
   ROW = 'row',
   COLUMN = 'column',
 }
-type Dimensions = {
+interface Dimensions {
   height: number;
   width: number;
-};
+}
 
-type ContainerRenderPropParam = {
+interface ContainerRenderPropParam {
   dimensions: Dimensions;
   id: string;
-};
+}
 
-type ContainerProps = {
+interface ContainerProps {
   id?: string;
   isFixedSize?: boolean;
   initialSize?: string | number;
   children:
     | ((param: ContainerRenderPropParam) => React.ReactNode)
     | React.ReactNode;
-};
+}
 
 type Container = React.FC<ContainerProps>;
 
-type LayoutProps = {
+interface LayoutProps {
   floats?: React.ReactNode;
   type?: LayoutType;
   children: React.ReactNode;
-};
+}
 
 type Layout = React.FC<LayoutProps> & {
   ROW: LayoutType.ROW;

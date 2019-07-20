@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { Position } from './useMouseDiff';
 
-const getPosition = (event, offset) => {
+const getPosition = (event, offset: Position | undefined): Position => {
   const { clientX, clientY } = event;
 
   if (offset) {
@@ -18,7 +18,7 @@ const getPosition = (event, offset) => {
   };
 };
 
-const useMouseMove = () => {
+const useMouseMove = (): Function => {
   const [eventListener, setEventListener] = useState();
   const onRemoveListenerRef = useRef<Function>();
   const [offset, setOffset] = useState<Position>();

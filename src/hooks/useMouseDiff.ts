@@ -11,22 +11,27 @@ interface UseMouseDiffOptions {
   onDiffLastChange: Function;
 }
 
-const useMouseDiff = (options: UseMouseDiffOptions) => {
+type OnMouseDown = (event: React.MouseEvent) => void;
+
+const useMouseDiff = (options: UseMouseDiffOptions): OnMouseDown => {
   const { onDiffChange, onDiffLastChange } = options;
   const addEventListener = useMouseMove();
   const diffRef = useRef<Position>({
     left: 0,
     top: 0,
   });
-  const initialPositionRef = useRef<Position>();
+  const initialPositionRef = useRef<Position>({
+    left: 0,
+    top: 0,
+  });
 
   const setDiff = useCallback(
     (currentPosition) => {
       const { current: initialPosition } = initialPositionRef;
 
       diffRef.current = {
-        left: currentPosition.left - initialPosition!.left,
-        top: currentPosition.top - initialPosition!.top,
+        left: currentPosition.left - initialPosition.left,
+        top: currentPosition.top - initialPosition.top,
       };
       if (onDiffChange) {
         onDiffChange(diffRef.current);

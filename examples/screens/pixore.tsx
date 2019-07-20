@@ -5,7 +5,7 @@ import CenterName from '../components/CenterName';
 import Label from '../components/Label';
 import ShowDimensions from '../components/ShowDimensions';
 
-const Pixore = () => (
+const Pixore: React.FC = () => (
   <Layout type={Layout.COLUMN}>
     <Container isFixedSize={true} initialSize={25}>
       <Label text="Menus" />
@@ -41,11 +41,8 @@ const Pixore = () => (
                     <CenterName name="Frames and Layers" />
                   </Container>
                   <Container isFixedSize={true} initialSize={dimensions.height}>
-                    {({ dimensions }) => (
-                      <ShowDimensions
-                        width={dimensions.width}
-                        height={dimensions.height}
-                      />
+                    {({ dimensions: dim }) => (
+                      <ShowDimensions width={dim.width} height={dim.height} />
                     )}
                   </Container>
                 </Layout>

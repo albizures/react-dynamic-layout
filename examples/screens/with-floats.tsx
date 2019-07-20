@@ -5,9 +5,9 @@ import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 import Float from '../../src/components/Float';
 
-const toggle = (val: boolean) => !val;
+const toggle = (val: boolean): boolean => !val;
 
-const WithFloats = () => {
+const WithFloats: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const floats = [
     <Float

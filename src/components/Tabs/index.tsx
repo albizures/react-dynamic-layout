@@ -52,8 +52,8 @@ const Tabs: Tabs = (props) => {
     result: ReducerResult,
     child: { props: any },
     index: number,
-  ) => {
-    const { title, name, children } = child.props;
+  ): ReducerResult => {
+    const { title, name, children: tabChildren } = child.props;
     const isFirst = index === 0;
     const isCurrentTab =
       tab === name ||
@@ -68,7 +68,7 @@ const Tabs: Tabs = (props) => {
     );
 
     if (isCurrentTab) {
-      result.contentTab = <Content key={name}>{children}</Content>;
+      result.contentTab = <Content key={name}>{tabChildren}</Content>;
     }
 
     return result;

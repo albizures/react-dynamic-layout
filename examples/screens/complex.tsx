@@ -8,9 +8,9 @@ import Float from '../../src/components/Float';
 
 import CenterName from '../components/CenterName';
 
-const toggle = (val) => !val;
+const toggle = (val): boolean => !val;
 
-const Complex = () => {
+const Complex: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const floats = [
     <Float

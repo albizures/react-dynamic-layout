@@ -87,5 +87,5 @@ const useDimensions = (
   return { dimensions, checkDimensions, setElement };
 };
 
-export { Dimensions };
+export { Dimensions, UseDimensions };
 export default useDimensions;
