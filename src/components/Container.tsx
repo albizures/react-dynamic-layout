@@ -114,8 +114,18 @@ const Container: React.FC<PropTypes> = (props) => {
 
   if (typeof size === 'number') {
     assign(style, { flex: `0 0 ${size}px` });
+    if (isFixedSize) {
+      assign(style, {
+        [portion]: `${size}px`,
+      });
+    }
   } else if (typeof size === 'string') {
     assign(style, { flex: `0 0 ${size}` });
+    if (isFixedSize) {
+      assign(style, {
+        [portion]: size,
+      });
+    }
   } else {
     assign(style, { flex: 'auto' });
   }
