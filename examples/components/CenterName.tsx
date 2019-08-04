@@ -24,7 +24,7 @@ interface PropTypes {
 const CenterName: React.FC<PropTypes> = (props) => {
   const color = useMemo(getRandomColor, []);
   const [transparency, setTransparencyTo] = useState(defaultTransparency);
-  const { name, small = false } = props;
+  const { name, small = true } = props;
   const style = {
     backgroundColor: color(transparency),
   };
