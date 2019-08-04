@@ -45,7 +45,7 @@ const useDimensions = (
         return currentWidth;
       });
       setHeight((lastHeight) => {
-        if (lastHeight !== currentWidth) {
+        if (lastHeight !== currentHeight) {
           lastHeightRef.current = lastHeight;
         }
         return currentHeight;

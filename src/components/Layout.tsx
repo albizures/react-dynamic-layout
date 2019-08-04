@@ -158,7 +158,9 @@ const Layout: Layout = (props) => {
     const containersDiff = type === 'row' ? diff.width : diff.height;
 
     if (containersEvents !== null) {
-      containersEvents.fire('layout-resize', containersDiff);
+      if (containersDiff !== 0) {
+        containersEvents.fire('layout-resize', containersDiff);
+      }
     }
     lastWidthRef.current = width;
     lastHeightRef.current = height;
