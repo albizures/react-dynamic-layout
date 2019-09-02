@@ -12,32 +12,45 @@ import {
 import { ResizeBarTypes } from '../../utils/enums';
 import { testResizeBar } from '../../utils/tests';
 import Float from '../Float';
-import LayoutContext from '../../contexts/LayoutContext';
+import LayoutContext, { LayoutState } from '../../contexts/LayoutContext';
+import Dragbar from '../Float/Dragbar';
 import { LayoutType } from '../../types';
+import { EventSystem } from '../../utils/events';
 
-const layoutEventfireMock = jest.fn();
-const containerEventfireMock = jest.fn();
+const layoutEventsMock: EventSystem = {
+  fire: jest.fn(),
+  on: jest.fn(),
+  off: jest.fn(),
+  events: {},
+};
+
+const containerEventsMock: EventSystem = {
+  fire: jest.fn(),
+  on: jest.fn(),
+  off: jest.fn(),
+  events: {},
+};
 
 type TestQueries = BoundFunctions<Queries> & {
   container: Element;
   rerender: Function;
 };
 
-const createEventSystem = (mock: object): React.MutableRefObject<object> => {
-  const layoutEventsRef: React.MutableRefObject<object> = React.createRef();
-  layoutEventsRef.current = mock;
+function createRef<T>(value: T): React.MutableRefObject<T> {
+  const variableContainersRef: React.MutableRefObject<T> = React.createRef();
+  variableContainersRef.current = value;
 
-  return layoutEventsRef;
-};
+  return variableContainersRef;
+}
 
 const renderComponent = (props?): React.ReactElement => {
-  const layoutEventsRef = createEventSystem({ fire: layoutEventfireMock });
-  const containersEventsRef = createEventSystem({
-    fire: containerEventfireMock,
-  });
-  const variableContainersRef = createEventSystem([]);
+  const layoutEventsRef = createRef(layoutEventsMock as EventSystem);
+  const containersEventsRef = createRef(containerEventsMock);
+  const variableContainersRef = createRef([]);
 
-  const contextValue = {
+  variableContainersRef.current = [];
+
+  const contextValue: LayoutState = {
     isRoot: false,
     type: LayoutType.ROW,
     layoutEventsRef,
@@ -93,8 +106,8 @@ describe('Float', () => {
 
       rerender(renderComponent({ isOpen: false }));
 
-      expect(layoutEventfireMock).toHaveBeenCalledWith('resize');
-      expect(layoutEventfireMock).toHaveBeenCalledTimes(1);
+      expect(layoutEventsMock.fire).toHaveBeenCalledWith('resize');
+      expect(layoutEventsMock.fire).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -109,7 +122,10 @@ describe('Float', () => {
 
   describe('when the dragBar is dragged', () => {
     it('should follow the mouse until is dropped', () => {
-      const { container } = getQueries();
+      const onClose = jest.fn();
+      const { container } = getQueries({
+        dragbar: <Dragbar onClose={onClose} />,
+      });
 
       const dragbar = container.getElementsByClassName(
         'rdl-float__drag-bar',

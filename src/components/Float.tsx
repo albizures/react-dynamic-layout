@@ -5,17 +5,19 @@ import ResizeBar from './ResizeBar';
 import { ResizeBarTypes } from '../utils/enums';
 import useMouseMove from '../hooks/useMouseMove';
 import useContextLayout from '../hooks/useContextLayout';
+import FloatContext from './Float/FloatContext';
 
 interface PropTypes {
-  closeLabel?: string;
   initialTop?: number;
   initialLeft?: number;
   initialWidth: number;
   initialHeight: number;
   isOpen?: boolean;
   children: React.ReactNode;
+  dragbar?: React.ReactNode;
   isFixedSize?: boolean;
 }
+
 const Float: React.FC<PropTypes> = (props) => {
   const {
     layoutEventsRef: { current: layoutEvents },
@@ -24,7 +26,6 @@ const Float: React.FC<PropTypes> = (props) => {
   const addEventListener = useMouseMove();
   const elementRef = useRef<HTMLDivElement>(null);
   const {
-    closeLabel,
     initialTop = 0,
     initialLeft = 0,
     initialWidth,
@@ -32,6 +33,7 @@ const Float: React.FC<PropTypes> = (props) => {
     isOpen,
     children,
     isFixedSize,
+    dragbar,
   } = props;
 
   const [{ top, left }, setPosition] = useState({
@@ -105,66 +107,53 @@ const Float: React.FC<PropTypes> = (props) => {
     'rdl-float--open': isOpen,
   });
 
+  const contextValue = {
+    onMouseDown,
+  };
+
   return (
-    <div ref={elementRef} style={style} className={className}>
-      <div className="rdl-float__drag-bar" onMouseDown={onMouseDown}>
-        <button aria-label={closeLabel} className="rdl-float__close">
-          <svg
-            viewBox="0 0 10 10"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              x1="0"
-              y1="10"
-              x2="10"
-              y2="0"
-              stroke="black"
-              strokeWidth="2"
+    <FloatContext.Provider value={contextValue}>
+      <div ref={elementRef} style={style} className={className}>
+        {dragbar}
+        {!isFixedSize ? (
+          <>
+            <ResizeBar
+              onSizeChange={onSizeChange}
+              type={ResizeBarTypes.NORTH}
             />
-            <line
-              x1="0"
-              y1="0"
-              x2="10"
-              y2="10"
-              stroke="black"
-              strokeWidth="2"
+            <ResizeBar
+              onSizeChange={onSizeChange}
+              type={ResizeBarTypes.SOUTH}
             />
-          </svg>
-        </button>
+            <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.EAST} />
+            <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.WEST} />
+            <ResizeBar
+              onSizeChange={onSizeChange}
+              type={ResizeBarTypes.NORTH_EAST}
+            />
+            <ResizeBar
+              onSizeChange={onSizeChange}
+              type={ResizeBarTypes.NORTH_WEST}
+            />
+            <ResizeBar
+              onSizeChange={onSizeChange}
+              type={ResizeBarTypes.SOUTH_WEST}
+            />
+            <ResizeBar
+              onSizeChange={onSizeChange}
+              type={ResizeBarTypes.SOUTH_EAST}
+            />
+          </>
+        ) : null}
+        <div className="rdl-float__content">{children}</div>
       </div>
-      {!isFixedSize ? (
-        <>
-          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.NORTH} />
-          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.SOUTH} />
-          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.EAST} />
-          <ResizeBar onSizeChange={onSizeChange} type={ResizeBarTypes.WEST} />
-          <ResizeBar
-            onSizeChange={onSizeChange}
-            type={ResizeBarTypes.NORTH_EAST}
-          />
-          <ResizeBar
-            onSizeChange={onSizeChange}
-            type={ResizeBarTypes.NORTH_WEST}
-          />
-          <ResizeBar
-            onSizeChange={onSizeChange}
-            type={ResizeBarTypes.SOUTH_WEST}
-          />
-          <ResizeBar
-            onSizeChange={onSizeChange}
-            type={ResizeBarTypes.SOUTH_EAST}
-          />
-        </>
-      ) : null}
-      <div className="rdl-float__content">{children}</div>
-    </div>
+    </FloatContext.Provider>
   );
 };
 
 Float.defaultProps = {
   isOpen: false,
-  closeLabel: 'Close',
+  dragbar: undefined,
   isFixedSize: false,
 };
 

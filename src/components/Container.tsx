@@ -108,9 +108,8 @@ const Container: React.FC<PropTypes> = (props) => {
     }
   }, [size, currentSize, id]);
 
-  useEffect(() => {
-    checkDimensions();
-  }, [size, checkDimensions]);
+  // Lazy check
+  setTimeout(() => checkDimensions());
 
   if (typeof size === 'number') {
     assign(style, { flex: `0 0 ${size}px` });
@@ -131,7 +130,6 @@ const Container: React.FC<PropTypes> = (props) => {
   }
 
   const content = getContent(size, children, id, dimensions);
-
   return (
     <div data-id={id} ref={elementRef} className="rdl-container" style={style}>
       {content}

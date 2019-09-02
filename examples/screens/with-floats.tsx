@@ -4,13 +4,19 @@ import ReactDOM from 'react-dom';
 import Layout from '../../src/components/Layout';
 import Container from '../../src/components/Container';
 import Float from '../../src/components/Float';
+import Dragbar from '../../src/components/Float/Dragbar';
 
 const toggle = (val: boolean): boolean => !val;
 
 const WithFloats: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const onClose = (): void => setIsModalOpen(toggle);
+
+  const dragbar = <Dragbar onClose={onClose} />;
+
   const floats = [
     <Float
+      dragbar={dragbar}
       isOpen={isModalOpen}
       initialWidth={300}
       initialHeight={300}
@@ -20,9 +26,7 @@ const WithFloats: React.FC = () => {
     >
       <Layout type={Layout.COLUMN}>
         <Container>
-          <button onClick={() => setIsModalOpen(toggle)}>
-            {isModalOpen ? 'Close' : 'Open'}
-          </button>
+          <button onClick={onClose}>{isModalOpen ? 'Close' : 'Open'}</button>
         </Container>
       </Layout>
     </Float>,
@@ -30,9 +34,7 @@ const WithFloats: React.FC = () => {
   return (
     <Layout floats={floats} type={Layout.COLUMN}>
       <Container>
-        <button onClick={() => setIsModalOpen(toggle)}>
-          {isModalOpen ? 'Close' : 'Open'}
-        </button>
+        <button onClick={onClose}>{isModalOpen ? 'Close' : 'Open'}</button>
       </Container>
     </Layout>
   );
