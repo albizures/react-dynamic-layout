@@ -9,13 +9,13 @@ import {
   Queries,
 } from '@testing-library/react';
 
-import { ResizeBarTypes } from '../../utils/enums';
-import { testResizeBar } from '../../utils/tests';
-import Float from '../Float';
-import LayoutContext, { LayoutState } from '../../contexts/LayoutContext';
-import Dragbar from '../Float/Dragbar';
-import { LayoutType } from '../../types';
-import { EventSystem } from '../../utils/events';
+import { ResizeBarTypes } from '../../../utils/enums';
+import { testResizeBar } from '../../../utils/tests';
+import Float from '../index';
+import LayoutContext, { LayoutState } from '../../../contexts/LayoutContext';
+import Dragbar from '../Dragbar';
+import { LayoutType } from '../../../types';
+import { EventSystem } from '../../../utils/events';
 
 const layoutEventsMock: EventSystem = {
   fire: jest.fn(),

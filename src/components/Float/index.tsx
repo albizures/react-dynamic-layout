@@ -1,11 +1,11 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
-import ResizeBar from './ResizeBar';
-import { ResizeBarTypes } from '../utils/enums';
-import useMouseMove from '../hooks/useMouseMove';
-import useContextLayout from '../hooks/useContextLayout';
-import FloatContext from './Float/FloatContext';
+import ResizeBar from '../ResizeBar';
+import { ResizeBarTypes } from '../../utils/enums';
+import useMouseMove from '../../hooks/useMouseMove';
+import useContextLayout from '../../hooks/useContextLayout';
+import FloatContext from '../Float/FloatContext';
 
 interface PropTypes {
   initialTop?: number;
