@@ -29,7 +29,7 @@
     "react-dom": "^16.8.6",
     "rimraf": "^2.5.4",
     "sass": "^1.22.1",
-    "semantic-release": "^15.13.18"
+    "semantic-release": "^17.2.3"
   },
   "peerDependencies": {
     "react": ">= 16.8 < 17",
